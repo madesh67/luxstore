@@ -3,11 +3,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { CheckoutService } from "@/services/checkout.service";
 import { logger } from "@/lib/logger";
 import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
+import { env } from "@/lib/env";
+import { getStripeClient } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
+  if (!env.ENABLE_PAYMENTS) {
+    return NextResponse.json(
+      { message: "Payments are currently unavailable" },
+      { status: 503 }
+    );
+  }
+
+  const stripe = getStripeClient();
+  const webhookSecret = env.STRIPE_WEBHOOK_SECRET || "";
+
   const body = await request.text();
   const signature = (await headers()).get("stripe-signature") || "";
 

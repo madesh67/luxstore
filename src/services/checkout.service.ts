@@ -6,9 +6,14 @@ import { TaxService } from "./tax.service";
 import { AppError } from "@/lib/error-handler";
 import { addressSchema } from "@/schemas/address";
 import { sendOrderConfirmationEmail } from "@/lib/email";
+import { getStripeClient } from "@/lib/stripe";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
+const stripe = {
+  get paymentIntents() {
+    return getStripeClient().paymentIntents;
+  }
+} as unknown as Stripe;
 const SESSION_EXPIRATION_MINUTES = 60;
 
 export const CheckoutService = {

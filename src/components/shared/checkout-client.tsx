@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useCart } from "@/hooks/use-cart";
 import { useUser } from "@/hooks/use-auth";
 import { useAddresses } from "@/hooks/use-addresses";
@@ -25,6 +26,8 @@ type CheckoutStep = "address" | "shipping" | "review";
 
 export function CheckoutClient() {
   const router = useRouter();
+  const enablePayments = process.env.NEXT_PUBLIC_ENABLE_PAYMENTS === "true";
+
   const { data: user } = useUser();
   const { data: cartData, isLoading: isCartLoading } = useCart();
   const { data: addressesData } = useAddresses();
@@ -62,6 +65,7 @@ export function CheckoutClient() {
 
   // Populate address form if user is logged in
   React.useEffect(() => {
+    if (!enablePayments) return;
     if (user) {
       setAddressForm((prev) => ({
         ...prev,
@@ -70,10 +74,11 @@ export function CheckoutClient() {
         email: user.email || "",
       }));
     }
-  }, [user]);
+  }, [user, enablePayments]);
 
   // Sync saved addresses and select default
   React.useEffect(() => {
+    if (!enablePayments) return;
     if (addressesData?.addresses && addressesData.addresses.length > 0) {
       const defaultAddr = addressesData.addresses.find((a) => a.isDefault);
       const selected = defaultAddr || addressesData.addresses[0];
@@ -82,7 +87,7 @@ export function CheckoutClient() {
     } else {
       setShowManualAddressForm(true);
     }
-  }, [addressesData]);
+  }, [addressesData, enablePayments]);
 
   interface CartSnapshotItem {
     productId: string;
@@ -95,6 +100,7 @@ export function CheckoutClient() {
 
   // A. Initialize Checkout Session on page mount
   React.useEffect(() => {
+    if (!enablePayments) return;
     if (!isCartLoading) {
       if (!cartData?.cart || cartData.cart.items.length === 0) {
         router.push("/cart");
@@ -113,7 +119,25 @@ export function CheckoutClient() {
         }
       );
     }
-  }, [cartData, isCartLoading, createSessionMutation, router, user?.email]);
+  }, [cartData, isCartLoading, createSessionMutation, router, user?.email, enablePayments]);
+
+  if (!enablePayments) {
+    return (
+      <Container className="py-20 text-center space-y-4">
+        <h2 className="text-xl font-bold tracking-wider uppercase text-foreground">
+          Checkout Unavailable
+        </h2>
+        <p className="text-sm text-muted-foreground max-w-md mx-auto">
+          Payments and checkout workflows are currently disabled on this preview environment. You can return to the shopping catalog.
+        </p>
+        <div className="pt-4">
+          <Button asChild variant="gold">
+            <Link href="/shop">Return to Shop</Link>
+          </Button>
+        </div>
+      </Container>
+    );
+  }
 
   // If loading checkout setup or session
   const isLoadingSetup = isCartLoading || createSessionMutation.isPending || !session;

@@ -102,22 +102,30 @@ export function CartPageClient() {
           <div className="space-y-6 lg:sticky lg:top-24">
             <CartSummary cart={cart!} showCheckoutCTA={false} />
             
-            <div className="bg-secondary/25 border border-border/40 p-6 rounded-sm text-center space-y-4">
-              <span className="text-[10px] tracking-[0.25em] font-semibold text-accent uppercase block">
-                Ready to Order
-              </span>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-                Secure Checkout
-              </h3>
-              <p className="text-xs text-muted-foreground font-light leading-relaxed">
-                Stripe payment gate and order processing pipelines are active.
-              </p>
-              <Button asChild variant="gold" className="w-full h-12 uppercase tracking-widest text-xs font-bold">
-                <Link href="/checkout">
-                  Proceed to Secure Checkout <ArrowRight className="h-4 w-4 ml-1" />
-                </Link>
-              </Button>
-            </div>
+            {process.env.NEXT_PUBLIC_ENABLE_PAYMENTS === "true" ? (
+              <div className="bg-secondary/25 border border-border/40 p-6 rounded-sm text-center space-y-4">
+                <span className="text-[10px] tracking-[0.25em] font-semibold text-accent uppercase block">
+                  Ready to Order
+                </span>
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+                  Secure Checkout
+                </h3>
+                <p className="text-xs text-muted-foreground font-light leading-relaxed">
+                  Stripe payment gate and order processing pipelines are active.
+                </p>
+                <Button asChild variant="gold" className="w-full h-12 uppercase tracking-widest text-xs font-bold">
+                  <Link href="/checkout">
+                    Proceed to Secure Checkout <ArrowRight className="h-4 w-4 ml-1" />
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="bg-secondary/25 border border-border/40 p-6 rounded-sm text-center py-6">
+                <p className="text-xs text-muted-foreground/80 font-light">
+                  🔒 Payments and Checkout are currently unavailable in preview mode.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
