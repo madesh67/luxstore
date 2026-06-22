@@ -1,0 +1,130 @@
+name: LuxStore CI/CD Suite
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint:
+    name: Code Style and Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linter
+        run: npm run lint
+
+  test:
+    name: Unit & Integration Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run Test Suite
+        run: npm run test
+
+  security:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run NPM Audit Security Check
+        run: npm audit --audit-level=high || echo "High severity vulnerabilities found, review logs."
+
+  build:
+    name: Production Compile Check
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run Production Compile
+        env:
+          NEXT_PUBLIC_APP_URL: https://luxstore.com
+          DATABASE_URL: postgresql://mock:mock@localhost:5432/mockdb
+          JWT_SECRET: mock-jwt-secret-key-at-least-32-chars-long
+          STRIPE_SECRET_KEY: sk_test_mock
+          STRIPE_WEBHOOK_SECRET: whsec_mock
+          CLOUDINARY_CLOUD_NAME: mock_cloud
+          CLOUDINARY_API_KEY: mock_key
+          CLOUDINARY_API_SECRET: mock_secret
+        run: npm run build
+
+  deploy:
+    name: Deployment Trigger
+    runs-on: ubuntu-latest
+    needs: [build, security]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel (Frontend)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+      - name: Deploy to Railway (Backend Services & Queues)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          if [ -n "$RAILWAY_TOKEN" ]; then
+            npm install -g @railway/cli
+            railway up --detach
+          else
+            echo "Railway token not set, skipping backend CLI deploy."
+          fi

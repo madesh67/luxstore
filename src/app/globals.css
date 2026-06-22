@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 200 50% 3%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 50% 3%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 50% 3%;
+
+    --primary: 30 15% 12%; /* Luxury Obsidian-Bronze */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 35 25% 90%; /* Light Warm Sand */
+    --secondary-foreground: 30 15% 12%;
+
+    --muted: 30 10% 94%;
+    --muted-foreground: 200 15% 40%;
+
+    --accent: 35 35% 45% ; /* Luxury Matte Gold */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 30 10% 88%;
+    --input: 30 10% 88%;
+    --ring: 30 15% 12%;
+
+    --radius: 0.25rem; /* Luxury sharp edges/minimal rounding */
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 10% 4%;
+
+    --secondary: 35 15% 15%; /* Deep Warm Bronze/Grey */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 35 30% 50%; /* Matte gold for dark mode */
+    --accent-foreground: 240 10% 4%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans transition-colors duration-300;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-wide font-medium;
+  }
+}
+
+/* Micro-interactions & animations */
+.transition-luxury {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift {
+  @apply transition-luxury;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #dfba73 0%, #c5a059 50%, #9e7f3d 100%);
+}
+
+.glass-header {
+  @apply bg-background/80 backdrop-blur-md border-b border-border/50 sticky top-0 z-50;
+}

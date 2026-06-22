@@ -1,0 +1,72 @@
+"use client";
+
+import * as React from "react";
+import { Plus, Minus, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+interface QuantitySelectorProps {
+  quantity: number;
+  max?: number;
+  min?: number;
+  onChange: (value: number) => void;
+  isLoading?: boolean;
+  className?: string;
+}
+
+export function QuantitySelector({
+  quantity,
+  max = 10,
+  min = 1,
+  onChange,
+  isLoading = false,
+  className = "",
+}: QuantitySelectorProps) {
+  const handleDecrement = () => {
+    if (quantity > min) {
+      onChange(quantity - 1);
+    }
+  };
+
+  const handleIncrement = () => {
+    if (quantity < max) {
+      onChange(quantity + 1);
+    }
+  };
+
+  return (
+    <div className={`flex items-center border border-border/60 bg-background/50 rounded-sm w-fit ${className}`}>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        onClick={handleDecrement}
+        disabled={quantity <= min || isLoading}
+        className="h-8 w-8 rounded-none hover:bg-muted/50 hover:text-accent disabled:opacity-40"
+        aria-label="Decrease quantity"
+      >
+        <Minus className="h-3 w-3" />
+      </Button>
+      
+      <div className="w-10 text-center text-xs font-mono font-medium text-foreground select-none relative">
+        {isLoading ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+            <Loader2 className="h-3 w-3 animate-spin text-accent" />
+          </div>
+        ) : null}
+        {quantity}
+      </div>
+
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        onClick={handleIncrement}
+        disabled={quantity >= max || isLoading}
+        className="h-8 w-8 rounded-none hover:bg-muted/50 hover:text-accent disabled:opacity-40"
+        aria-label="Increase quantity"
+      >
+        <Plus className="h-3 w-3" />
+      </Button>
+    </div>
+  );
+}
