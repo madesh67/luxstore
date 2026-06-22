@@ -4,30 +4,40 @@ import { logger } from "./logger";
 // Graceful fallback store for in-memory cache
 const memoryCache = new Map<string, { value: string; expiresAt: number }>();
 
+declare global {
+  var redisClient: Redis | undefined;
+}
+
 let redisClient: Redis | null = null;
 const isRedisConfigured = !!process.env.REDIS_URL;
 
 if (isRedisConfigured) {
-  try {
-    redisClient = new Redis(process.env.REDIS_URL!, {
-      maxRetriesPerRequest: 3,
-      connectTimeout: 5000,
-      lazyConnect: true,
-      retryStrategy(times) {
-        const delay = Math.min(times * 100, 3000);
-        return delay;
-      },
-    });
+  if (globalThis.redisClient) {
+    redisClient = globalThis.redisClient;
+  } else {
+    try {
+      redisClient = new Redis(process.env.REDIS_URL!, {
+        maxRetriesPerRequest: 3,
+        connectTimeout: 5000,
+        lazyConnect: true,
+        retryStrategy(times) {
+          const delay = Math.min(times * 100, 3000);
+          return delay;
+        },
+      });
 
-    redisClient.on("error", (err) => {
-      logger.error("Redis Connection Error:", err);
-    });
+      redisClient.on("error", (err) => {
+        logger.error("Redis Connection Error:", err);
+      });
 
-    redisClient.on("connect", () => {
-      logger.info("Redis connected successfully.");
-    });
-  } catch (error: unknown) {
-    logger.error("Failed to initialize Redis client:", error as Error);
+      redisClient.on("connect", () => {
+        logger.info("Redis connected successfully.");
+      });
+
+      globalThis.redisClient = redisClient;
+    } catch (error: unknown) {
+      logger.error("Failed to initialize Redis client:", error as Error);
+    }
   }
 } else {
   logger.info("REDIS_URL is not set. Caching will fall back to in-memory store.");
