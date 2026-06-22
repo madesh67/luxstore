@@ -68,6 +68,22 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
     updateUrl();
   }, [updateUrl]);
 
+  // Sync URL search params back to local state (handles back/forward, header links, and deep links)
+  React.useEffect(() => {
+    const searchVal = searchParams.get("search") || "";
+    setSearch(searchVal);
+    setDebouncedSearch(searchVal);
+    setSelectedCategory(searchParams.get("category") || "");
+    setSelectedBrand(searchParams.get("brand") || "");
+    setMinPrice(searchParams.get("minPrice") || "");
+    setMaxPrice(searchParams.get("maxPrice") || "");
+    setFeatured(searchParams.get("featured") === "true");
+    setInStock(searchParams.get("inStock") === "true");
+    setRating(searchParams.get("rating") || "");
+    setSortBy(searchParams.get("sortBy") || "newest");
+    setPage(parseInt(searchParams.get("page") || "1", 10));
+  }, [searchParams]);
+
   // 4. Query data using custom hook
   const { data, isLoading, isError, error } = useProducts({
     search: debouncedSearch,
