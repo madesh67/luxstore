@@ -77,7 +77,7 @@ export default function HomePage() {
           </p>
           <div className="pt-4 flex justify-center gap-4">
             <Button asChild variant="gold" size="lg">
-              <Link href="#">
+              <Link href="/shop">
                 Shop Collection
               </Link>
             </Button>
