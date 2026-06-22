@@ -11,19 +11,19 @@ const COLLECTIONS = [
     title: "Timepieces",
     description: "Chronographs built with precision engineering",
     imageUrl: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=800",
-    href: "#",
+    href: "/shop?category=timepieces",
   },
   {
     title: "Leather Goods",
     description: "Full-grain calfskin bags and classic wallets",
     imageUrl: "https://images.unsplash.com/photo-1547949003-9792a18a2601?q=80&w=800",
-    href: "#",
+    href: "/shop?category=leather",
   },
   {
     title: "Eyewear",
     description: "Handcrafted sunglasses with polarized lenses",
     imageUrl: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800",
-    href: "#",
+    href: "/shop?category=eyewear",
   },
 ];
 
