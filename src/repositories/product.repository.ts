@@ -37,7 +37,8 @@ export const ProductRepository = {
 
     // Category Filter
     if (category) {
-      where.category = { slug: category, active: true, deletedAt: null };
+      const targetCategory = category === "leather" ? "leather-bags" : category;
+      where.category = { slug: targetCategory, active: true, deletedAt: null };
     }
 
     // Brand Filter

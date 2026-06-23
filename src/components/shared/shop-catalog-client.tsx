@@ -22,71 +22,65 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // 1. Local State synchronized with URL parameters
+  // 1. Read filter state directly from URL (Single Source of Truth)
   const [search, setSearch] = React.useState(searchParams.get("search") || "");
-  const [debouncedSearch, setDebouncedSearch] = React.useState(search);
-  const [selectedCategory, setSelectedCategory] = React.useState(searchParams.get("category") || "");
-  const [selectedBrand, setSelectedBrand] = React.useState(searchParams.get("brand") || "");
-  const [minPrice, setMinPrice] = React.useState(searchParams.get("minPrice") || "");
-  const [maxPrice, setMaxPrice] = React.useState(searchParams.get("maxPrice") || "");
-  const [featured, setFeatured] = React.useState(searchParams.get("featured") === "true");
-  const [inStock, setInStock] = React.useState(searchParams.get("inStock") === "true");
-  const [rating, setRating] = React.useState(searchParams.get("rating") || "");
-  const [sortBy, setSortBy] = React.useState(searchParams.get("sortBy") || "newest");
-  const [page, setPage] = React.useState(parseInt(searchParams.get("page") || "1", 10));
+  const selectedCategory = searchParams.get("category") || "";
+  const selectedBrand = searchParams.get("brand") || "";
+  const minPrice = searchParams.get("minPrice") || "";
+  const maxPrice = searchParams.get("maxPrice") || "";
+  const featured = searchParams.get("featured") === "true";
+  const inStock = searchParams.get("inStock") === "true";
+  const rating = searchParams.get("rating") || "";
+  const sortBy = searchParams.get("sortBy") || "newest";
+  const page = parseInt(searchParams.get("page") || "1", 10);
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = React.useState(false);
 
-  // 2. Debounce search input changes (300ms)
+  // Normalize category for display (maps 'leather' -> 'leather-bags' for UI highlight sync)
+  const normalizedCategory = selectedCategory === "leather" ? "leather-bags" : selectedCategory;
+
+  // 2. Helper function to update filters by modifying URL query string
+  const updateFilter = React.useCallback(
+    (updates: Record<string, string | null | boolean>) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null || value === undefined || value === "" || value === false) {
+          params.delete(key);
+        } else {
+          params.set(key, String(value));
+        }
+      });
+
+      // Reset page to 1 when filters change (unless page is explicitly updated)
+      if (!("page" in updates)) {
+        params.delete("page");
+      }
+
+      router.replace(`/shop?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, router]
+  );
+
+  // 3. Debounce search input changes (300ms) to URL
   React.useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedSearch(search);
-      setPage(1); // Reset page on query modify
+      const currentSearch = searchParams.get("search") || "";
+      if (search !== currentSearch) {
+        updateFilter({ search });
+      }
     }, 300);
     return () => clearTimeout(handler);
-  }, [search]);
+  }, [search, searchParams, updateFilter]);
 
-  // 3. Sync state changes back to URL history
-  const updateUrl = React.useCallback(() => {
-    const params = new URLSearchParams();
-    
-    if (debouncedSearch) params.set("search", debouncedSearch);
-    if (selectedCategory) params.set("category", selectedCategory);
-    if (selectedBrand) params.set("brand", selectedBrand);
-    if (minPrice) params.set("minPrice", minPrice);
-    if (maxPrice) params.set("maxPrice", maxPrice);
-    if (featured) params.set("featured", "true");
-    if (inStock) params.set("inStock", "true");
-    if (rating) params.set("rating", rating);
-    if (sortBy !== "newest") params.set("sortBy", sortBy);
-    if (page > 1) params.set("page", String(page));
-
-    router.replace(`/shop?${params.toString()}`, { scroll: false });
-  }, [debouncedSearch, selectedCategory, selectedBrand, minPrice, maxPrice, featured, inStock, rating, sortBy, page, router]);
-
+  // Sync external URL changes to local search input state (e.g. back/forward, reset)
   React.useEffect(() => {
-    updateUrl();
-  }, [updateUrl]);
-
-  // Sync URL search params back to local state (handles back/forward, header links, and deep links)
-  React.useEffect(() => {
-    const searchVal = searchParams.get("search") || "";
-    setSearch(searchVal);
-    setDebouncedSearch(searchVal);
-    setSelectedCategory(searchParams.get("category") || "");
-    setSelectedBrand(searchParams.get("brand") || "");
-    setMinPrice(searchParams.get("minPrice") || "");
-    setMaxPrice(searchParams.get("maxPrice") || "");
-    setFeatured(searchParams.get("featured") === "true");
-    setInStock(searchParams.get("inStock") === "true");
-    setRating(searchParams.get("rating") || "");
-    setSortBy(searchParams.get("sortBy") || "newest");
-    setPage(parseInt(searchParams.get("page") || "1", 10));
+    setSearch(searchParams.get("search") || "");
   }, [searchParams]);
 
-  // 4. Query data using custom hook
+  // 4. Query data using custom hook (automatically refetches when arguments change)
   const { data, isLoading, isError, error } = useProducts({
-    search: debouncedSearch,
+    search: searchParams.get("search") || "",
     category: selectedCategory,
     brand: selectedBrand,
     minPrice: minPrice ? parseFloat(minPrice) : undefined,
@@ -105,15 +99,6 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
   // Reset all filters helper
   const handleResetFilters = () => {
     setSearch("");
-    setSelectedCategory("");
-    setSelectedBrand("");
-    setMinPrice("");
-    setMaxPrice("");
-    setFeatured(false);
-    setInStock(false);
-    setRating("");
-    setSortBy("newest");
-    setPage(1);
     router.replace("/shop");
   };
 
@@ -140,16 +125,16 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">Categories</h3>
             <div className="space-y-2">
               <button
-                onClick={() => { setSelectedCategory(""); setPage(1); }}
-                className={`block text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${!selectedCategory ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                onClick={() => updateFilter({ category: "" })}
+                className={`block text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${!normalizedCategory ? "text-accent font-semibold" : "text-muted-foreground"}`}
               >
                 All Categories
               </button>
               {initialCategories.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => { setSelectedCategory(cat.slug); setPage(1); }}
-                  className={`block text-xs uppercase tracking-wider font-light text-left hover:text-accent transition-colors ${selectedCategory === cat.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                  onClick={() => updateFilter({ category: cat.slug })}
+                  className={`block text-xs uppercase tracking-wider font-light text-left hover:text-accent transition-colors ${normalizedCategory === cat.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
                 >
                   {cat.name}
                 </button>
@@ -162,7 +147,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">Brands</h3>
             <div className="space-y-2">
               <button
-                onClick={() => { setSelectedBrand(""); setPage(1); }}
+                onClick={() => updateFilter({ brand: "" })}
                 className={`block text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${!selectedBrand ? "text-accent font-semibold" : "text-muted-foreground"}`}
               >
                 All Brands
@@ -170,7 +155,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
               {initialBrands.map((brand) => (
                 <button
                   key={brand.id}
-                  onClick={() => { setSelectedBrand(brand.slug); setPage(1); }}
+                  onClick={() => updateFilter({ brand: brand.slug })}
                   className={`block text-xs uppercase tracking-wider font-light text-left hover:text-accent transition-colors ${selectedBrand === brand.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
                 >
                   {brand.name}
@@ -187,7 +172,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 type="number"
                 placeholder="MIN"
                 value={minPrice}
-                onChange={(e) => { setMinPrice(e.target.value); setPage(1); }}
+                onChange={(e) => updateFilter({ minPrice: e.target.value })}
                 className="h-9 uppercase text-[10px] tracking-widest bg-background/50 placeholder:text-muted-foreground/60"
               />
               <span className="text-xs text-muted-foreground">—</span>
@@ -195,7 +180,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 type="number"
                 placeholder="MAX"
                 value={maxPrice}
-                onChange={(e) => { setMaxPrice(e.target.value); setPage(1); }}
+                onChange={(e) => updateFilter({ maxPrice: e.target.value })}
                 className="h-9 uppercase text-[10px] tracking-widest bg-background/50 placeholder:text-muted-foreground/60"
               />
             </div>
@@ -208,7 +193,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 id="featured"
                 type="checkbox"
                 checked={featured}
-                onChange={(e) => { setFeatured(e.target.checked); setPage(1); }}
+                onChange={(e) => updateFilter({ featured: e.target.checked })}
                 className="rounded border-border text-accent focus:ring-accent accent-accent"
               />
               <Label htmlFor="featured" className="cursor-pointer">Featured Pieces Only</Label>
@@ -218,7 +203,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 id="inStock"
                 type="checkbox"
                 checked={inStock}
-                onChange={(e) => { setInStock(e.target.checked); setPage(1); }}
+                onChange={(e) => updateFilter({ inStock: e.target.checked })}
                 className="rounded border-border text-accent focus:ring-accent accent-accent"
               />
               <Label htmlFor="inStock" className="cursor-pointer">Available In Stock</Label>
@@ -230,7 +215,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">Rating</h3>
             <div className="space-y-2">
               <button
-                onClick={() => { setRating(""); setPage(1); }}
+                onClick={() => updateFilter({ rating: "" })}
                 className={`block text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${!rating ? "text-accent font-semibold" : "text-muted-foreground"}`}
               >
                 Any Rating
@@ -238,7 +223,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
               {[4, 4.5].map((val) => (
                 <button
                   key={val}
-                  onClick={() => { setRating(String(val)); setPage(1); }}
+                  onClick={() => updateFilter({ rating: String(val) })}
                   className={`flex items-center gap-1.5 text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${rating === String(val) ? "text-accent font-semibold" : "text-muted-foreground"}`}
                 >
                   <Star className="h-3 w-3 text-accent fill-accent" /> {val} & Above
@@ -278,7 +263,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">Sort By</span>
                 <select
                   value={sortBy}
-                  onChange={(e) => { setSortBy(e.target.value); setPage(1); }}
+                  onChange={(e) => updateFilter({ sortBy: e.target.value })}
                   className="h-11 border border-input bg-background/50 px-3 uppercase text-[10px] tracking-widest focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm cursor-pointer"
                 >
                   <option value="newest">Newest Arrivals</option>
@@ -396,7 +381,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                onClick={() => updateFilter({ page: String(Math.max(page - 1, 1)) })}
                 disabled={page === 1 || isLoading}
                 aria-label="Previous Page"
               >
@@ -408,7 +393,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => setPage((p) => Math.min(p + 1, pagination.pages))}
+                onClick={() => updateFilter({ page: String(Math.min(page + 1, pagination.pages)) })}
                 disabled={page === pagination.pages || isLoading}
                 aria-label="Next Page"
               >
@@ -440,16 +425,16 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">Categories</h3>
                 <div className="space-y-1.5 flex flex-col items-start">
                   <button
-                    onClick={() => { setSelectedCategory(""); setPage(1); }}
-                    className={`text-xs uppercase tracking-wider ${!selectedCategory ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                    onClick={() => updateFilter({ category: "" })}
+                    className={`text-xs uppercase tracking-wider ${!normalizedCategory ? "text-accent font-semibold" : "text-muted-foreground"}`}
                   >
                     All Categories
                   </button>
                   {initialCategories.map((cat) => (
                     <button
                       key={cat.id}
-                      onClick={() => { setSelectedCategory(cat.slug); setPage(1); }}
-                      className={`text-xs uppercase tracking-wider ${selectedCategory === cat.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                      onClick={() => updateFilter({ category: cat.slug })}
+                      className={`text-xs uppercase tracking-wider ${normalizedCategory === cat.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
                     >
                       {cat.name}
                     </button>
@@ -462,7 +447,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">Brands</h3>
                 <div className="space-y-1.5 flex flex-col items-start">
                   <button
-                    onClick={() => { setSelectedBrand(""); setPage(1); }}
+                    onClick={() => updateFilter({ brand: "" })}
                     className={`text-xs uppercase tracking-wider ${!selectedBrand ? "text-accent font-semibold" : "text-muted-foreground"}`}
                   >
                     All Brands
@@ -470,7 +455,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                   {initialBrands.map((brand) => (
                     <button
                       key={brand.id}
-                      onClick={() => { setSelectedBrand(brand.slug); setPage(1); }}
+                      onClick={() => updateFilter({ brand: brand.slug })}
                       className={`text-xs uppercase tracking-wider text-left ${selectedBrand === brand.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
                     >
                       {brand.name}
@@ -487,14 +472,14 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                     type="number"
                     placeholder="MIN"
                     value={minPrice}
-                    onChange={(e) => { setMinPrice(e.target.value); setPage(1); }}
+                    onChange={(e) => updateFilter({ minPrice: e.target.value })}
                     className="h-9 text-[10px]"
                   />
                   <Input
                     type="number"
                     placeholder="MAX"
                     value={maxPrice}
-                    onChange={(e) => { setMaxPrice(e.target.value); setPage(1); }}
+                    onChange={(e) => updateFilter({ maxPrice: e.target.value })}
                     className="h-9 text-[10px]"
                   />
                 </div>

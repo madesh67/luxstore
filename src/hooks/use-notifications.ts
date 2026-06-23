@@ -2,6 +2,8 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { useUser } from "./use-auth";
+
 export interface NotificationType {
   id: string;
   userId: string;
@@ -41,6 +43,8 @@ async function fetcher<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 export function useNotifications(params: { page: number; limit: number; unreadOnly?: boolean }) {
+  const { data: user } = useUser();
+  
   const queryParams = new URLSearchParams({
     page: String(params.page),
     limit: String(params.limit),
@@ -50,7 +54,8 @@ export function useNotifications(params: { page: number; limit: number; unreadOn
   return useQuery<NotificationsResponse, Error>({
     queryKey: ["notifications", params],
     queryFn: () => fetcher<NotificationsResponse>(`/api/notifications?${queryParams.toString()}`),
-    refetchInterval: 15000, // Poll every 15s to keep Notification Center sync'd
+    enabled: !!user,
+    refetchInterval: user ? 15000 : false, // Poll every 15s to keep Notification Center sync'd
   });
 }
 

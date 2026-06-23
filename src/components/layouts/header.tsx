@@ -81,8 +81,8 @@ export function Header() {
 
     <header className="w-full">
       {/* Top Banner */}
-      <div className="w-full bg-primary py-2 text-center text-xs tracking-widest text-primary-foreground uppercase font-medium">
-        Complimentary express delivery on orders over ₹10,000
+      <div className="w-full bg-[#a88a44] py-2 text-center text-[10px] sm:text-xs tracking-widest text-white uppercase font-bold px-4">
+        LuxStore Preview: Orders are currently not being processed.
       </div>
 
       {/* Main Header navigation */}

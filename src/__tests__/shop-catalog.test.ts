@@ -7,10 +7,8 @@ describe("Shop Catalog Parameter Synchronization (Static Audit)", () => {
     const filePath = path.resolve(__dirname, "../components/shared/shop-catalog-client.tsx");
     const content = fs.readFileSync(filePath, "utf-8");
     
-    // Assert the presence of state sync setters inside useEffect blocks
-    expect(content).toContain("setSelectedCategory");
-    expect(content).toContain("setSelectedBrand");
-    expect(content).toContain("setDebouncedSearch");
+    // Assert the presence of URL-driven filter update utility and parameter extraction
+    expect(content).toContain("updateFilter");
     expect(content).toContain("searchParams.get");
   });
 });

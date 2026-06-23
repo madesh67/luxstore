@@ -11,6 +11,9 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Shop Catalog | LuxStore Accessories",
   description: "Browse the curated collection of premium leather bags, watches, sunglasses, and travel accessories at LuxStore.",
+  alternates: {
+    canonical: "/shop",
+  },
   openGraph: {
     title: "Atelier Accessories Shop | LuxStore",
     description: "Browse the curated collection of premium leather bags, watches, sunglasses, and travel accessories at LuxStore.",

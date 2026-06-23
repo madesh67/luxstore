@@ -125,10 +125,10 @@ export function CheckoutClient() {
     return (
       <Container className="py-20 text-center space-y-4">
         <h2 className="text-xl font-bold tracking-wider uppercase text-foreground">
-          Checkout Unavailable
+          Demo Mode / Checkout Unavailable
         </h2>
         <p className="text-sm text-muted-foreground max-w-md mx-auto">
-          Payments and checkout workflows are currently disabled on this preview environment. You can return to the shopping catalog.
+          LuxStore Preview: Orders are currently not being processed. Payment integration is disabled on this preview environment.
         </p>
         <div className="pt-4">
           <Button asChild variant="gold">
