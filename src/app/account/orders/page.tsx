@@ -108,7 +108,7 @@ export default function OrdersHistoryPage() {
             onClick={() => refetch()}
             variant="ghost"
             size="icon"
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
+            className="h-11 w-11 md:h-8 md:w-8 text-muted-foreground hover:text-foreground flex items-center justify-center"
             title="Refresh list"
           >
             <RefreshCw className="h-4 w-4" />
@@ -239,7 +239,7 @@ export default function OrdersHistoryPage() {
                     size="sm"
                     disabled={page === 1}
                     onClick={() => setPage(page - 1)}
-                    className="uppercase tracking-widest text-[9px] font-bold"
+                    className="uppercase tracking-widest text-xs md:text-[9px] font-bold h-11 md:h-8 px-4 md:px-3 flex items-center justify-center"
                   >
                     Previous
                   </Button>
@@ -251,7 +251,7 @@ export default function OrdersHistoryPage() {
                     size="sm"
                     disabled={page === totalPages}
                     onClick={() => setPage(page + 1)}
-                    className="uppercase tracking-widest text-[9px] font-bold"
+                    className="uppercase tracking-widest text-xs md:text-[9px] font-bold h-11 md:h-8 px-4 md:px-3 flex items-center justify-center"
                   >
                     Next
                   </Button>

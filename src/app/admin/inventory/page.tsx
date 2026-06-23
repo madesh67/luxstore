@@ -269,12 +269,12 @@ export default function AdminInventoryPage() {
                           <td className="p-4 text-center text-[#a8a6a3]">{item.incoming}</td>
                           <td className="p-4 text-center text-amber-500 font-semibold">{item.lowStockThreshold}</td>
                           <td className="p-4 text-right">
-                            <div className="flex justify-end gap-2">
+                            <div className="flex justify-end items-center gap-2">
                               <Button
                                 onClick={() => openAdjustModal(item)}
                                 variant="outline"
                                 size="sm"
-                                className="text-[10px] border-[#26221f] hover:bg-[#1a1715] h-7 uppercase tracking-wider font-bold"
+                                className="text-xs md:text-[10px] border-[#26221f] hover:bg-[#1a1715] h-11 md:h-7 uppercase tracking-wider font-bold flex items-center px-4"
                               >
                                 Adjust Stock
                               </Button>
@@ -282,7 +282,7 @@ export default function AdminInventoryPage() {
                                 onClick={() => openThresholdModal(item)}
                                 variant="ghost"
                                 size="icon"
-                                className="h-7 w-7 text-[#7d7a77] hover:text-white"
+                                className="h-11 w-11 md:h-7 md:w-7 text-[#7d7a77] hover:text-white flex items-center justify-center"
                               >
                                 <Edit2 className="h-3.5 w-3.5" />
                               </Button>

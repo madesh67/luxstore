@@ -109,7 +109,7 @@ export function WishlistButton({
       <Button
         variant="outline"
         size="icon"
-        className={`h-10 w-10 border-border/40 ${className}`}
+        className={`h-11 w-11 md:h-10 md:w-10 border-border/40 ${className}`}
         disabled
       >
         <Heart className="h-4 w-4 text-muted-foreground/60" />
@@ -143,7 +143,7 @@ export function WishlistButton({
       size="icon"
       onClick={handleToggle}
       disabled={isLoading}
-      className={`h-10 w-10 border-border/60 transition-all ${isLiked ? "border-accent/40 bg-accent/5" : ""} ${className}`}
+      className={`h-11 w-11 md:h-10 md:w-10 border-border/60 transition-all ${isLiked ? "border-accent/40 bg-accent/5" : ""} ${className}`}
       aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
     >
       {isLoading ? (

@@ -382,7 +382,7 @@ export default function AdminReviewsPage() {
                           variant="ghost"
                           size="icon"
                           disabled={r.status === "APPROVED"}
-                          className="h-7 w-7 text-emerald-400 hover:bg-emerald-950/30"
+                          className="h-11 w-11 md:h-7 md:w-7 text-emerald-400 hover:bg-emerald-950/30 flex items-center justify-center"
                           title="Approve"
                         >
                           <Check className="h-4 w-4" />
@@ -392,7 +392,7 @@ export default function AdminReviewsPage() {
                           variant="ghost"
                           size="icon"
                           disabled={r.status === "REJECTED"}
-                          className="h-7 w-7 text-amber-500 hover:bg-amber-950/30"
+                          className="h-11 w-11 md:h-7 md:w-7 text-amber-500 hover:bg-amber-950/30 flex items-center justify-center"
                           title="Reject"
                         >
                           <X className="h-4 w-4" />
@@ -402,7 +402,7 @@ export default function AdminReviewsPage() {
                           variant="ghost"
                           size="icon"
                           disabled={r.status === "HIDDEN"}
-                          className="h-7 w-7 text-gray-400 hover:bg-gray-800"
+                          className="h-11 w-11 md:h-7 md:w-7 text-gray-400 hover:bg-gray-800 flex items-center justify-center"
                           title="Hide"
                         >
                           <EyeOff className="h-4 w-4" />
@@ -411,7 +411,7 @@ export default function AdminReviewsPage() {
                           onClick={() => toggleFlagMutation.mutate({ id: r.id, isFlagged: !r.isFlagged })}
                           variant="ghost"
                           size="icon"
-                          className={`h-7 w-7 ${r.isFlagged ? "text-red-400 bg-red-950/20" : "text-gray-400 hover:text-white"}`}
+                          className={`h-11 w-11 md:h-7 md:w-7 flex items-center justify-center ${r.isFlagged ? "text-red-400 bg-red-950/20" : "text-gray-400 hover:text-white"}`}
                           title={r.isFlagged ? "Unflag" : "Flag"}
                         >
                           <Flag className="h-4 w-4" />
@@ -420,7 +420,7 @@ export default function AdminReviewsPage() {
                           onClick={() => handleDelete(r.id)}
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 text-red-500 hover:bg-red-950/20"
+                          className="h-11 w-11 md:h-7 md:w-7 text-red-500 hover:bg-red-950/20 flex items-center justify-center"
                           title="Delete"
                         >
                           <Trash2 className="h-4 w-4" />

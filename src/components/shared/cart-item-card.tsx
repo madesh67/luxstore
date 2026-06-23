@@ -63,7 +63,7 @@ export function CartItemCard({ item }: CartItemCardProps) {
             <button
               onClick={handleRemove}
               disabled={isPending}
-              className="text-muted-foreground hover:text-destructive transition-colors p-1"
+              className="text-muted-foreground hover:text-destructive transition-colors min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 p-3 md:p-1 flex items-center justify-center"
               aria-label="Remove item"
             >
               <Trash2 className="h-3.5 w-3.5" />

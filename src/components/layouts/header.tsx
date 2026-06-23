@@ -79,7 +79,7 @@ export function Header() {
 
   return (
 
-    <header className="w-full">
+    <header className="w-full sticky top-0 z-40">
       {/* Top Banner */}
       <div className="w-full bg-[#a88a44] py-2 text-center text-[10px] sm:text-xs tracking-widest text-white uppercase font-bold px-4">
         LuxStore Preview: Orders are currently not being processed.

@@ -76,7 +76,7 @@ export function CartDrawer() {
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                className="text-muted-foreground hover:text-foreground transition-colors min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 p-3 md:p-1 flex items-center justify-center"
                 aria-label="Close cart drawer"
               >
                 <X className="h-5 w-5" />
@@ -155,7 +155,7 @@ export function CartDrawer() {
                   
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="w-full text-center text-[10px] tracking-widest font-semibold text-accent hover:underline uppercase py-2"
+                    className="w-full text-center text-[10px] tracking-widest font-semibold text-accent hover:underline uppercase min-h-[44px] flex items-center justify-center"
                   >
                     Continue Shopping
                   </button>

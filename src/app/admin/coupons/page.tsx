@@ -275,7 +275,7 @@ export default function AdminCouponsPage() {
                             onClick={() => openEditModal(c)}
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-[#a8a6a3] hover:text-white"
+                            className="h-11 w-11 md:h-8 md:w-8 text-[#a8a6a3] hover:text-white flex items-center justify-center"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -283,7 +283,7 @@ export default function AdminCouponsPage() {
                             onClick={() => handleDelete(c.id)}
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-red-400 hover:text-red-300"
+                            className="h-11 w-11 md:h-8 md:w-8 text-red-400 hover:text-red-300 flex items-center justify-center"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

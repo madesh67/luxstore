@@ -31,7 +31,7 @@ export function InvoiceDownloadButton({ orderId }: InvoiceDownloadButtonProps) {
       variant="outline"
       size="sm"
       disabled={downloading}
-      className="uppercase tracking-widest text-[10px] font-semibold flex items-center gap-1.5 h-9"
+      className="uppercase tracking-widest text-[10px] font-semibold flex items-center gap-1.5 h-11 md:h-9 px-4 md:px-3"
     >
       {downloading ? (
         <>

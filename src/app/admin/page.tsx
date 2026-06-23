@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Top Title Bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Operations Dashboard</h2>
           <p className="text-xs text-[#a8a6a3] mt-1">Real-time statistics and premium store metrics monitoring.</p>
@@ -138,7 +138,7 @@ export default function AdminDashboardPage() {
           disabled={isRefetching}
           variant="outline"
           size="sm"
-          className="border-[#26221f] text-xs font-semibold tracking-widest text-[#a8a6a3] hover:text-white uppercase gap-2 hover:bg-[#1a1715]"
+          className="w-fit border-[#26221f] text-xs font-semibold tracking-widest text-[#a8a6a3] hover:text-white uppercase gap-2 hover:bg-[#1a1715]"
         >
           <RefreshCw className={`h-3 w-3 ${isRefetching ? "animate-spin" : ""}`} />
           {isRefetching ? "Refreshing..." : "Refresh Data"}

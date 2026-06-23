@@ -41,7 +41,7 @@ export function QuantitySelector({
         size="icon"
         onClick={handleDecrement}
         disabled={quantity <= min || isLoading}
-        className="h-8 w-8 rounded-none hover:bg-muted/50 hover:text-accent disabled:opacity-40"
+        className="h-11 w-11 md:h-8 md:w-8 rounded-none hover:bg-muted/50 hover:text-accent disabled:opacity-40 flex items-center justify-center"
         aria-label="Decrease quantity"
       >
         <Minus className="h-3 w-3" />
@@ -62,7 +62,7 @@ export function QuantitySelector({
         size="icon"
         onClick={handleIncrement}
         disabled={quantity >= max || isLoading}
-        className="h-8 w-8 rounded-none hover:bg-muted/50 hover:text-accent disabled:opacity-40"
+        className="h-11 w-11 md:h-8 md:w-8 rounded-none hover:bg-muted/50 hover:text-accent disabled:opacity-40 flex items-center justify-center"
         aria-label="Increase quantity"
       >
         <Plus className="h-3 w-3" />

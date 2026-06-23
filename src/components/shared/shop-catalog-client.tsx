@@ -406,13 +406,19 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
       {/* Mobile Drawer Filters Modal */}
       {mobileFiltersOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 lg:hidden flex justify-end">
-          <div className="w-80 bg-background h-full p-6 overflow-y-auto animate-fade-in flex flex-col space-y-6">
+        <div
+          className="fixed inset-0 z-50 bg-black/50 lg:hidden flex justify-end"
+          onClick={() => setMobileFiltersOpen(false)}
+        >
+          <div
+            className="w-80 bg-background h-full p-6 overflow-y-auto animate-fade-in flex flex-col space-y-6"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center border-b border-border pb-4">
               <h2 className="text-xs font-semibold uppercase tracking-widest text-foreground">Filters</h2>
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="text-[10px] font-semibold text-accent uppercase tracking-widest"
+                className="text-[10px] font-semibold text-accent uppercase tracking-widest min-h-[44px] px-2 flex items-center justify-center"
               >
                 Close
               </button>

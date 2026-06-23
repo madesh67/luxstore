@@ -177,7 +177,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             <div className="border-b border-border/40 pb-4">
               <button
                 onClick={() => toggleAccordion("description")}
-                className="w-full flex justify-between items-center text-xs font-semibold uppercase tracking-widest text-foreground py-2"
+                className="w-full flex justify-between items-center text-xs font-semibold uppercase tracking-widest text-foreground min-h-[44px] py-2"
               >
                 Product Details <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${activeAccordion === "description" ? "rotate-180" : ""}`} />
               </button>
@@ -192,7 +192,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             <div className="border-b border-border/40 pb-4">
               <button
                 onClick={() => toggleAccordion("shipping")}
-                className="w-full flex justify-between items-center text-xs font-semibold uppercase tracking-widest text-foreground py-2"
+                className="w-full flex justify-between items-center text-xs font-semibold uppercase tracking-widest text-foreground min-h-[44px] py-2"
               >
                 Shipping & Returns <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${activeAccordion === "shipping" ? "rotate-180" : ""}`} />
               </button>

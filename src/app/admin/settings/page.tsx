@@ -135,13 +135,13 @@ export default function AdminSettingsPage() {
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         {/* Navigation Sidebar Tabs */}
-        <div className="lg:col-span-1 flex flex-col gap-1.5 bg-[#12100f] border border-[#26221f] rounded-xl p-3">
+        <div className="lg:col-span-1 flex flex-row overflow-x-auto gap-1.5 bg-[#12100f] border border-[#26221f] rounded-xl p-3 lg:flex-col lg:overflow-x-visible">
           {SETTINGS_TABS.map((tab) => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`text-left text-xs font-bold uppercase tracking-wider px-4 py-3 rounded-lg transition-all ${
+              className={`text-left text-xs font-bold uppercase tracking-wider px-4 py-3 rounded-lg transition-all shrink-0 whitespace-nowrap ${
                 activeTab === tab.id
                   ? "bg-accent text-white shadow shadow-accent/15"
                   : "text-[#a8a6a3] hover:bg-[#1a1715] hover:text-white"

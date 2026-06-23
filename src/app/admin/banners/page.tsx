@@ -304,7 +304,7 @@ export default function AdminBannersPage() {
                             disabled={idx === 0}
                             variant="ghost"
                             size="icon"
-                            className="h-6 w-6 text-[#7d7a77] hover:text-white"
+                            className="h-11 w-11 md:h-6 md:w-6 text-[#7d7a77] hover:text-white flex items-center justify-center"
                           >
                             <ArrowUp className="h-3.5 w-3.5" />
                           </Button>
@@ -313,7 +313,7 @@ export default function AdminBannersPage() {
                             disabled={idx === bannersData.data.length - 1}
                             variant="ghost"
                             size="icon"
-                            className="h-6 w-6 text-[#7d7a77] hover:text-white"
+                            className="h-11 w-11 md:h-6 md:w-6 text-[#7d7a77] hover:text-white flex items-center justify-center"
                           >
                             <ArrowDown className="h-3.5 w-3.5" />
                           </Button>
@@ -348,7 +348,7 @@ export default function AdminBannersPage() {
                             onClick={() => openEditModal(b)}
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-[#a8a6a3] hover:text-white"
+                            className="h-11 w-11 md:h-8 md:w-8 text-[#a8a6a3] hover:text-white flex items-center justify-center"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -356,7 +356,7 @@ export default function AdminBannersPage() {
                             onClick={() => handleDelete(b.id)}
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-red-400 hover:text-red-300"
+                            className="h-11 w-11 md:h-8 md:w-8 text-red-400 hover:text-red-300 flex items-center justify-center"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
