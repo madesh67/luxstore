@@ -101,7 +101,7 @@ export function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-1 group">
-            <span className="font-display text-2xl font-semibold tracking-wider text-foreground">
+            <span className="font-display text-lg sm:text-2xl font-semibold tracking-wider text-foreground">
               LUX<span className="text-accent">STORE</span>
             </span>
           </Link>
@@ -121,7 +121,7 @@ export function Header() {
           </nav>
 
           {/* Action Utilities (Search, Account, Wishlist, Cart) */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
             <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex text-foreground/80 hover:text-foreground">
               <Link href="/shop" aria-label="Search">
                 <Search className="h-[1.2rem] w-[1.2rem]" />
@@ -162,7 +162,7 @@ export function Header() {
               )}
             </Button>
 
-            <div className="pl-1 border-l border-border/60">
+            <div className="hidden sm:block pl-1 border-l border-border/60">
               <ThemeToggle />
             </div>
           </div>
@@ -195,6 +195,10 @@ export function Header() {
                 <Heart className="h-4 w-4" /> Wishlist ({wishlistCount})
               </Link>
             </Button>
+            <div className="flex justify-between items-center border-t border-border/60 pt-4 mt-2">
+              <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Appearance</span>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       )}

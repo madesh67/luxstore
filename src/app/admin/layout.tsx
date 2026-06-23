@@ -170,14 +170,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Menu className="h-5 w-5" />
             </Button>
             <h1 className="text-sm font-semibold tracking-widest text-[#a8a6a3] uppercase">
-              Command Center / <span className="text-white">{pathname?.split("/").pop() || "Dashboard"}</span>
+              <span className="hidden sm:inline">Command Center / </span><span className="text-white">{pathname?.split("/").pop() || "Dashboard"}</span>
             </h1>
           </div>
 
           <div className="flex items-center gap-4">
             <Button asChild variant="outline" size="sm" className="text-xs border-[#26221f] hover:bg-[#1a1715] gap-2">
               <Link href="/" target="_blank">
-                <ExternalLink className="h-3 w-3" /> View Storefront
+                <ExternalLink className="h-3 w-3" />
+                <span className="hidden sm:inline">View Storefront</span>
               </Link>
             </Button>
           </div>

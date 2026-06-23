@@ -260,7 +260,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
               </Button>
 
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">Sort By</span>
+                <span className="hidden sm:inline text-[10px] font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">Sort By</span>
                 <select
                   value={sortBy}
                   onChange={(e) => updateFilter({ sortBy: e.target.value })}

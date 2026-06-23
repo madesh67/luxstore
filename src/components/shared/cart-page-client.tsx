@@ -80,10 +80,10 @@ export function CartPageClient() {
               ))}
             </div>
             
-            <div className="flex justify-between items-center pt-2">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest font-semibold hover:text-accent transition-colors"
+                className="inline-flex items-center justify-center gap-1.5 text-xs uppercase tracking-widest font-semibold hover:text-accent transition-colors min-h-[44px] sm:min-h-0 py-2"
               >
                 <ArrowLeft className="h-3.5 w-3.5" /> Keep Adding Masterpieces
               </Link>
@@ -91,7 +91,7 @@ export function CartPageClient() {
               <button
                 onClick={() => clearCartMutation.mutate()}
                 disabled={clearCartMutation.isPending}
-                className="inline-flex items-center gap-1.5 text-xs tracking-widest font-semibold text-muted-foreground hover:text-destructive hover:underline uppercase"
+                className="inline-flex items-center justify-center gap-1.5 text-xs tracking-widest font-semibold text-muted-foreground hover:text-destructive hover:underline uppercase min-h-[44px] sm:min-h-0 py-2"
               >
                 <Trash2 className="h-3.5 w-3.5" /> Clear All Items
               </button>

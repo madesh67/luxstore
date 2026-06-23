@@ -60,7 +60,7 @@ export default function HomePage() {
           alt="Luxury fashion accessories background"
           fill
           priority
-          className="object-cover object-center opacity-65 scale-105"
+          className="object-cover object-center opacity-65"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10" />
 
@@ -68,20 +68,20 @@ export default function HomePage() {
           <span className="text-xs tracking-[0.3em] font-semibold uppercase text-accent animate-pulse">
             Introducing The Atelier Series
           </span>
-          <h1 className="text-4xl md:text-6xl font-light tracking-wide uppercase leading-tight font-display">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-light tracking-wide uppercase leading-tight font-display">
             CRAFTED FOR THE <br />
             <span className="font-semibold text-accent">DISCERNING INDIVIDUAL</span>
           </h1>
           <p className="text-sm md:text-base font-light text-neutral-300 max-w-xl mx-auto leading-relaxed">
             Elevating everyday rituals. Discover our curated collection of premium leather goods, precision watches, and luxury optical frames.
           </p>
-          <div className="pt-4 flex justify-center gap-4">
-            <Button asChild variant="gold" size="lg">
+          <div className="pt-4 flex flex-col sm:flex-row justify-center gap-4 max-w-[280px] sm:max-w-none mx-auto w-full">
+            <Button asChild variant="gold" size="lg" className="w-full sm:w-auto">
               <Link href="/shop">
                 Shop Collection
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-black">
+            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-black">
               <Link href="#">
                 Our Story
               </Link>
@@ -157,7 +157,7 @@ export default function HomePage() {
               We believe a product should last a lifetime. That&apos;s why we source our leathers only from certified gold-rated Italian tanneries, and build our movements in partnership with generational watchmakers. We combine historical techniques with state-of-the-art structural materials.
             </p>
             <div className="flex">
-              <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+              <Button asChild variant="outline" className="text-[10px] sm:text-sm px-4 sm:px-6 border-primary text-primary hover:bg-primary hover:text-white">
                 <Link href="#">
                   View Craftsmanship Journal
                 </Link>
