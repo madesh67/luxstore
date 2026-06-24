@@ -126,10 +126,10 @@ export function WishlistCard({ item }: WishlistCardProps) {
   const inStock = item.product.inventory && item.product.inventory.quantity > 0;
 
   return (
-    <div className="group border border-border/30 bg-card hover:border-accent/40 p-4 hover-lift rounded-sm relative flex flex-col justify-between">
+    <div className="group border border-border/30 bg-card hover:border-accent/40 p-4 md:p-6 hover-lift rounded-sm relative flex flex-col justify-between">
       <div>
         {/* Product image */}
-        <div className="relative aspect-square w-full overflow-hidden bg-secondary/15 rounded-sm mb-4">
+        <div className="relative aspect-square w-full overflow-hidden bg-secondary/15 rounded-sm mb-4 md:mb-6">
           <img
             src={primaryImage}
             alt={item.product.name}
@@ -146,21 +146,21 @@ export function WishlistCard({ item }: WishlistCardProps) {
         </div>
 
         {/* Brand & Category */}
-        <div className="flex justify-between items-center text-[9px] tracking-widest text-muted-foreground uppercase font-semibold mb-1">
+        <div className="flex justify-between items-center text-[9px] md:text-[10px] tracking-widest text-muted-foreground uppercase font-semibold mb-1 md:mb-2">
           <span>{item.product.brand?.name || "LuxStore"}</span>
           <span>{item.product.category?.name}</span>
         </div>
 
         {/* Title */}
-        <h3 className="text-sm font-display font-medium uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
+        <h3 className="text-sm md:text-base font-display font-medium uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
           <Link href={`/products/${item.product.slug}`}>{item.product.name}</Link>
         </h3>
         
         {/* Pricing */}
-        <div className="mt-2 text-xs font-mono font-semibold text-foreground">
+        <div className="mt-2 text-xs md:text-sm font-mono font-semibold text-foreground">
           {formatPrice(Number(item.product.price))}
           {item.product.compareAtPrice && (
-            <span className="text-[10px] text-muted-foreground line-through font-light ml-2">
+            <span className="text-[10px] md:text-xs text-muted-foreground line-through font-light ml-2">
               {formatPrice(Number(item.product.compareAtPrice))}
             </span>
           )}
@@ -168,7 +168,7 @@ export function WishlistCard({ item }: WishlistCardProps) {
       </div>
 
       {/* Move to Cart button */}
-      <div className="mt-4 pt-4 border-t border-border/40">
+      <div className="mt-4 pt-4 md:mt-6 md:pt-4 border-t border-border/40">
         <Button
           onClick={handleMoveToCart}
           disabled={isPending || !inStock}

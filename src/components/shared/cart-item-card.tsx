@@ -37,9 +37,9 @@ export function CartItemCard({ item }: CartItemCardProps) {
   const isPending = updateMutation.isPending || removeMutation.isPending;
 
   return (
-    <div className="flex gap-4 p-4 bg-card border border-border/40 rounded-sm relative group overflow-hidden transition-all hover:border-accent/30">
+    <div className="flex gap-4 md:gap-6 p-4 md:p-6 bg-card border border-border/40 rounded-sm relative group overflow-hidden transition-all hover:border-accent/30">
       {/* Thumbnail */}
-      <div className="relative h-20 w-20 shrink-0 bg-secondary/15 rounded-sm overflow-hidden border border-border/30">
+      <div className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 bg-secondary/15 rounded-sm overflow-hidden border border-border/30">
         <img
           src={primaryImage}
           alt={item.product.name}
@@ -52,10 +52,10 @@ export function CartItemCard({ item }: CartItemCardProps) {
         <div className="space-y-1">
           <div className="flex justify-between items-start gap-2">
             <div>
-              <span className="text-[8px] tracking-widest font-semibold uppercase text-accent">
+              <span className="text-[8px] md:text-[9px] tracking-widest font-semibold uppercase text-accent">
                 {item.product.brand?.name || "LuxStore"}
               </span>
-              <h4 className="text-xs font-display uppercase tracking-wider text-foreground hover:text-accent transition-colors truncate">
+              <h4 className="text-xs md:text-sm font-display uppercase tracking-wider text-foreground hover:text-accent transition-colors truncate">
                 <Link href={`/products/${item.product.slug}`}>{item.product.name}</Link>
               </h4>
             </div>
@@ -70,7 +70,7 @@ export function CartItemCard({ item }: CartItemCardProps) {
             </button>
           </div>
           
-          <div className="text-[10px] text-muted-foreground uppercase font-light">
+          <div className="text-[10px] md:text-xs text-muted-foreground uppercase font-light">
             Category: {item.product.category?.name}
           </div>
         </div>
@@ -85,11 +85,11 @@ export function CartItemCard({ item }: CartItemCardProps) {
           />
           
           <div className="text-right">
-            <span className="text-xs font-semibold text-foreground font-mono">
+            <span className="text-xs md:text-sm font-semibold text-foreground font-mono">
               {formatPrice(Number(item.product.price) * item.quantity)}
             </span>
             {item.quantity > 1 && (
-              <span className="block text-[9px] text-muted-foreground font-mono">
+              <span className="block text-[9px] md:text-[10px] text-muted-foreground font-mono">
                 ({formatPrice(Number(item.product.price))} each)
               </span>
             )}

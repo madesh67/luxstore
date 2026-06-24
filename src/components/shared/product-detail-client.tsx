@@ -45,7 +45,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
       </Link>
 
       {/* Two-Column Detail Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
         {/* Left Column: Image Gallery */}
         <div className="space-y-4">
           <div className="relative aspect-square w-full bg-secondary/10 border border-border/40 overflow-hidden rounded-sm">
@@ -220,7 +220,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
             {relatedProducts.map((rel) => {
               const relImage = rel.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800";
               return (

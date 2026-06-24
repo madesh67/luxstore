@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Product } from "@/types";
 import { trackAnalyticsEvent } from "@/lib/analytics";
+import { useUser } from "./use-auth";
 
 export interface WishlistItemType {
   id: string;
@@ -43,11 +44,13 @@ async function fetcher<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 export function useWishlist() {
+  const { data: user } = useUser();
   return useQuery<{ wishlist: WishlistType }, Error>({
     queryKey: ["wishlist"],
     queryFn: () => fetcher<{ wishlist: WishlistType }>("/api/wishlist"),
     staleTime: 1000 * 60 * 2, // 2 minutes stale time
     retry: false, // Don't retry if not authenticated
+    enabled: !!user,
   });
 }
 

@@ -60,6 +60,7 @@ export default function HomePage() {
           alt="Luxury fashion accessories background"
           fill
           priority
+          sizes="100vw"
           className="object-cover object-center opacity-65"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10" />
@@ -114,6 +115,7 @@ export default function HomePage() {
                   src={col.imageUrl}
                   alt={col.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -142,6 +144,7 @@ export default function HomePage() {
               src="https://images.unsplash.com/photo-1547949003-9792a18a2601?q=80&w=1200"
               alt="Artisan stitching leather"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
           </div>

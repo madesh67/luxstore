@@ -104,10 +104,10 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
   return (
     <Container className="py-12">
-      <div className="flex flex-col lg:flex-row gap-10">
+      <div className="flex flex-col md:flex-row gap-6 lg:gap-10">
         
-        {/* Sidebar Filters (Desktop) */}
-        <aside className="hidden lg:block w-64 shrink-0 space-y-8">
+        {/* Sidebar Filters (Desktop/Tablet) */}
+        <aside className="hidden md:block w-56 lg:w-64 shrink-0 space-y-8">
           <div className="flex justify-between items-center border-b border-border pb-4">
             <h2 className="text-xs tracking-[0.2em] font-semibold uppercase text-foreground flex items-center gap-2">
               <SlidersHorizontal className="h-4 w-4" /> Filters
@@ -237,7 +237,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
         <main className="flex-grow space-y-8">
           {/* Header Controls (Search and Sort) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 border border-border rounded-sm">
-            <div className="relative w-full sm:max-w-md">
+            <div className="relative w-full sm:max-w-xs md:max-w-sm lg:max-w-md">
               <Search className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground/60" />
               <Input
                 type="text"
@@ -254,7 +254,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 variant="outline"
                 size="sm"
                 onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-                className="lg:hidden flex items-center gap-2 uppercase tracking-widest text-[10px] font-semibold h-11"
+                className="md:hidden flex items-center gap-2 uppercase tracking-widest text-[10px] font-semibold h-11"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
               </Button>
@@ -287,7 +287,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             </div>
           ) : isLoading ? (
             /* Skeletons */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="space-y-4 border border-border/30 p-4 rounded-sm animate-pulse">
                   <div className="bg-muted aspect-square w-full rounded-sm" />
@@ -311,7 +311,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             </div>
           ) : (
             /* Products Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {products.map((product) => {
                 const primaryImage = product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800";
                 
@@ -319,11 +319,11 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                   <Link
                     key={product.id}
                     href={`/products/${product.slug}`}
-                    className="group border border-border/30 bg-card hover:border-accent/40 p-4 hover-lift rounded-sm relative flex flex-col justify-between"
+                    className="group border border-border/30 bg-card hover:border-accent/40 p-4 md:p-6 hover-lift rounded-sm relative flex flex-col justify-between"
                   >
                     <div>
                       {/* Product image */}
-                      <div className="relative aspect-square w-full overflow-hidden bg-secondary/20 rounded-sm mb-4">
+                      <div className="relative aspect-square w-full overflow-hidden bg-secondary/20 rounded-sm mb-4 md:mb-6">
                         <img
                           src={primaryImage}
                           alt={product.name}
@@ -340,31 +340,31 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                       </div>
 
                       {/* Brand & Category details */}
-                      <div className="flex justify-between items-center text-[9px] tracking-widest text-muted-foreground uppercase font-semibold mb-1">
+                      <div className="flex justify-between items-center text-[9px] md:text-[10px] tracking-widest text-muted-foreground uppercase font-semibold mb-1 md:mb-2">
                         <span>{product.brand?.name || "LuxStore"}</span>
                         <span>{product.category?.name}</span>
                       </div>
 
                       {/* Product Title */}
-                      <h3 className="text-sm font-display font-medium uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
+                      <h3 className="text-sm md:text-base font-display font-medium uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
                         {product.name}
                       </h3>
                       
                       {/* Star Rating */}
-                      <div className="flex items-center gap-1 mt-1 mb-2">
+                      <div className="flex items-center gap-1 mt-1 mb-2 md:mt-2 md:mb-3">
                         <Star className="h-3 w-3 text-accent fill-accent" />
-                        <span className="text-[10px] text-foreground font-semibold">{Number(product.ratingAverage).toFixed(1)}</span>
-                        <span className="text-[9px] text-muted-foreground font-light">({product.ratingCount})</span>
+                        <span className="text-[10px] md:text-xs text-foreground font-semibold">{Number(product.ratingAverage).toFixed(1)}</span>
+                        <span className="text-[9px] md:text-[10px] text-muted-foreground font-light">({product.ratingCount})</span>
                       </div>
                     </div>
 
                     {/* Pricing */}
-                    <div className="mt-4 pt-3 border-t border-border/40 flex items-baseline gap-2">
-                      <span className="text-sm font-semibold text-foreground">
+                    <div className="mt-4 pt-3 md:mt-6 md:pt-4 border-t border-border/40 flex items-baseline gap-2">
+                      <span className="text-sm md:text-base font-semibold text-foreground">
                         {formatPrice(Number(product.price))}
                       </span>
                       {product.compareAtPrice && (
-                        <span className="text-xs text-muted-foreground line-through font-light">
+                        <span className="text-xs md:text-sm text-muted-foreground line-through font-light">
                           {formatPrice(Number(product.compareAtPrice))}
                         </span>
                       )}
