@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Container } from "./container";
 import { formatPrice } from "@/lib/utils";
 import { WishlistButton } from "./wishlist-button";
+import { motion } from "framer-motion";
 
 interface ShopCatalogClientProps {
   initialCategories: Category[];
@@ -316,60 +317,67 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 const primaryImage = product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800";
                 
                 return (
-                  <Link
+                  <motion.div
                     key={product.id}
-                    href={`/products/${product.slug}`}
-                    className="group border border-border/30 bg-card hover:border-accent/40 p-4 md:p-6 hover-lift rounded-sm relative flex flex-col justify-between"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-20px" }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
                   >
-                    <div>
-                      {/* Product image */}
-                      <div className="relative aspect-square w-full overflow-hidden bg-secondary/20 rounded-sm mb-4 md:mb-6">
-                        <img
-                          src={primaryImage}
-                          alt={product.name}
-                          className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
-                        />
-                        {product.featured && (
-                          <span className="absolute top-2 left-2 text-[8px] font-bold tracking-widest text-white bg-accent px-2 py-0.5 uppercase rounded-sm">
-                            Featured
-                          </span>
-                        )}
-                        <div className="absolute top-2 right-2 z-10">
-                          <WishlistButton productId={product.id} product={product} />
+                    <Link
+                      href={`/products/${product.slug}`}
+                      className="group border border-border/30 bg-card hover:border-accent/40 p-4 md:p-6 hover-lift rounded-sm relative flex flex-col justify-between h-full"
+                    >
+                      <div>
+                        {/* Product image */}
+                        <div className="relative aspect-square w-full overflow-hidden bg-secondary/20 rounded-sm mb-4 md:mb-6">
+                          <img
+                            src={primaryImage}
+                            alt={product.name}
+                            className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
+                          />
+                          {product.featured && (
+                            <span className="absolute top-2 left-2 text-[8px] font-bold tracking-widest text-white bg-accent px-2 py-0.5 uppercase rounded-sm">
+                              Featured
+                            </span>
+                          )}
+                          <div className="absolute top-2 right-2 z-10">
+                            <WishlistButton productId={product.id} product={product} />
+                          </div>
+                        </div>
+
+                        {/* Brand & Category details */}
+                        <div className="flex justify-between items-center text-[9px] md:text-[10px] tracking-widest text-muted-foreground uppercase font-semibold mb-1 md:mb-2">
+                          <span>{product.brand?.name || "LuxStore"}</span>
+                          <span>{product.category?.name}</span>
+                        </div>
+
+                        {/* Product Title */}
+                        <h3 className="text-sm md:text-base font-display font-medium uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
+                          {product.name}
+                        </h3>
+                        
+                        {/* Star Rating */}
+                        <div className="flex items-center gap-1 mt-1 mb-2 md:mt-2 md:mb-3">
+                          <Star className="h-3 w-3 text-accent fill-accent" />
+                          <span className="text-[10px] md:text-xs text-foreground font-semibold">{Number(product.ratingAverage).toFixed(1)}</span>
+                          <span className="text-[9px] md:text-[10px] text-muted-foreground font-light">({product.ratingCount})</span>
                         </div>
                       </div>
 
-                      {/* Brand & Category details */}
-                      <div className="flex justify-between items-center text-[9px] md:text-[10px] tracking-widest text-muted-foreground uppercase font-semibold mb-1 md:mb-2">
-                        <span>{product.brand?.name || "LuxStore"}</span>
-                        <span>{product.category?.name}</span>
-                      </div>
-
-                      {/* Product Title */}
-                      <h3 className="text-sm md:text-base font-display font-medium uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
-                        {product.name}
-                      </h3>
-                      
-                      {/* Star Rating */}
-                      <div className="flex items-center gap-1 mt-1 mb-2 md:mt-2 md:mb-3">
-                        <Star className="h-3 w-3 text-accent fill-accent" />
-                        <span className="text-[10px] md:text-xs text-foreground font-semibold">{Number(product.ratingAverage).toFixed(1)}</span>
-                        <span className="text-[9px] md:text-[10px] text-muted-foreground font-light">({product.ratingCount})</span>
-                      </div>
-                    </div>
-
-                    {/* Pricing */}
-                    <div className="mt-4 pt-3 md:mt-6 md:pt-4 border-t border-border/40 flex items-baseline gap-2">
-                      <span className="text-sm md:text-base font-semibold text-foreground">
-                        {formatPrice(Number(product.price))}
-                      </span>
-                      {product.compareAtPrice && (
-                        <span className="text-xs md:text-sm text-muted-foreground line-through font-light">
-                          {formatPrice(Number(product.compareAtPrice))}
+                      {/* Pricing */}
+                      <div className="mt-4 pt-3 md:mt-6 md:pt-4 border-t border-border/40 flex items-baseline gap-2">
+                        <span className="text-sm md:text-base font-semibold text-foreground">
+                          {formatPrice(Number(product.price))}
                         </span>
-                      )}
-                    </div>
-                  </Link>
+                        {product.compareAtPrice && (
+                          <span className="text-xs md:text-sm text-muted-foreground line-through font-light">
+                            {formatPrice(Number(product.compareAtPrice))}
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>

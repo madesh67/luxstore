@@ -6,6 +6,7 @@ import { useUser } from "@/hooks/use-auth";
 import { useWishlist, useAddToWishlist, useRemoveFromWishlist } from "@/hooks/use-wishlist";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types";
+import { motion } from "framer-motion";
 
 interface WishlistButtonProps {
   productId: string;
@@ -129,7 +130,13 @@ export function WishlistButton({
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin text-accent" />
         ) : (
-          <Heart className={`h-4 w-4 ${isLiked ? "text-accent fill-accent" : "text-foreground"}`} />
+          <motion.span
+            animate={isLiked ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="inline-flex"
+          >
+            <Heart className={`h-4 w-4 ${isLiked ? "text-accent fill-accent" : "text-foreground"}`} />
+          </motion.span>
         )}
         {isLiked ? "Saved in Wishlist" : "Save to Wishlist"}
       </Button>
@@ -149,7 +156,13 @@ export function WishlistButton({
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin text-accent" />
       ) : (
-        <Heart className={`h-4 w-4 transition-colors ${isLiked ? "text-accent fill-accent" : "text-muted-foreground hover:text-foreground"}`} />
+        <motion.span
+          animate={isLiked ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="inline-flex"
+        >
+          <Heart className={`h-4 w-4 transition-colors ${isLiked ? "text-accent fill-accent" : "text-muted-foreground hover:text-foreground"}`} />
+        </motion.span>
       )}
     </Button>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Compass, ShieldCheck, HeartHandshake, Eye } from "lucide-react";
@@ -5,6 +7,7 @@ import { Container } from "@/components/shared/container";
 import { PageWrapper } from "@/components/layouts/page-wrapper";
 import { Button } from "@/components/ui/button";
 import { NewsletterForm } from "@/components/shared/newsletter-form";
+import { motion } from "framer-motion";
 
 const COLLECTIONS = [
   {
@@ -55,28 +58,73 @@ export default function HomePage() {
     <PageWrapper>
       {/* Hero Section */}
       <section className="relative h-[85vh] w-full flex items-center justify-center overflow-hidden bg-black">
-        <Image
-          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2000"
-          alt="Luxury fashion accessories background"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-65"
-        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.65 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="absolute inset-0"
+        >
+          <Image
+            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2000"
+            alt="Luxury fashion accessories background"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10" />
 
-        <div className="relative z-10 text-center text-white px-4 max-w-3xl space-y-6">
-          <span className="text-xs tracking-[0.3em] font-semibold uppercase text-accent animate-pulse">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.2
+              }
+            }
+          }}
+          className="relative z-10 text-center text-white px-4 max-w-3xl space-y-6"
+        >
+          <motion.span
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+            }}
+            className="text-xs tracking-[0.3em] font-semibold uppercase text-accent animate-pulse block"
+          >
             Introducing The Atelier Series
-          </span>
-          <h1 className="text-2xl sm:text-4xl md:text-6xl font-light tracking-wide uppercase leading-tight font-display">
+          </motion.span>
+          <motion.h1
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+            }}
+            className="text-2xl sm:text-4xl md:text-6xl font-light tracking-wide uppercase leading-tight font-display"
+          >
             CRAFTED FOR THE <br />
             <span className="font-semibold text-accent">DISCERNING INDIVIDUAL</span>
-          </h1>
-          <p className="text-sm md:text-base font-light text-neutral-300 max-w-xl mx-auto leading-relaxed">
+          </motion.h1>
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+            }}
+            className="text-sm md:text-base font-light text-neutral-300 max-w-xl mx-auto leading-relaxed"
+          >
             Elevating everyday rituals. Discover our curated collection of premium leather goods, precision watches, and luxury optical frames.
-          </p>
-          <div className="pt-4 flex flex-col sm:flex-row justify-center gap-4 max-w-[280px] sm:max-w-none mx-auto w-full">
+          </motion.p>
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+            }}
+            className="pt-4 flex flex-col sm:flex-row justify-center gap-4 max-w-[280px] sm:max-w-none mx-auto w-full"
+          >
             <Button asChild variant="gold" size="lg" className="w-full sm:w-auto">
               <Link href="/shop">
                 Shop Collection
@@ -87,8 +135,8 @@ export default function HomePage() {
                 Our Story
               </Link>
             </Button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Featured Collections Section */}

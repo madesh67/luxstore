@@ -9,6 +9,7 @@ import { formatPrice } from "@/lib/utils";
 import { AddToCartButton } from "./add-to-cart-button";
 import { WishlistButton } from "./wishlist-button";
 import { QuantitySelector } from "./quantity-selector";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ProductDetailClientProps {
   product: Product & {
@@ -49,11 +50,18 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
         {/* Left Column: Image Gallery */}
         <div className="space-y-4">
           <div className="relative aspect-square w-full bg-secondary/10 border border-border/40 overflow-hidden rounded-sm">
-            <img
-              src={mainImage}
-              alt={images[activeImageIdx]?.altText || product.name}
-              className="object-cover h-full w-full transition-all duration-300"
-            />
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={activeImageIdx}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                src={mainImage}
+                alt={images[activeImageIdx]?.altText || product.name}
+                className="object-cover h-full w-full absolute inset-0"
+              />
+            </AnimatePresence>
           </div>
           
           {/* Thumbnails slider */}
@@ -224,30 +232,37 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             {relatedProducts.map((rel) => {
               const relImage = rel.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800";
               return (
-                <Link
+                <motion.div
                   key={rel.id}
-                  href={`/products/${rel.slug}`}
-                  className="group border border-border/20 p-4 hover:border-accent/40 bg-card hover-lift rounded-sm flex flex-col justify-between"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10px" }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                  <div>
-                    <div className="relative aspect-square w-full overflow-hidden bg-secondary/15 rounded-sm mb-3">
-                      <img
-                        src={relImage}
-                        alt={rel.name}
-                        className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
-                      />
+                  <Link
+                    href={`/products/${rel.slug}`}
+                    className="group border border-border/20 p-4 hover:border-accent/40 bg-card hover-lift rounded-sm flex flex-col justify-between h-full"
+                  >
+                    <div>
+                      <div className="relative aspect-square w-full overflow-hidden bg-secondary/15 rounded-sm mb-3">
+                        <img
+                          src={relImage}
+                          alt={rel.name}
+                          className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="text-[8px] font-semibold tracking-widest text-muted-foreground uppercase mb-1">
+                        {rel.brand?.name}
+                      </div>
+                      <h4 className="text-xs font-display uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
+                        {rel.name}
+                      </h4>
                     </div>
-                    <div className="text-[8px] font-semibold tracking-widest text-muted-foreground uppercase mb-1">
-                      {rel.brand?.name}
+                    <div className="mt-3 pt-2 border-t border-border/30 text-xs font-semibold text-foreground">
+                      {formatPrice(Number(rel.price))}
                     </div>
-                    <h4 className="text-xs font-display uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
-                      {rel.name}
-                    </h4>
-                  </div>
-                  <div className="mt-3 pt-2 border-t border-border/30 text-xs font-semibold text-foreground">
-                    {formatPrice(Number(rel.price))}
-                  </div>
-                </Link>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>

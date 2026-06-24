@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Container } from "../shared/container";
 import { ThemeToggle } from "../shared/theme-toggle";
 import { Button } from "../ui/button";
@@ -23,6 +24,15 @@ const NAV_ITEMS = [
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const { data: user } = useUser();
   const { data: cartData } = useCart();
@@ -114,8 +124,14 @@ export function Header() {
       </div>
 
       {/* Main Header navigation */}
-      <div className="glass-header w-full border-b border-border/40 bg-background/95">
-        <Container className="flex h-16 items-center justify-between">
+      <div className={cn(
+        "glass-header w-full border-b border-border/40 bg-background/95 transition-all duration-300",
+        isScrolled ? "shadow-md bg-background/98" : ""
+      )}>
+        <Container className={cn(
+          "flex items-center justify-between transition-all duration-300",
+          isScrolled ? "h-12" : "h-16"
+        )}>
           {/* Mobile Menu Toggle Button */}
           <Button
             variant="ghost"
@@ -197,67 +213,76 @@ export function Header() {
         </Container>
       </div>
 
-      {/* Backdrop overlay */}
-      <div
-        onClick={() => setMobileMenuOpen(false)}
-        className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm md:hidden transition-opacity duration-300",
-          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-      />
-
-      {/* Mobile Drawer Menu */}
-      <div
-        className={cn(
-          "fixed inset-y-0 left-0 z-[60] w-[80vw] max-w-[320px] h-[100vh] bg-background p-6 shadow-xl flex flex-col md:hidden transition-transform duration-300 ease-in-out border-r border-border/40",
-          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
-        <div className="flex justify-between items-center border-b border-border/40 pb-4 mb-6">
-          <Link href="/" className="flex items-center gap-1 group" onClick={() => setMobileMenuOpen(false)}>
-            <span className="font-display text-lg font-semibold tracking-wider text-foreground">
-              LUX<span className="text-accent">STORE</span>
-            </span>
-          </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-label="Close Menu"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
-        <nav className="flex flex-col space-y-6">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
+      {/* Mobile Drawer and Backdrop using Framer Motion */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="text-lg font-medium tracking-widest text-foreground hover:text-accent uppercase transition-colors"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm md:hidden"
+            />
+
+            {/* Mobile Drawer Menu */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
+              className="fixed inset-y-0 left-0 z-[60] w-[80vw] max-w-[320px] h-[100vh] bg-background p-6 shadow-xl flex flex-col md:hidden border-r border-border/40"
             >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="mt-auto border-t border-border/60 pt-6 flex flex-col gap-4">
-          <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
-            <Link href={accountHref} onClick={() => setMobileMenuOpen(false)}>
-              <User className="h-4 w-4" /> Account
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
-            <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)}>
-              <Heart className="h-4 w-4" /> Wishlist ({wishlistCount})
-            </Link>
-          </Button>
-          <div className="flex justify-between items-center border-t border-border/60 pt-4 mt-2">
-            <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Appearance</span>
-            <ThemeToggle />
-          </div>
-        </div>
-      </div>
+              <div className="flex justify-between items-center border-b border-border/40 pb-4 mb-6">
+                <Link href="/" className="flex items-center gap-1 group" onClick={() => setMobileMenuOpen(false)}>
+                  <span className="font-display text-lg font-semibold tracking-wider text-foreground">
+                    LUX<span className="text-accent">STORE</span>
+                  </span>
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setMobileMenuOpen(false)}
+                  aria-label="Close Menu"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <nav className="flex flex-col space-y-6">
+                {NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-lg font-medium tracking-widest text-foreground hover:text-accent uppercase transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+              <div className="mt-auto border-t border-border/60 pt-6 flex flex-col gap-4">
+                <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
+                  <Link href={accountHref} onClick={() => setMobileMenuOpen(false)}>
+                    <User className="h-4 w-4" /> Account
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
+                  <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)}>
+                    <Heart className="h-4 w-4" /> Wishlist ({wishlistCount})
+                  </Link>
+                </Button>
+                <div className="flex justify-between items-center border-t border-border/60 pt-4 mt-2">
+                  <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Appearance</span>
+                  <ThemeToggle />
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

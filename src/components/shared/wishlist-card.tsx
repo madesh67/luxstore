@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Trash2, ShoppingBag, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 import { WishlistItemType, useRemoveFromWishlist, useMoveToCart } from "@/hooks/use-wishlist";
 import { useUser } from "@/hooks/use-auth";
 import { useAddToCart } from "@/hooks/use-cart";
@@ -126,7 +127,13 @@ export function WishlistCard({ item }: WishlistCardProps) {
   const inStock = item.product.inventory && item.product.inventory.quantity > 0;
 
   return (
-    <div className="group border border-border/30 bg-card hover:border-accent/40 p-4 md:p-6 hover-lift rounded-sm relative flex flex-col justify-between">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="group border border-border/30 bg-card hover:border-accent/40 p-4 md:p-6 hover-lift rounded-sm relative flex flex-col justify-between h-full"
+    >
       <div>
         {/* Product image */}
         <div className="relative aspect-square w-full overflow-hidden bg-secondary/15 rounded-sm mb-4 md:mb-6">
@@ -188,6 +195,6 @@ export function WishlistCard({ item }: WishlistCardProps) {
           )}
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 }
