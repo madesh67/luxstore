@@ -11,6 +11,7 @@ import { useUser } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { NotificationCenter } from "../shared/notification-center";
+import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { label: "New Arrivals", href: "/shop" },
@@ -72,6 +73,33 @@ export function Header() {
     e.preventDefault();
     window.dispatchEvent(new CustomEvent("open-cart-drawer"));
   };
+
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  // Close mobile menu on ESC press
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+    if (mobileMenuOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
 
   if (pathname?.startsWith("/admin") || pathname?.startsWith("/superadmin")) {
     return null;
@@ -169,39 +197,67 @@ export function Header() {
         </Container>
       </div>
 
+      {/* Backdrop overlay */}
+      <div
+        onClick={() => setMobileMenuOpen(false)}
+        className={cn(
+          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm md:hidden transition-opacity duration-300",
+          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+      />
+
       {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[104px] bottom-0 z-40 bg-background/98 animate-fade-in flex flex-col px-6 py-8 border-t border-border/50">
-          <nav className="flex flex-col space-y-6">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-lg font-medium tracking-widest text-foreground hover:text-accent uppercase transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-auto border-t border-border/60 pt-6 flex flex-col gap-4">
-            <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
-              <Link href={accountHref} onClick={() => setMobileMenuOpen(false)}>
-                <User className="h-4 w-4" /> Account
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
-              <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)}>
-                <Heart className="h-4 w-4" /> Wishlist ({wishlistCount})
-              </Link>
-            </Button>
-            <div className="flex justify-between items-center border-t border-border/60 pt-4 mt-2">
-              <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Appearance</span>
-              <ThemeToggle />
-            </div>
+      <div
+        className={cn(
+          "fixed inset-y-0 left-0 z-[60] w-[80vw] max-w-[320px] h-[100vh] bg-background p-6 shadow-xl flex flex-col md:hidden transition-transform duration-300 ease-in-out border-r border-border/40",
+          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="flex justify-between items-center border-b border-border/40 pb-4 mb-6">
+          <Link href="/" className="flex items-center gap-1 group" onClick={() => setMobileMenuOpen(false)}>
+            <span className="font-display text-lg font-semibold tracking-wider text-foreground">
+              LUX<span className="text-accent">STORE</span>
+            </span>
+          </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close Menu"
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
+
+        <nav className="flex flex-col space-y-6">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-lg font-medium tracking-widest text-foreground hover:text-accent uppercase transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="mt-auto border-t border-border/60 pt-6 flex flex-col gap-4">
+          <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
+            <Link href={accountHref} onClick={() => setMobileMenuOpen(false)}>
+              <User className="h-4 w-4" /> Account
+            </Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
+            <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)}>
+              <Heart className="h-4 w-4" /> Wishlist ({wishlistCount})
+            </Link>
+          </Button>
+          <div className="flex justify-between items-center border-t border-border/60 pt-4 mt-2">
+            <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Appearance</span>
+            <ThemeToggle />
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
