@@ -23,7 +23,7 @@ export function TrackingCard({ shipment }: TrackingCardProps) {
 
   return (
     <div className="border border-border bg-card rounded-sm overflow-hidden">
-      <div className="p-6 border-b border-border/60 bg-neutral-50/50 dark:bg-neutral-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 border-b border-border/60 bg-muted/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 bg-accent/10 text-accent rounded-sm flex items-center justify-center">
             <Truck className="h-5 w-5" />

@@ -220,8 +220,8 @@ export default function AdminBannersPage() {
       {/* Title & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Promotional Banner Cards</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Schedule and position homepage hero slides and strip campaigns.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Promotional Banner Cards</h2>
+          <p className="text-xs text-muted-foreground mt-1">Schedule and position homepage hero slides and strip campaigns.</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -229,7 +229,7 @@ export default function AdminBannersPage() {
             disabled={isRefetching}
             variant="outline"
             size="sm"
-            className="border-[#26221f] text-xs font-semibold tracking-widest text-[#a8a6a3] hover:text-white uppercase gap-2 hover:bg-[#1a1715]"
+            className="border-border text-xs font-semibold tracking-widest text-muted-foreground hover:text-foreground uppercase gap-2 hover:bg-muted"
           >
             <RefreshCw className={`h-3 w-3 ${isRefetching ? "animate-spin" : ""}`} />
             Refresh
@@ -244,11 +244,11 @@ export default function AdminBannersPage() {
       </div>
 
       {/* Banners List */}
-      <div className="border border-[#26221f] rounded-xl bg-[#12100f] overflow-hidden">
+      <div className="border border-border rounded-xl bg-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#26221f] text-[10px] uppercase tracking-widest text-[#7d7a77] font-bold">
+              <tr className="border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground/80 font-bold">
                 <th className="p-4 w-48">Image Banner</th>
                 <th className="p-4">Campaign Title</th>
                 <th className="p-4">Position</th>
@@ -258,17 +258,17 @@ export default function AdminBannersPage() {
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#26221f]/50 text-xs">
+            <tbody className="divide-y divide-border/50 text-xs">
               {isLoading ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#a8a6a3]">
+                  <td colSpan={7} className="p-8 text-center text-muted-foreground">
                     <Loader2 className="h-6 w-6 animate-spin mx-auto text-accent mb-2" />
                     Fetching Campaigns...
                   </td>
                 </tr>
               ) : !bannersData?.data || bannersData.data.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#7d7a77] uppercase tracking-widest">
+                  <td colSpan={7} className="p-8 text-center text-muted-foreground/80 uppercase tracking-widest">
                     No promotional campaigns created
                   </td>
                 </tr>
@@ -278,33 +278,33 @@ export default function AdminBannersPage() {
                   const isExpired = b.endDate && new Date(b.endDate) < now;
                   const isScheduled = b.startDate && new Date(b.startDate) > now;
                   return (
-                    <tr key={b.id} className="hover:bg-[#1a1715]/40 transition-colors">
+                    <tr key={b.id} className="hover:bg-muted/40 transition-colors">
                       <td className="p-4">
                         <img
                           src={b.imageUrl}
                           alt={b.title}
-                          className="h-16 w-32 object-cover rounded-lg border border-[#26221f] bg-[#1c1a17]"
+                          className="h-16 w-32 object-cover rounded-lg border border-border bg-background"
                         />
                       </td>
                       <td className="p-4">
-                        <p className="font-semibold text-white">{b.title}</p>
-                        <p className="text-[#a8a6a3] text-[11px] truncate max-w-[180px]">{b.subtitle || "-"}</p>
+                        <p className="font-semibold text-foreground">{b.title}</p>
+                        <p className="text-muted-foreground text-[11px] truncate max-w-[180px]">{b.subtitle || "-"}</p>
                         {b.linkUrl && <p className="text-[10px] text-accent truncate max-w-[180px] mt-0.5">{b.linkUrl}</p>}
                       </td>
                       <td className="p-4">
-                        <span className="text-[10px] font-bold tracking-wider text-[#a8a6a3] bg-[#1c1a17] px-2 py-0.5 rounded border border-[#26221f]">
+                        <span className="text-[10px] font-bold tracking-wider text-muted-foreground bg-background px-2 py-0.5 rounded border border-border">
                           {b.position}
                         </span>
                       </td>
                       <td className="p-4">
                         <div className="flex items-center justify-center gap-1">
-                          <span className="font-bold text-white mr-2">{b.order}</span>
+                          <span className="font-bold text-foreground mr-2">{b.order}</span>
                           <Button
                             onClick={() => handleMove(idx, "up")}
                             disabled={idx === 0}
                             variant="ghost"
                             size="icon"
-                            className="h-11 w-11 md:h-6 md:w-6 text-[#7d7a77] hover:text-white flex items-center justify-center"
+                            className="h-11 w-11 md:h-6 md:w-6 text-muted-foreground/80 hover:text-foreground flex items-center justify-center"
                           >
                             <ArrowUp className="h-3.5 w-3.5" />
                           </Button>
@@ -313,15 +313,15 @@ export default function AdminBannersPage() {
                             disabled={idx === bannersData.data.length - 1}
                             variant="ghost"
                             size="icon"
-                            className="h-11 w-11 md:h-6 md:w-6 text-[#7d7a77] hover:text-white flex items-center justify-center"
+                            className="h-11 w-11 md:h-6 md:w-6 text-muted-foreground/80 hover:text-foreground flex items-center justify-center"
                           >
                             <ArrowDown className="h-3.5 w-3.5" />
                           </Button>
                         </div>
                       </td>
-                      <td className="p-4 text-[#a8a6a3] space-y-0.5">
+                      <td className="p-4 text-muted-foreground space-y-0.5">
                         {b.startDate || b.endDate ? (
-                          <p className="flex items-center gap-1 text-[10px] text-[#7d7a77]">
+                          <p className="flex items-center gap-1 text-[10px] text-muted-foreground/80">
                             <Calendar className="h-3 w-3" />
                             {b.startDate ? new Date(b.startDate).toLocaleDateString() : "Anytime"} – {b.endDate ? new Date(b.endDate).toLocaleDateString() : "Anytime"}
                           </p>
@@ -348,7 +348,7 @@ export default function AdminBannersPage() {
                             onClick={() => openEditModal(b)}
                             variant="ghost"
                             size="icon"
-                            className="h-11 w-11 md:h-8 md:w-8 text-[#a8a6a3] hover:text-white flex items-center justify-center"
+                            className="h-11 w-11 md:h-8 md:w-8 text-muted-foreground hover:text-foreground flex items-center justify-center"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -374,12 +374,12 @@ export default function AdminBannersPage() {
       {/* Form Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#12100f] border border-[#26221f] w-full max-w-xl rounded-xl shadow-2xl flex flex-col">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-[#26221f]">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+          <div className="bg-card border border-border w-full max-w-xl rounded-xl shadow-2xl flex flex-col">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-border">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
                 {editingBannerId ? "Modify Banner Card" : "Configure Banner Campaign"}
               </h3>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="text-[#a8a6a3] hover:text-white">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </Button>
             </div>
@@ -387,22 +387,22 @@ export default function AdminBannersPage() {
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Campaign Title</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Campaign Title</label>
                   <input
                     type="text"
                     required
                     value={formState.title}
                     onChange={(e) => setFormState((p) => ({ ...p, title: e.target.value }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Target Position</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Target Position</label>
                   <select
                     value={formState.position}
                     onChange={(e) => setFormState((p) => ({ ...p, position: e.target.value }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   >
                     <option value="HERO">Hero Slideshow (Carousel)</option>
                     <option value="PROMO_STRIP">Strip Campaign Banner</option>
@@ -411,65 +411,65 @@ export default function AdminBannersPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Subtitle / Caption</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Subtitle / Caption</label>
                 <input
                   type="text"
                   value={formState.subtitle}
                   onChange={(e) => setFormState((p) => ({ ...p, subtitle: e.target.value }))}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Redirect Link URL (Optional)</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Redirect Link URL (Optional)</label>
                   <input
                     type="text"
                     value={formState.linkUrl}
                     onChange={(e) => setFormState((p) => ({ ...p, linkUrl: e.target.value }))}
                     placeholder="https://luxstore.com/shop?category=timepieces"
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Order Weight</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Order Weight</label>
                   <input
                     type="number"
                     value={formState.order}
                     onChange={(e) => setFormState((p) => ({ ...p, order: parseInt(e.target.value, 10) || 0 }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Activation Date (Optional)</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Activation Date (Optional)</label>
                   <input
                     type="date"
                     value={formState.startDate || ""}
                     onChange={(e) => setFormState((p) => ({ ...p, startDate: e.target.value || null }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Deactivation Date (Optional)</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Deactivation Date (Optional)</label>
                   <input
                     type="date"
                     value={formState.endDate || ""}
                     onChange={(e) => setFormState((p) => ({ ...p, endDate: e.target.value || null }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3] block">Banner Image Asset</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Banner Image Asset</label>
                 <div className="flex items-center gap-4">
                   {formState.imageUrl ? (
-                    <div className="relative h-20 w-40 border border-[#26221f] rounded-lg overflow-hidden bg-[#1c1a17]">
+                    <div className="relative h-20 w-40 border border-border rounded-lg overflow-hidden bg-background">
                       <img src={formState.imageUrl} alt="Upload preview" className="h-full w-full object-cover" />
                       <button
                         type="button"
@@ -480,13 +480,13 @@ export default function AdminBannersPage() {
                       </button>
                     </div>
                   ) : (
-                    <label className="h-20 w-40 border border-dashed border-[#26221f] hover:border-accent rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
+                    <label className="h-20 w-40 border border-dashed border-border hover:border-accent rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
                       {uploadingImage ? (
                         <Loader2 className="h-4.5 w-4.5 animate-spin text-accent" />
                       ) : (
                         <>
-                          <Upload className="h-5 w-5 text-[#7d7a77] mb-1" />
-                          <span className="text-[8px] font-bold uppercase tracking-widest text-[#7d7a77]">Upload Graphic</span>
+                          <Upload className="h-5 w-5 text-muted-foreground/80 mb-1" />
+                          <span className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground/80">Upload Graphic</span>
                         </>
                       )}
                       <input
@@ -498,7 +498,7 @@ export default function AdminBannersPage() {
                       />
                     </label>
                   )}
-                  <span className="text-[10px] text-[#7d7a77] max-w-[200px]">Hero dimensions: 1920x800 webp format. Strip dimensions: 1200x200 webp format.</span>
+                  <span className="text-[10px] text-muted-foreground/80 max-w-[200px]">Hero dimensions: 1920x800 webp format. Strip dimensions: 1200x200 webp format.</span>
                 </div>
               </div>
 
@@ -507,13 +507,13 @@ export default function AdminBannersPage() {
                   type="checkbox"
                   checked={formState.isActive}
                   onChange={(e) => setFormState((p) => ({ ...p, isActive: e.target.checked }))}
-                  className="rounded border-[#26221f] bg-[#1c1a17] text-accent focus:ring-0"
+                  className="rounded border-border bg-background text-accent focus:ring-0"
                 />
-                <span className="text-xs text-[#a8a6a3]">Set Active Status</span>
+                <span className="text-xs text-muted-foreground">Set Active Status</span>
               </label>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#26221f]">
-                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-[#26221f]">
+              <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-border">
                   Cancel
                 </Button>
                 <Button

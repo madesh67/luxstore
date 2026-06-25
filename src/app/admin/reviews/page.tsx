@@ -179,15 +179,15 @@ export default function AdminReviewsPage() {
       {/* Title & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Review Moderation</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Audit customer testimonials, flag reviews, and update active approvals.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Review Moderation</h2>
+          <p className="text-xs text-muted-foreground mt-1">Audit customer testimonials, flag reviews, and update active approvals.</p>
         </div>
         <Button
           onClick={() => refetch()}
           disabled={isRefetching}
           variant="outline"
           size="sm"
-          className="border-[#26221f] text-xs font-semibold tracking-widest text-[#a8a6a3] hover:text-white uppercase gap-2 hover:bg-[#1a1715]"
+          className="border-border text-xs font-semibold tracking-widest text-muted-foreground hover:text-foreground uppercase gap-2 hover:bg-muted"
         >
           <RefreshCw className={`h-3 w-3 ${isRefetching ? "animate-spin" : ""}`} />
           {isRefetching ? "Refreshing..." : "Refresh"}
@@ -195,10 +195,10 @@ export default function AdminReviewsPage() {
       </div>
 
       {/* Filters & Search */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-[#12100f] border border-[#26221f] rounded-xl p-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-card border border-border rounded-xl p-4">
         {/* Search */}
-        <div className="md:col-span-2 flex items-center gap-3 bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-1.5">
-          <Search className="h-4 w-4 text-[#7d7a77]" />
+        <div className="md:col-span-2 flex items-center gap-3 bg-background border border-border rounded-lg px-3 py-1.5">
+          <Search className="h-4 w-4 text-muted-foreground/80" />
           <input
             type="text"
             placeholder="Search reviews by comment, product or writer..."
@@ -207,20 +207,20 @@ export default function AdminReviewsPage() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="bg-transparent border-0 outline-none text-xs text-[#e8e6e3] placeholder-[#7d7a77] w-full"
+            className="bg-transparent border-0 outline-none text-xs text-foreground placeholder-[#7d7a77] w-full"
           />
         </div>
 
         {/* Status Filter */}
-        <div className="flex items-center gap-2 bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-1.5 text-xs text-white">
-          <Filter className="h-4.5 w-4.5 text-[#7d7a77] mr-1" />
+        <div className="flex items-center gap-2 bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground">
+          <Filter className="h-4.5 w-4.5 text-muted-foreground/80 mr-1" />
           <select
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="bg-transparent border-0 outline-none text-xs w-full text-[#a8a6a3]"
+            className="bg-transparent border-0 outline-none text-xs w-full text-muted-foreground"
           >
             <option value="">All Statuses</option>
             <option value="PENDING">Pending Approval</option>
@@ -231,15 +231,15 @@ export default function AdminReviewsPage() {
         </div>
 
         {/* Flagged filter */}
-        <div className="flex items-center gap-2 bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-1.5 text-xs text-white">
-          <Flag className="h-4 w-4 text-[#7d7a77] mr-1" />
+        <div className="flex items-center gap-2 bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground">
+          <Flag className="h-4 w-4 text-muted-foreground/80 mr-1" />
           <select
             value={flagFilter}
             onChange={(e) => {
               setFlagFilter(e.target.value);
               setPage(1);
             }}
-            className="bg-transparent border-0 outline-none text-xs w-full text-[#a8a6a3]"
+            className="bg-transparent border-0 outline-none text-xs w-full text-muted-foreground"
           >
             <option value="">All Reviews</option>
             <option value="true">Flagged Items Only</option>
@@ -275,7 +275,7 @@ export default function AdminReviewsPage() {
               onClick={() => handleBulkStatusUpdate("HIDDEN")}
               variant="outline"
               size="sm"
-              className="text-[10px] border-gray-800 hover:bg-gray-900 text-gray-400 font-bold uppercase tracking-wider h-8"
+              className="text-[10px] border-border hover:bg-muted text-muted-foreground font-bold uppercase tracking-wider h-8"
             >
               Hide All
             </Button>
@@ -292,17 +292,17 @@ export default function AdminReviewsPage() {
       )}
 
       {/* Reviews Moderation Table */}
-      <div className="border border-[#26221f] rounded-xl bg-[#12100f] overflow-hidden">
+      <div className="border border-border rounded-xl bg-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#26221f] text-[10px] uppercase tracking-widest text-[#7d7a77] font-bold">
+              <tr className="border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground/80 font-bold">
                 <th className="p-4 w-12 text-center">
                   <input
                     type="checkbox"
                     checked={reviewsData?.data && selectedIds.length === reviewsData.data.length}
                     onChange={handleSelectAll}
-                    className="rounded border-[#26221f] bg-[#1c1a17] text-accent focus:ring-0"
+                    className="rounded border-border bg-background text-accent focus:ring-0"
                   />
                 </th>
                 <th className="p-4">Customer</th>
@@ -313,42 +313,42 @@ export default function AdminReviewsPage() {
                 <th className="p-4 text-right">Moderation Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#26221f]/50 text-xs">
+            <tbody className="divide-y divide-border/50 text-xs">
               {isLoading ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#a8a6a3]">
+                  <td colSpan={7} className="p-8 text-center text-muted-foreground">
                     <Loader2 className="h-6 w-6 animate-spin mx-auto text-accent mb-2" />
                     Fetching Reviews...
                   </td>
                 </tr>
               ) : !reviewsData?.data || reviewsData.data.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#7d7a77] uppercase tracking-widest">
+                  <td colSpan={7} className="p-8 text-center text-muted-foreground/80 uppercase tracking-widest">
                     No reviews mapped
                   </td>
                 </tr>
               ) : (
                 reviewsData.data.map((r: Review) => (
-                  <tr key={r.id} className="hover:bg-[#1a1715]/40 transition-colors">
+                  <tr key={r.id} className="hover:bg-muted/40 transition-colors">
                     <td className="p-4 text-center">
                       <input
                         type="checkbox"
                         checked={selectedIds.includes(r.id)}
                         onChange={(e) => handleSelectRow(r.id, e.target.checked)}
-                        className="rounded border-[#26221f] bg-[#1c1a17] text-accent focus:ring-0"
+                        className="rounded border-border bg-background text-accent focus:ring-0"
                       />
                     </td>
-                    <td className="p-4 font-semibold text-white">
+                    <td className="p-4 font-semibold text-foreground">
                       <p>{r.user.firstName} {r.user.lastName}</p>
-                      <p className="text-[10px] text-[#7d7a77] font-mono">{r.user.email}</p>
+                      <p className="text-[10px] text-muted-foreground/80 font-mono">{r.user.email}</p>
                     </td>
-                    <td className="p-4 text-[#a8a6a3]">{r.product.name}</td>
+                    <td className="p-4 text-muted-foreground">{r.product.name}</td>
                     <td className="p-4">
                       <div className="flex items-center text-accent">
                         {Array.from({ length: 5 }).map((_, idx) => (
                           <Star
                             key={idx}
-                            className={`h-3 w-3 ${idx < r.rating ? "fill-accent" : "text-[#26221f]"}`}
+                            className={`h-3 w-3 ${idx < r.rating ? "fill-accent" : "text-foreground"}`}
                           />
                         ))}
                       </div>
@@ -359,8 +359,8 @@ export default function AdminReviewsPage() {
                           <AlertTriangle className="h-2.5 w-2.5" /> Flagged
                         </span>
                       )}
-                      <p className="font-semibold text-white">{r.title}</p>
-                      <p className="text-[#a8a6a3] italic">{r.comment}</p>
+                      <p className="font-semibold text-foreground">{r.title}</p>
+                      <p className="text-muted-foreground italic">{r.comment}</p>
                     </td>
                     <td className="p-4 text-center">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
@@ -369,7 +369,7 @@ export default function AdminReviewsPage() {
                           : r.status === "PENDING"
                           ? "bg-amber-950/40 text-amber-400 border border-amber-900/30"
                           : r.status === "HIDDEN"
-                          ? "bg-gray-800 text-gray-400 border border-gray-700"
+                          ? "bg-muted text-muted-foreground border border-border"
                           : "bg-red-950/40 text-red-400 border border-red-900/30"
                       }`}>
                         {r.status}
@@ -402,7 +402,7 @@ export default function AdminReviewsPage() {
                           variant="ghost"
                           size="icon"
                           disabled={r.status === "HIDDEN"}
-                          className="h-11 w-11 md:h-7 md:w-7 text-gray-400 hover:bg-gray-800 flex items-center justify-center"
+                          className="h-11 w-11 md:h-7 md:w-7 text-muted-foreground hover:bg-muted flex items-center justify-center"
                           title="Hide"
                         >
                           <EyeOff className="h-4 w-4" />
@@ -411,7 +411,7 @@ export default function AdminReviewsPage() {
                           onClick={() => toggleFlagMutation.mutate({ id: r.id, isFlagged: !r.isFlagged })}
                           variant="ghost"
                           size="icon"
-                          className={`h-11 w-11 md:h-7 md:w-7 flex items-center justify-center ${r.isFlagged ? "text-red-400 bg-red-950/20" : "text-gray-400 hover:text-white"}`}
+                          className={`h-11 w-11 md:h-7 md:w-7 flex items-center justify-center ${r.isFlagged ? "text-red-400 bg-red-950/20" : "text-muted-foreground hover:text-foreground"}`}
                           title={r.isFlagged ? "Unflag" : "Flag"}
                         >
                           <Flag className="h-4 w-4" />
@@ -436,8 +436,8 @@ export default function AdminReviewsPage() {
 
         {/* Pagination */}
         {reviewsData && reviewsData.totalPages > 1 && (
-          <div className="h-16 flex items-center justify-between px-6 border-t border-[#26221f]">
-            <span className="text-xs text-[#7d7a77]">
+          <div className="h-16 flex items-center justify-between px-6 border-t border-border">
+            <span className="text-xs text-muted-foreground/80">
               Page {reviewsData.page} of {reviewsData.totalPages}
             </span>
             <div className="flex gap-2">
@@ -446,7 +446,7 @@ export default function AdminReviewsPage() {
                 disabled={page === 1}
                 variant="outline"
                 size="sm"
-                className="text-xs border-[#26221f]"
+                className="text-xs border-border"
               >
                 Previous
               </Button>
@@ -455,7 +455,7 @@ export default function AdminReviewsPage() {
                 disabled={page === reviewsData.totalPages}
                 variant="outline"
                 size="sm"
-                className="text-xs border-[#26221f]"
+                className="text-xs border-border"
               >
                 Next
               </Button>

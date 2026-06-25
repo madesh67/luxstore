@@ -145,7 +145,7 @@ export function WishlistCard({ item }: WishlistCardProps) {
           <button
             onClick={handleRemove}
             disabled={isPending}
-            className="absolute top-2 right-2 p-3 md:p-1.5 rounded-full bg-background/80 hover:bg-destructive hover:text-white transition-colors border border-border/20 min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 flex items-center justify-center"
+            className="absolute top-2 right-2 p-3 md:p-1.5 rounded-full bg-background/80 hover:bg-destructive hover:text-destructive-foreground transition-colors border border-border/20 min-w-[44px] min-h-[44px] md:min-w-0 md:min-h-0 flex items-center justify-center"
             aria-label="Remove item"
           >
             <Trash2 className="h-3.5 w-3.5" />

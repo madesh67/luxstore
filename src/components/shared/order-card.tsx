@@ -27,7 +27,7 @@ export function OrderCard({ order }: OrderCardProps) {
 
   return (
     <div className="border border-border bg-card rounded-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
-      <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/60 bg-neutral-50/50 dark:bg-neutral-900/50">
+      <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/60 bg-muted/50">
         <div className="space-y-1">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-light">Order Number</p>
           <p className="text-sm font-semibold tracking-wider text-foreground">{order.orderNumber}</p>

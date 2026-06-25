@@ -52,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[#0d0c0a] text-accent">
+      <div className="flex h-screen w-screen items-center justify-center bg-background text-accent">
         <div className="flex flex-col items-center gap-4">
           <div className="h-10 w-10 animate-spin rounded-full border-2 border-accent border-t-transparent" />
           <span className="font-display text-sm tracking-widest uppercase text-accent/70">
@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0a09] text-[#e8e6e3] flex">
+    <div className="min-h-screen bg-background text-foreground flex">
       {/* Mobile Sidebar Backdrop Overlay */}
       {sidebarOpen && (
         <div
@@ -89,21 +89,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#12100f] border-r border-[#26221f] flex flex-col transition-transform duration-300 md:translate-x-0 md:static ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border flex flex-col transition-transform duration-300 md:translate-x-0 md:static ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Brand/Logo Section */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-[#26221f]">
+        <div className="h-16 flex items-center justify-between px-6 border-b border-border">
           <Link href="/admin" className="flex items-center gap-1">
-            <span className="font-display text-xl font-bold tracking-wider text-white">
+            <span className="font-display text-xl font-bold tracking-wider text-foreground">
               LUX<span className="text-accent">COMMAND</span>
             </span>
           </Link>
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden text-[#a8a6a3] hover:text-white"
+            className="md:hidden text-muted-foreground hover:text-foreground"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="h-5 w-5" />
@@ -122,11 +122,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all duration-200 ${
                   isActive
-                    ? "bg-accent text-white shadow-lg shadow-accent/15"
-                    : "text-[#a8a6a3] hover:bg-[#1a1715] hover:text-white"
+                    ? "bg-accent text-accent-foreground shadow-lg shadow-accent/15"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
-                <Icon className={`h-4.5 w-4.5 ${isActive ? "text-white" : "text-[#a8a6a3]"}`} />
+                <Icon className={`h-4.5 w-4.5 ${isActive ? "text-foreground" : "text-muted-foreground"}`} />
                 {item.label}
               </Link>
             );
@@ -134,21 +134,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Footer Area with User Profile Summary & Logout */}
-        <div className="p-4 border-t border-[#26221f] space-y-4">
+        <div className="p-4 border-t border-border space-y-4">
           <div className="flex items-center gap-3 px-2">
             <div className="h-9 w-9 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent">
               <UserIcon className="h-4 w-4" />
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-semibold text-white truncate">{user.firstName} {user.lastName}</p>
-              <p className="text-[10px] text-[#a8a6a3] uppercase tracking-wider font-bold">{user.role}</p>
+              <p className="text-xs font-semibold text-foreground truncate">{user.firstName} {user.lastName}</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">{user.role}</p>
             </div>
           </div>
 
           <Button
             onClick={handleLogout}
             variant="ghost"
-            className="w-full justify-start text-xs font-bold tracking-wider text-[#d32f2f] hover:bg-[#1c1212] hover:text-red-400 gap-3 uppercase py-2.5 rounded-lg"
+            className="w-full justify-start text-xs font-bold tracking-wider text-destructive hover:bg-destructive/10 hover:text-destructive gap-3 uppercase py-2.5 rounded-lg"
           >
             <LogOut className="h-4.5 w-4.5" />
             Sign Out
@@ -159,23 +159,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header Bar */}
-        <header className="h-16 border-b border-[#26221f] bg-[#12100f]/80 backdrop-blur-md sticky top-0 z-40 flex items-center justify-between px-6">
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-40 flex items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden text-[#a8a6a3] hover:text-white"
+              className="md:hidden text-muted-foreground hover:text-foreground"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="h-5 w-5" />
             </Button>
-            <h1 className="text-sm font-semibold tracking-widest text-[#a8a6a3] uppercase">
-              <span className="hidden sm:inline">Command Center / </span><span className="text-white">{pathname?.split("/").pop() || "Dashboard"}</span>
+            <h1 className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
+              <span className="hidden sm:inline">Command Center / </span><span className="text-foreground">{pathname?.split("/").pop() || "Dashboard"}</span>
             </h1>
           </div>
 
           <div className="flex items-center gap-4">
-            <Button asChild variant="outline" size="sm" className="text-xs border-[#26221f] hover:bg-[#1a1715] gap-2">
+            <Button asChild variant="outline" size="sm" className="text-xs border-border hover:bg-muted gap-2">
               <Link href="/" target="_blank">
                 <ExternalLink className="h-3 w-3" />
                 <span className="hidden sm:inline">View Storefront</span>

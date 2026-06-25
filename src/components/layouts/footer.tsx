@@ -44,24 +44,24 @@ export function Footer() {
   }
 
   return (
-    <footer className="w-full bg-[#171513] text-[#e8e6e3] border-t border-border/10">
+    <footer className="w-full bg-card text-foreground border-t border-border">
       <Container className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
         {/* Brand details */}
         <div className="lg:col-span-2 space-y-6">
           <Link href="/">
-            <span className="font-display text-2xl font-bold tracking-widest text-[#e8e6e3]">
+            <span className="font-display text-2xl font-bold tracking-widest text-foreground">
               LUX<span className="text-accent">STORE</span>
             </span>
           </Link>
-          <p className="text-sm text-[#a8a6a3] max-w-sm font-light leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-sm font-light leading-relaxed">
             Crafting premium, timeless accessories designed to elevate the modern lifestyle. Built on a foundation of exceptional craftsmanship, ethical sourcing, and clean design aesthetics.
           </p>
           <div className="flex space-x-4">
             {/* Socials placeholder */}
             <span className="text-xs tracking-widest font-semibold uppercase text-accent">Follow Us</span>
-            <span className="text-xs text-[#a8a6a3] hover:text-[#e8e6e3] cursor-pointer">Instagram</span>
-            <span className="text-xs text-[#a8a6a3] hover:text-[#e8e6e3] cursor-pointer">Pinterest</span>
-            <span className="text-xs text-[#a8a6a3] hover:text-[#e8e6e3] cursor-pointer">LinkedIn</span>
+            <span className="text-xs text-muted-foreground hover:text-foreground cursor-pointer">Instagram</span>
+            <span className="text-xs text-muted-foreground hover:text-foreground cursor-pointer">Pinterest</span>
+            <span className="text-xs text-muted-foreground hover:text-foreground cursor-pointer">LinkedIn</span>
           </div>
         </div>
 
@@ -74,7 +74,7 @@ export function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-xs text-[#a8a6a3] hover:text-[#e8e6e3] transition-colors"
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -86,7 +86,7 @@ export function Footer() {
       </Container>
 
       {/* Bottom Bar */}
-      <div className="w-full border-t border-[#2d2a27]/40 bg-[#12100f] py-8 text-center text-xs text-[#7d7a77]">
+      <div className="w-full border-t border-border bg-background py-8 text-center text-xs text-muted-foreground">
         <Container className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <div>
             &copy; {new Date().getFullYear()} LuxStore. All rights reserved. Created as an architectural template.

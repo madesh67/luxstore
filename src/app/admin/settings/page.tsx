@@ -117,7 +117,7 @@ export default function AdminSettingsPage() {
       <div className="flex h-[50vh] items-center justify-center">
         <div className="flex flex-col items-center gap-2">
           <RefreshCw className="h-7 w-7 animate-spin text-accent" />
-          <p className="text-xs uppercase tracking-widest text-[#a8a6a3]">Loading Store Settings...</p>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">Loading Store Settings...</p>
         </div>
       </div>
     );
@@ -128,14 +128,14 @@ export default function AdminSettingsPage() {
       {/* Title */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Store Configuration</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Configure global store rules, payments setup, taxes, and branding.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Store Configuration</h2>
+          <p className="text-xs text-muted-foreground mt-1">Configure global store rules, payments setup, taxes, and branding.</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         {/* Navigation Sidebar Tabs */}
-        <div className="lg:col-span-1 flex flex-row overflow-x-auto gap-1.5 bg-[#12100f] border border-[#26221f] rounded-xl p-3 lg:flex-col lg:overflow-x-visible">
+        <div className="lg:col-span-1 flex flex-row overflow-x-auto gap-1.5 bg-card border border-border rounded-xl p-3 lg:flex-col lg:overflow-x-visible">
           {SETTINGS_TABS.map((tab) => (
             <button
               key={tab.id}
@@ -143,8 +143,8 @@ export default function AdminSettingsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`text-left text-xs font-bold uppercase tracking-wider px-4 py-3 rounded-lg transition-all shrink-0 whitespace-nowrap ${
                 activeTab === tab.id
-                  ? "bg-accent text-white shadow shadow-accent/15"
-                  : "text-[#a8a6a3] hover:bg-[#1a1715] hover:text-white"
+                  ? "bg-accent text-accent-foreground shadow shadow-accent/15"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               {tab.label}
@@ -153,10 +153,10 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* Tab Panel Body */}
-        <div className="lg:col-span-3 border border-[#26221f] bg-[#12100f] rounded-xl overflow-hidden flex flex-col min-h-[50vh]">
+        <div className="lg:col-span-3 border border-border bg-card rounded-xl overflow-hidden flex flex-col min-h-[50vh]">
           {/* Tab Header title */}
-          <div className="h-14 border-b border-[#26221f] px-6 flex items-center justify-between bg-[#171513]/40">
-            <span className="text-xs font-bold uppercase tracking-widest text-white">
+          <div className="h-14 border-b border-border px-6 flex items-center justify-between bg-muted/50/40">
+            <span className="text-xs font-bold uppercase tracking-widest text-foreground">
               {SETTINGS_TABS.find((t) => t.id === activeTab)?.label} Settings Section
             </span>
           </div>
@@ -167,42 +167,42 @@ export default function AdminSettingsPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Store Name</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Store Name</label>
                     <input
                       type="text"
                       value={getVal("STORE_NAME", "LuxStore")}
                       onChange={(e) => handleChange("STORE_NAME", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Contact Support Email</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Contact Support Email</label>
                     <input
                       type="email"
                       value={getVal("STORE_EMAIL", "support@luxstore.com")}
                       onChange={(e) => handleChange("STORE_EMAIL", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Store Telephone</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Store Telephone</label>
                     <input
                       type="text"
                       value={getVal("STORE_PHONE", "+91 98765 43210")}
                       onChange={(e) => handleChange("STORE_PHONE", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Store Currency Code</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Store Currency Code</label>
                     <input
                       type="text"
                       value={getVal("STORE_CURRENCY", "INR")}
                       onChange={(e) => handleChange("STORE_CURRENCY", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                 </div>
@@ -212,29 +212,29 @@ export default function AdminSettingsPage() {
             {activeTab === "payments" && (
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Stripe Publishable Key</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Stripe Publishable Key</label>
                   <input
                     type="text"
                     value={getVal("STRIPE_PUBLISHABLE_KEY", "")}
                     onChange={(e) => handleChange("STRIPE_PUBLISHABLE_KEY", e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Stripe Secret API Key</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Stripe Secret API Key</label>
                   <input
                     type="password"
                     value={getVal("STRIPE_SECRET_KEY", "")}
                     onChange={(e) => handleChange("STRIPE_SECRET_KEY", e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Payment Flow Mode</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Payment Flow Mode</label>
                   <select
                     value={getVal("PAYMENT_FLOW_MODE", "TEST")}
                     onChange={(e) => handleChange("PAYMENT_FLOW_MODE", e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                   >
                     <option value="TEST">Sandbox Test mode</option>
                     <option value="LIVE">Production Live mode</option>
@@ -247,21 +247,21 @@ export default function AdminSettingsPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Free Shipping Threshold (INR)</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Free Shipping Threshold (INR)</label>
                     <input
                       type="number"
                       value={getVal("FREE_SHIPPING_THRESHOLD", "10000")}
                       onChange={(e) => handleChange("FREE_SHIPPING_THRESHOLD", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Base Shipping Cost (INR)</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Base Shipping Cost (INR)</label>
                     <input
                       type="number"
                       value={getVal("DEFAULT_SHIPPING_COST", "350")}
                       onChange={(e) => handleChange("DEFAULT_SHIPPING_COST", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                 </div>
@@ -272,21 +272,21 @@ export default function AdminSettingsPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Default Tax Rate (%)</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Default Tax Rate (%)</label>
                     <input
                       type="number"
                       step="0.01"
                       value={getVal("DEFAULT_TAX_RATE", "18.00")}
                       onChange={(e) => handleChange("DEFAULT_TAX_RATE", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Tax Application Mode</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Tax Application Mode</label>
                     <select
                       value={getVal("TAX_CALCULATION_MODE", "EXCLUSIVE")}
                       onChange={(e) => handleChange("TAX_CALCULATION_MODE", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     >
                       <option value="EXCLUSIVE">Exclusive Tax (Added at checkout)</option>
                       <option value="INCLUSIVE">Inclusive Tax (Prices already contain tax)</option>
@@ -300,31 +300,31 @@ export default function AdminSettingsPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">SMTP Host Name</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">SMTP Host Name</label>
                     <input
                       type="text"
                       value={getVal("SMTP_HOST", "smtp.resend.com")}
                       onChange={(e) => handleChange("SMTP_HOST", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">SMTP Host Port</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">SMTP Host Port</label>
                     <input
                       type="number"
                       value={getVal("SMTP_PORT", "465")}
                       onChange={(e) => handleChange("SMTP_PORT", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">System Sender Email address</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">System Sender Email address</label>
                   <input
                     type="email"
                     value={getVal("SYSTEM_EMAIL_SENDER", "notifications@luxstore.com")}
                     onChange={(e) => handleChange("SYSTEM_EMAIL_SENDER", e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
               </div>
@@ -333,30 +333,30 @@ export default function AdminSettingsPage() {
             {activeTab === "seo" && (
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Default Title Tag</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Default Title Tag</label>
                   <input
                     type="text"
                     value={getVal("DEFAULT_SEO_TITLE", "LuxStore | Premium Timeless Accessories")}
                     onChange={(e) => handleChange("DEFAULT_SEO_TITLE", e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Default Meta Description</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Default Meta Description</label>
                   <textarea
                     rows={3}
                     value={getVal("DEFAULT_SEO_DESC", "Premium timeless bags, glasses and accessories crafted under atelier care.")}
                     onChange={(e) => handleChange("DEFAULT_SEO_DESC", e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Google Analytics ID (GTAG)</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Google Analytics ID (GTAG)</label>
                   <input
                     type="text"
                     value={getVal("GOOGLE_ANALYTICS_ID", "G-XXXXXXXXXX")}
                     onChange={(e) => handleChange("GOOGLE_ANALYTICS_ID", e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                   />
                 </div>
               </div>
@@ -366,21 +366,21 @@ export default function AdminSettingsPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Accent Theme Color (Hex)</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Accent Theme Color (Hex)</label>
                     <input
                       type="text"
                       value={getVal("BRAND_ACCENT_COLOR", "#d4af37")}
                       onChange={(e) => handleChange("BRAND_ACCENT_COLOR", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Store Logo CDN URL</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Store Logo CDN URL</label>
                     <input
                       type="text"
                       value={getVal("BRAND_LOGO_URL", "")}
                       onChange={(e) => handleChange("BRAND_LOGO_URL", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                     />
                   </div>
                 </div>
@@ -391,21 +391,21 @@ export default function AdminSettingsPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Rate Limit Max Requests (per minute)</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Rate Limit Max Requests (per minute)</label>
                     <input
                       type="number"
                       value={getVal("RATE_LIMIT_MAX", "100")}
                       onChange={(e) => handleChange("RATE_LIMIT_MAX", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Session Timeout Limit (minutes)</label>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Session Timeout Limit (minutes)</label>
                     <input
                       type="number"
                       value={getVal("SESSION_TIMEOUT", "60")}
                       onChange={(e) => handleChange("SESSION_TIMEOUT", e.target.value)}
-                      className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                      className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                     />
                   </div>
                 </div>
@@ -418,7 +418,7 @@ export default function AdminSettingsPage() {
           </div>
 
           {/* Tab Footer actions */}
-          <div className="h-16 border-t border-[#26221f] px-6 flex items-center justify-end gap-3 bg-[#171513]/25">
+          <div className="h-16 border-t border-border px-6 flex items-center justify-end gap-3 bg-muted/50/25">
             <Button
               type="submit"
               disabled={updateMutation.isPending}

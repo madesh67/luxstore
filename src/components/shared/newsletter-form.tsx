@@ -38,7 +38,7 @@ export function NewsletterForm() {
     return (
       <div className="flex flex-col items-center justify-center p-6 border border-accent/20 bg-accent/5 max-w-md mx-auto text-center rounded-sm animate-fade-in">
         <div className="h-10 w-10 rounded-full bg-accent flex items-center justify-center mb-4">
-          <Check className="h-5 w-5 text-white" />
+          <Check className="h-5 w-5 text-accent-foreground" />
         </div>
         <h4 className="text-sm font-semibold uppercase tracking-wider mb-2">Welcome to the Club</h4>
         <p className="text-xs text-muted-foreground font-light">

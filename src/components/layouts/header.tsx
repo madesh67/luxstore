@@ -119,7 +119,7 @@ export function Header() {
 
     <header className="w-full sticky top-0 z-40">
       {/* Top Banner */}
-      <div className="w-full bg-[#a88a44] py-2 text-center text-[10px] sm:text-xs tracking-widest text-white uppercase font-bold px-4">
+      <div className="w-full bg-accent py-2 text-center text-[10px] sm:text-xs tracking-widest text-accent-foreground uppercase font-bold px-4">
         LuxStore Preview: Orders are currently not being processed.
       </div>
 
@@ -184,7 +184,7 @@ export function Header() {
               <Link href="/wishlist" aria-label="Wishlist">
                 <Heart className="h-[1.2rem] w-[1.2rem]" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-white">
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-accent-foreground">
                     {wishlistCount}
                   </span>
                 )}
@@ -200,7 +200,7 @@ export function Header() {
             >
               <ShoppingBag className="h-[1.2rem] w-[1.2rem]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-white">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground">
                   {cartCount}
                 </span>
               )}

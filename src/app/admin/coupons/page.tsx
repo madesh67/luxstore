@@ -160,8 +160,8 @@ export default function AdminCouponsPage() {
       {/* Title & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Coupon & Promotion Rules</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Configure percentage, fixed amount, and free shipping discounts.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Coupon & Promotion Rules</h2>
+          <p className="text-xs text-muted-foreground mt-1">Configure percentage, fixed amount, and free shipping discounts.</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -169,7 +169,7 @@ export default function AdminCouponsPage() {
             disabled={isRefetching}
             variant="outline"
             size="sm"
-            className="border-[#26221f] text-xs font-semibold tracking-widest text-[#a8a6a3] hover:text-white uppercase gap-2 hover:bg-[#1a1715]"
+            className="border-border text-xs font-semibold tracking-widest text-muted-foreground hover:text-foreground uppercase gap-2 hover:bg-muted"
           >
             <RefreshCw className={`h-3 w-3 ${isRefetching ? "animate-spin" : ""}`} />
             Refresh
@@ -184,7 +184,7 @@ export default function AdminCouponsPage() {
       </div>
 
       {/* Search */}
-      <div className="flex items-center gap-4 bg-[#12100f] border border-[#26221f] rounded-xl px-4 py-2">
+      <div className="flex items-center gap-4 bg-card border border-border rounded-xl px-4 py-2">
         <input
           type="text"
           placeholder="Search coupons by code name..."
@@ -193,16 +193,16 @@ export default function AdminCouponsPage() {
             setSearch(e.target.value.toUpperCase());
             setPage(1);
           }}
-          className="bg-transparent border-0 outline-none text-xs text-[#e8e6e3] placeholder-[#7d7a77] w-full"
+          className="bg-transparent border-0 outline-none text-xs text-foreground placeholder-[#7d7a77] w-full"
         />
       </div>
 
       {/* Coupons Table */}
-      <div className="border border-[#26221f] rounded-xl bg-[#12100f] overflow-hidden">
+      <div className="border border-border rounded-xl bg-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#26221f] text-[10px] uppercase tracking-widest text-[#7d7a77] font-bold">
+              <tr className="border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground/80 font-bold">
                 <th className="p-4">Code</th>
                 <th className="p-4">Type</th>
                 <th className="p-4">Value</th>
@@ -213,17 +213,17 @@ export default function AdminCouponsPage() {
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#26221f]/50 text-xs">
+            <tbody className="divide-y divide-border/50 text-xs">
               {isLoading ? (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-[#a8a6a3]">
+                  <td colSpan={8} className="p-8 text-center text-muted-foreground">
                     <Loader2 className="h-6 w-6 animate-spin mx-auto text-accent mb-2" />
                     Fetching Coupons...
                   </td>
                 </tr>
               ) : !couponsData?.data || couponsData.data.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center text-[#7d7a77] uppercase tracking-widest">
+                  <td colSpan={8} className="p-8 text-center text-muted-foreground/80 uppercase tracking-widest">
                     No promotional coupons registered
                   </td>
                 </tr>
@@ -232,30 +232,30 @@ export default function AdminCouponsPage() {
                   const now = new Date();
                   const isExpired = new Date(c.endDate) < now;
                   return (
-                    <tr key={c.id} className={`hover:bg-[#1a1715]/40 transition-colors ${isExpired ? "opacity-60" : ""}`}>
+                    <tr key={c.id} className={`hover:bg-muted/40 transition-colors ${isExpired ? "opacity-60" : ""}`}>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
                           <Ticket className="h-4 w-4 text-accent" />
-                          <span className="font-bold text-white font-mono text-[13px]">{c.code}</span>
+                          <span className="font-bold text-foreground font-mono text-[13px]">{c.code}</span>
                         </div>
                       </td>
                       <td className="p-4">
-                        <span className="text-xs uppercase font-bold text-[#a8a6a3]">
+                        <span className="text-xs uppercase font-bold text-muted-foreground">
                           {c.discountType.replace("_", " ")}
                         </span>
                       </td>
-                      <td className="p-4 font-semibold text-white">
+                      <td className="p-4 font-semibold text-foreground">
                         {c.discountType === "PERCENTAGE" ? `${c.value}%` : `₹${Number(c.value).toLocaleString()}`}
                       </td>
-                      <td className="p-4 text-[#7d7a77] space-y-0.5">
+                      <td className="p-4 text-muted-foreground/80 space-y-0.5">
                         {c.minOrderValue && <p className="text-[10px]">Min Spend: ₹{Number(c.minOrderValue).toLocaleString()}</p>}
                         {c.maxDiscount && <p className="text-[10px]">Max Disc: ₹{Number(c.maxDiscount).toLocaleString()}</p>}
                       </td>
-                      <td className="p-4 text-[#a8a6a3] font-semibold">
+                      <td className="p-4 text-muted-foreground font-semibold">
                         {c.usageCount} / {c.usageLimit || "∞"}
                       </td>
-                      <td className="p-4 text-[#a8a6a3]">
-                        <p className="flex items-center gap-1.5 text-[10px] text-[#7d7a77]">
+                      <td className="p-4 text-muted-foreground">
+                        <p className="flex items-center gap-1.5 text-[10px] text-muted-foreground/80">
                           <Calendar className="h-3 w-3" />
                           {new Date(c.startDate).toLocaleDateString()} – {new Date(c.endDate).toLocaleDateString()}
                         </p>
@@ -275,7 +275,7 @@ export default function AdminCouponsPage() {
                             onClick={() => openEditModal(c)}
                             variant="ghost"
                             size="icon"
-                            className="h-11 w-11 md:h-8 md:w-8 text-[#a8a6a3] hover:text-white flex items-center justify-center"
+                            className="h-11 w-11 md:h-8 md:w-8 text-muted-foreground hover:text-foreground flex items-center justify-center"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -299,8 +299,8 @@ export default function AdminCouponsPage() {
 
         {/* Pagination */}
         {couponsData && couponsData.totalPages > 1 && (
-          <div className="h-16 flex items-center justify-between px-6 border-t border-[#26221f]">
-            <span className="text-xs text-[#7d7a77]">
+          <div className="h-16 flex items-center justify-between px-6 border-t border-border">
+            <span className="text-xs text-muted-foreground/80">
               Page {couponsData.page} of {couponsData.totalPages}
             </span>
             <div className="flex gap-2">
@@ -309,7 +309,7 @@ export default function AdminCouponsPage() {
                 disabled={page === 1}
                 variant="outline"
                 size="sm"
-                className="text-xs border-[#26221f]"
+                className="text-xs border-border"
               >
                 Previous
               </Button>
@@ -318,7 +318,7 @@ export default function AdminCouponsPage() {
                 disabled={page === couponsData.totalPages}
                 variant="outline"
                 size="sm"
-                className="text-xs border-[#26221f]"
+                className="text-xs border-border"
               >
                 Next
               </Button>
@@ -330,12 +330,12 @@ export default function AdminCouponsPage() {
       {/* Form Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#12100f] border border-[#26221f] w-full max-w-xl rounded-xl shadow-2xl flex flex-col">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-[#26221f]">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+          <div className="bg-card border border-border w-full max-w-xl rounded-xl shadow-2xl flex flex-col">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-border">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
                 {editingCouponId ? "Modify Coupon" : "Add Promo Coupon"}
               </h3>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="text-[#a8a6a3] hover:text-white">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </Button>
             </div>
@@ -343,23 +343,23 @@ export default function AdminCouponsPage() {
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Coupon Code</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Coupon Code</label>
                   <input
                     type="text"
                     required
                     value={formState.code}
                     onChange={(e) => setFormState((p) => ({ ...p, code: e.target.value.toUpperCase() }))}
                     placeholder="e.g. LUXURY20"
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Discount Type</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Discount Type</label>
                   <select
                     value={formState.discountType}
                     onChange={(e: any) => setFormState((p) => ({ ...p, discountType: e.target.value }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   >
                     <option value="PERCENTAGE">Percentage (%)</option>
                     <option value="FIXED_AMOUNT">Fixed Value (INR)</option>
@@ -370,7 +370,7 @@ export default function AdminCouponsPage() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Discount Value</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Discount Value</label>
                   <input
                     type="number"
                     required
@@ -378,12 +378,12 @@ export default function AdminCouponsPage() {
                     value={formState.value}
                     disabled={formState.discountType === "FREE_SHIPPING"}
                     onChange={(e) => setFormState((p) => ({ ...p, value: parseFloat(e.target.value) || 0 }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none disabled:opacity-50"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none disabled:opacity-50"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Min Order Spend</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Min Order Spend</label>
                   <input
                     type="number"
                     min="0"
@@ -391,12 +391,12 @@ export default function AdminCouponsPage() {
                     onChange={(e) =>
                       setFormState((p) => ({ ...p, minOrderValue: parseFloat(e.target.value) || null }))
                     }
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Max Discount Limit</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Max Discount Limit</label>
                   <input
                     type="number"
                     min="0"
@@ -405,38 +405,38 @@ export default function AdminCouponsPage() {
                     onChange={(e) =>
                       setFormState((p) => ({ ...p, maxDiscount: parseFloat(e.target.value) || null }))
                     }
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none disabled:opacity-50"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none disabled:opacity-50"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Start Date</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Start Date</label>
                   <input
                     type="date"
                     required
                     value={formState.startDate}
                     onChange={(e) => setFormState((p) => ({ ...p, startDate: e.target.value }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Expiration End Date</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expiration End Date</label>
                   <input
                     type="date"
                     required
                     value={formState.endDate}
                     onChange={(e) => setFormState((p) => ({ ...p, endDate: e.target.value }))}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Global Redemption Limit</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Global Redemption Limit</label>
                   <input
                     type="number"
                     min="1"
@@ -445,12 +445,12 @@ export default function AdminCouponsPage() {
                       setFormState((p) => ({ ...p, usageLimit: parseInt(e.target.value, 10) || null }))
                     }
                     placeholder="e.g. 500 total uses"
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Redemptions Per User Limit</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Redemptions Per User Limit</label>
                   <input
                     type="number"
                     min="1"
@@ -458,7 +458,7 @@ export default function AdminCouponsPage() {
                     onChange={(e) =>
                       setFormState((p) => ({ ...p, perUserLimit: parseInt(e.target.value, 10) || null }))
                     }
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   />
                 </div>
               </div>
@@ -468,13 +468,13 @@ export default function AdminCouponsPage() {
                   type="checkbox"
                   checked={formState.isActive}
                   onChange={(e) => setFormState((p) => ({ ...p, isActive: e.target.checked }))}
-                  className="rounded border-[#26221f] bg-[#1c1a17] text-accent focus:ring-0"
+                  className="rounded border-border bg-background text-accent focus:ring-0"
                 />
-                <span className="text-xs text-[#a8a6a3]">Set Active Status</span>
+                <span className="text-xs text-muted-foreground">Set Active Status</span>
               </label>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#26221f]">
-                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-[#26221f]">
+              <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-border">
                   Cancel
                 </Button>
                 <Button

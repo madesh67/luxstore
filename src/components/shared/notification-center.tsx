@@ -76,7 +76,7 @@ export function NotificationCenter() {
       >
         <Bell className="h-[1.2rem] w-[1.2rem]" />
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-white animate-pulse">
+          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-accent-foreground animate-pulse">
             {unreadCount}
           </span>
         )}
@@ -86,7 +86,7 @@ export function NotificationCenter() {
       {isOpen && (
         <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-card border border-border/80 shadow-xl rounded-sm z-50 overflow-hidden animate-fade-in origin-top-right">
           {/* Header */}
-          <div className="p-4 border-b border-border/60 flex items-center justify-between bg-neutral-50 dark:bg-neutral-900">
+          <div className="p-4 border-b border-border/60 flex items-center justify-between bg-muted">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-foreground flex items-center gap-1.5">
               Notifications {unreadCount > 0 && <span className="text-[10px] text-accent font-normal">({unreadCount} new)</span>}
             </h3>
@@ -103,7 +103,7 @@ export function NotificationCenter() {
           </div>
 
           {/* Filter Bar */}
-          <div className="px-4 py-2 border-b border-border/40 flex items-center gap-4 text-[10px] uppercase tracking-widest bg-neutral-50/50 dark:bg-neutral-900/50">
+          <div className="px-4 py-2 border-b border-border/40 flex items-center gap-4 text-[10px] uppercase tracking-widest bg-muted/50">
             <button
               onClick={() => setUnreadOnly(false)}
               className={`font-semibold transition-colors ${!unreadOnly ? "text-accent" : "text-muted-foreground hover:text-foreground"}`}
@@ -126,14 +126,14 @@ export function NotificationCenter() {
               </div>
             ) : notifications.length === 0 ? (
               <div className="py-12 text-center text-muted-foreground flex flex-col items-center gap-2">
-                <Inbox className="h-8 w-8 text-neutral-300 dark:text-neutral-700" />
+                <Inbox className="h-8 w-8 text-muted-foreground/50" />
                 <p className="text-xs font-light">No notifications to display</p>
               </div>
             ) : (
               notifications.map((item: NotificationType) => (
                 <div
                   key={item.id}
-                  className={`p-4 transition-colors relative flex items-start gap-3 hover:bg-neutral-50/50 dark:hover:bg-neutral-900/50 ${
+                  className={`p-4 transition-colors relative flex items-start gap-3 hover:bg-muted/50 ${
                     !item.isRead ? "bg-accent/[0.02]" : ""
                   }`}
                 >
@@ -171,7 +171,7 @@ export function NotificationCenter() {
                       variant="ghost"
                       size="icon"
                       onClick={(e) => handleDelete(item.id, e)}
-                      className="h-7 w-7 text-neutral-400 hover:text-red-600"
+                      className="h-7 w-7 text-muted-foreground hover:text-destructive"
                       title="Delete"
                     >
                       <Trash2 className="h-3.5 w-3.5" />

@@ -177,8 +177,8 @@ export default function AdminBrandsPage() {
       {/* Title & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Brand Partners Management</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Manage brand logo assets, details, and active storefront states.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Brand Partners Management</h2>
+          <p className="text-xs text-muted-foreground mt-1">Manage brand logo assets, details, and active storefront states.</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -186,7 +186,7 @@ export default function AdminBrandsPage() {
             disabled={isRefetching}
             variant="outline"
             size="sm"
-            className="border-[#26221f] text-xs font-semibold tracking-widest text-[#a8a6a3] hover:text-white uppercase gap-2 hover:bg-[#1a1715]"
+            className="border-border text-xs font-semibold tracking-widest text-muted-foreground hover:text-foreground uppercase gap-2 hover:bg-muted"
           >
             <RefreshCw className={`h-3 w-3 ${isRefetching ? "animate-spin" : ""}`} />
             Refresh
@@ -201,11 +201,11 @@ export default function AdminBrandsPage() {
       </div>
 
       {/* Brands Table */}
-      <div className="border border-[#26221f] rounded-xl bg-[#12100f] overflow-hidden">
+      <div className="border border-border rounded-xl bg-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#26221f] text-[10px] uppercase tracking-widest text-[#7d7a77] font-bold">
+              <tr className="border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground/80 font-bold">
                 <th className="p-4">Logo</th>
                 <th className="p-4">Brand Name</th>
                 <th className="p-4">Slug</th>
@@ -214,39 +214,39 @@ export default function AdminBrandsPage() {
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#26221f]/50 text-xs">
+            <tbody className="divide-y divide-border/50 text-xs">
               {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-[#a8a6a3]">
+                  <td colSpan={6} className="p-8 text-center text-muted-foreground">
                     <Loader2 className="h-6 w-6 animate-spin mx-auto text-accent mb-2" />
                     Fetching Brands...
                   </td>
                 </tr>
               ) : !brands || brands.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-[#7d7a77] uppercase tracking-widest">
+                  <td colSpan={6} className="p-8 text-center text-muted-foreground/80 uppercase tracking-widest">
                     No brands found
                   </td>
                 </tr>
               ) : (
                 brands.map((b: any) => (
-                  <tr key={b.id} className="hover:bg-[#1a1715]/40 transition-colors">
+                  <tr key={b.id} className="hover:bg-muted/40 transition-colors">
                     <td className="p-4">
                       {b.logo ? (
                         <img
                           src={b.logo}
                           alt={b.name}
-                          className="h-10 w-16 object-contain rounded-lg border border-[#26221f] p-1 bg-white"
+                          className="h-10 w-16 object-contain rounded-lg border border-border p-1 bg-white"
                         />
                       ) : (
-                        <div className="h-10 w-16 bg-[#1c1a17] border border-[#26221f] rounded-lg flex items-center justify-center text-[9px] text-[#7d7a77] font-bold uppercase">
+                        <div className="h-10 w-16 bg-background border border-border rounded-lg flex items-center justify-center text-[9px] text-muted-foreground/80 font-bold uppercase">
                           No Logo
                         </div>
                       )}
                     </td>
-                    <td className="p-4 font-semibold text-white">{b.name}</td>
-                    <td className="p-4 font-mono text-[11px] text-[#a8a6a3]">{b.slug}</td>
-                    <td className="p-4 text-[#7d7a77] max-w-[240px] truncate">{b.description || "-"}</td>
+                    <td className="p-4 font-semibold text-foreground">{b.name}</td>
+                    <td className="p-4 font-mono text-[11px] text-muted-foreground">{b.slug}</td>
+                    <td className="p-4 text-muted-foreground/80 max-w-[240px] truncate">{b.description || "-"}</td>
                     <td className="p-4 text-center">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                         b.active
@@ -262,7 +262,7 @@ export default function AdminBrandsPage() {
                           onClick={() => openEditModal(b)}
                           variant="ghost"
                           size="icon"
-                          className="h-11 w-11 md:h-8 md:w-8 text-[#a8a6a3] hover:text-white flex items-center justify-center"
+                          className="h-11 w-11 md:h-8 md:w-8 text-muted-foreground hover:text-foreground flex items-center justify-center"
                         >
                           <Edit2 className="h-4 w-4" />
                         </Button>
@@ -287,54 +287,54 @@ export default function AdminBrandsPage() {
       {/* Form Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#12100f] border border-[#26221f] w-full max-w-lg rounded-xl shadow-2xl flex flex-col">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-[#26221f]">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+          <div className="bg-card border border-border w-full max-w-lg rounded-xl shadow-2xl flex flex-col">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-border">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
                 {editingBrandId ? "Modify Brand" : "Add New Brand"}
               </h3>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="text-[#a8a6a3] hover:text-white">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </Button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Brand Name</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Brand Name</label>
                 <input
                   type="text"
                   required
                   value={formState.name}
                   onChange={handleNameChange}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Slug</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Slug</label>
                 <input
                   type="text"
                   required
                   value={formState.slug}
                   onChange={(e) => setFormState((p) => ({ ...p, slug: slugify(e.target.value) }))}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Description</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Description</label>
                 <textarea
                   rows={3}
                   value={formState.description}
                   onChange={(e) => setFormState((p) => ({ ...p, description: e.target.value }))}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3] block">Brand Logo Image</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Brand Logo Image</label>
                 <div className="flex items-center gap-4">
                   {formState.logo ? (
-                    <div className="relative h-16 w-24 border border-[#26221f] rounded-lg overflow-hidden bg-white p-1 flex items-center justify-center">
+                    <div className="relative h-16 w-24 border border-border rounded-lg overflow-hidden bg-white p-1 flex items-center justify-center">
                       <img src={formState.logo} alt="Upload preview" className="h-full object-contain" />
                       <button
                         type="button"
@@ -345,13 +345,13 @@ export default function AdminBrandsPage() {
                       </button>
                     </div>
                   ) : (
-                    <label className="h-16 w-24 border border-dashed border-[#26221f] hover:border-accent rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
+                    <label className="h-16 w-24 border border-dashed border-border hover:border-accent rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
                       {uploadingImage ? (
                         <Loader2 className="h-4.5 w-4.5 animate-spin text-accent" />
                       ) : (
                         <>
-                          <Upload className="h-4 w-4 text-[#7d7a77] mb-0.5" />
-                          <span className="text-[8px] font-bold uppercase tracking-wider text-[#7d7a77]">Upload Logo</span>
+                          <Upload className="h-4 w-4 text-muted-foreground/80 mb-0.5" />
+                          <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground/80">Upload Logo</span>
                         </>
                       )}
                       <input
@@ -363,7 +363,7 @@ export default function AdminBrandsPage() {
                       />
                     </label>
                   )}
-                  <span className="text-[10px] text-[#7d7a77]">Transparent PNG recommended.</span>
+                  <span className="text-[10px] text-muted-foreground/80">Transparent PNG recommended.</span>
                 </div>
               </div>
 
@@ -372,13 +372,13 @@ export default function AdminBrandsPage() {
                   type="checkbox"
                   checked={formState.active}
                   onChange={(e) => setFormState((p) => ({ ...p, active: e.target.checked }))}
-                  className="rounded border-[#26221f] bg-[#1c1a17] text-accent focus:ring-0"
+                  className="rounded border-border bg-background text-accent focus:ring-0"
                 />
-                <span className="text-xs text-[#a8a6a3]">Set Active Status</span>
+                <span className="text-xs text-muted-foreground">Set Active Status</span>
               </label>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#26221f]">
-                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-[#26221f]">
+              <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-border">
                   Cancel
                 </Button>
                 <Button

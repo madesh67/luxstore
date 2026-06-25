@@ -291,17 +291,17 @@ export function CheckoutClient() {
       {/* Step Indicators */}
       <div className="flex items-center justify-center space-x-4 max-w-md mx-auto border-b border-border/30 pb-6">
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "address" ? "bg-accent text-white" : "bg-primary/10 text-primary"}`}>1</span>
+          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "address" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}>1</span>
           <span className={step === "address" ? "text-accent" : "text-muted-foreground"}>Address</span>
         </div>
         <ChevronRight className="h-4 w-4 text-muted-foreground/40" />
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "shipping" ? "bg-accent text-white" : "bg-primary/10 text-primary"}`}>2</span>
+          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "shipping" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}>2</span>
           <span className={step === "shipping" ? "text-accent" : "text-muted-foreground"}>Shipping</span>
         </div>
         <ChevronRight className="h-4 w-4 text-muted-foreground/40" />
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "review" ? "bg-accent text-white" : "bg-primary/10 text-primary"}`}>3</span>
+          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "review" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}>3</span>
           <span className={step === "review" ? "text-accent" : "text-muted-foreground"}>Payment</span>
         </div>
       </div>

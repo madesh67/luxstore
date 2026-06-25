@@ -101,7 +101,7 @@ export default function OrderDetailPage() {
           <div className="flex flex-wrap items-center gap-6">
             <div className="space-y-1">
               <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-light block">Order Status</span>
-              <span className="inline-flex items-center text-[10px] font-bold tracking-wider px-2.5 py-1 uppercase rounded-sm border bg-neutral-100 text-neutral-800 border-neutral-200">
+              <span className="inline-flex items-center text-[10px] font-bold tracking-wider px-2.5 py-1 uppercase rounded-sm border bg-muted text-muted-foreground border-border">
                 {order.status.replace("_", " ")}
               </span>
             </div>
@@ -126,7 +126,7 @@ export default function OrderDetailPage() {
               <div className="divide-y divide-border/40">
                 {order.items.map((item: OrderItemType) => (
                   <div key={item.id} className="py-4 flex gap-4 first:pt-0 last:pb-0">
-                    <div className="relative h-16 w-16 bg-neutral-100 dark:bg-neutral-900 border border-border/40 rounded-sm overflow-hidden flex-shrink-0 flex items-center justify-center text-muted-foreground">
+                    <div className="relative h-16 w-16 bg-muted border border-border/40 rounded-sm overflow-hidden flex-shrink-0 flex items-center justify-center text-muted-foreground">
                       {item.productImage ? (
                         <Image
                           src={item.productImage}

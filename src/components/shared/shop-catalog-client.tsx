@@ -337,7 +337,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                             className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
                           />
                           {product.featured && (
-                            <span className="absolute top-2 left-2 text-[8px] font-bold tracking-widest text-white bg-accent px-2 py-0.5 uppercase rounded-sm">
+                            <span className="absolute top-2 left-2 text-[8px] font-bold tracking-widest text-accent-foreground bg-accent px-2 py-0.5 uppercase rounded-sm">
                               Featured
                             </span>
                           )}

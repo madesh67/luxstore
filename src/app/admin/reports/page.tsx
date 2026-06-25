@@ -97,33 +97,33 @@ export default function AdminReportsPage() {
       {/* Title */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Business Reporting Center</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Export raw tabular data sheets to CSV format for financial audit.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Business Reporting Center</h2>
+          <p className="text-xs text-muted-foreground mt-1">Export raw tabular data sheets to CSV format for financial audit.</p>
         </div>
       </div>
 
       {/* Date filter card */}
-      <div className="bg-[#12100f] border border-[#26221f] rounded-xl p-6 space-y-4">
-        <h3 className="text-xs font-bold uppercase tracking-widest text-white flex items-center gap-2">
+      <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+        <h3 className="text-xs font-bold uppercase tracking-widest text-foreground flex items-center gap-2">
           <Calendar className="h-4 w-4 text-accent" /> Date Timeframe Boundaries
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Start Date</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Start Date</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+              className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">End Date</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">End Date</label>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+              className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
             />
           </div>
         </div>
@@ -141,18 +141,18 @@ export default function AdminReportsPage() {
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-white">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-foreground">
                     {report.title}
                   </span>
                   <Icon className={`h-5 w-5 ${report.text}`} />
                 </div>
-                <p className="text-xs text-[#a8a6a3] leading-relaxed">{report.description}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{report.description}</p>
               </div>
 
               <Button
                 onClick={() => handleDownload(report.id)}
                 disabled={isExporting}
-                className="w-full bg-transparent hover:bg-white/5 border border-[#26221f] hover:border-[#403b36] text-white text-xs font-semibold tracking-widest uppercase gap-2 py-2.5 h-auto transition-all"
+                className="w-full bg-transparent hover:bg-muted border border-border hover:border-border text-foreground text-xs font-semibold tracking-widest uppercase gap-2 py-2.5 h-auto transition-all"
               >
                 {isExporting ? (
                   <>

@@ -130,7 +130,7 @@ export default function HomePage() {
                 Shop Collection
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-black">
+            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto bg-transparent border-white text-white hover:bg-white hover:text-black">
               <Link href="#">
                 Our Story
               </Link>
@@ -208,7 +208,7 @@ export default function HomePage() {
               We believe a product should last a lifetime. That&apos;s why we source our leathers only from certified gold-rated Italian tanneries, and build our movements in partnership with generational watchmakers. We combine historical techniques with state-of-the-art structural materials.
             </p>
             <div className="flex">
-              <Button asChild variant="outline" className="text-[10px] sm:text-sm px-4 sm:px-6 border-primary text-primary hover:bg-primary hover:text-white">
+              <Button asChild variant="outline" className="text-[10px] sm:text-sm px-4 sm:px-6 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
                 <Link href="#">
                   View Craftsmanship Journal
                 </Link>
@@ -243,15 +243,15 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Signup Section */}
-      <section className="py-24 bg-[#171513] text-[#e8e6e3] text-center relative overflow-hidden border-t border-border/10">
+      <section className="py-24 bg-card text-foreground text-center relative overflow-hidden border-t border-border">
         <Container className="relative z-10 max-w-2xl space-y-6">
           <span className="text-xs tracking-[0.2em] font-semibold uppercase text-accent">
             STAY IN TOUCH
           </span>
-          <h2 className="text-3xl font-light uppercase tracking-widest text-[#e8e6e3] font-display">
+          <h2 className="text-3xl font-light uppercase tracking-widest text-foreground font-display">
             JOIN THE ATELIER CIRCLE
           </h2>
-          <p className="text-sm text-[#a8a6a3] font-light max-w-md mx-auto leading-relaxed">
+          <p className="text-sm text-muted-foreground font-light max-w-md mx-auto leading-relaxed">
             Subscribe to receive private previews of upcoming seasonal collections, artisan stories, and members-only invitations.
           </p>
           <div className="pt-4">

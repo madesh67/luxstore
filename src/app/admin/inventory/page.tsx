@@ -152,11 +152,11 @@ export default function AdminInventoryPage() {
       {/* Title & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Inventory Controls</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Audit stock quantities, review transaction logs, and manage alerts.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Inventory Controls</h2>
+          <p className="text-xs text-muted-foreground mt-1">Audit stock quantities, review transaction logs, and manage alerts.</p>
         </div>
 
-        <div className="flex items-center gap-2 border border-[#26221f] rounded-lg p-0.5 bg-[#12100f]">
+        <div className="flex items-center gap-2 border border-border rounded-lg p-0.5 bg-card">
           <Button
             onClick={() => {
               setActiveTab("status");
@@ -164,7 +164,7 @@ export default function AdminInventoryPage() {
             }}
             variant="ghost"
             className={`text-xs font-semibold uppercase tracking-wider px-4 py-1.5 h-auto ${
-              activeTab === "status" ? "bg-accent text-white" : "text-[#a8a6a3] hover:text-white"
+              activeTab === "status" ? "bg-accent text-white" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Boxes className="h-3.5 w-3.5 mr-2" /> Stock Status
@@ -176,7 +176,7 @@ export default function AdminInventoryPage() {
             }}
             variant="ghost"
             className={`text-xs font-semibold uppercase tracking-wider px-4 py-1.5 h-auto ${
-              activeTab === "logs" ? "bg-accent text-white" : "text-[#a8a6a3] hover:text-white"
+              activeTab === "logs" ? "bg-accent text-white" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <History className="h-3.5 w-3.5 mr-2" /> Audit Trail Logs
@@ -188,7 +188,7 @@ export default function AdminInventoryPage() {
         <>
           {/* Status Controls */}
           <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
-            <div className="flex-1 flex items-center gap-3 bg-[#12100f] border border-[#26221f] rounded-xl px-4 py-2">
+            <div className="flex-1 flex items-center gap-3 bg-card border border-border rounded-xl px-4 py-2">
               <input
                 type="text"
                 placeholder="Search products by SKU or Name..."
@@ -197,11 +197,11 @@ export default function AdminInventoryPage() {
                   setSearch(e.target.value);
                   setPage(1);
                 }}
-                className="bg-transparent border-0 outline-none text-xs text-[#e8e6e3] placeholder-[#7d7a77] w-full"
+                className="bg-transparent border-0 outline-none text-xs text-foreground placeholder-[#7d7a77] w-full"
               />
             </div>
 
-            <label className="flex items-center gap-2 cursor-pointer bg-[#12100f] border border-[#26221f] rounded-xl px-4 py-2.5 text-xs text-[#a8a6a3] hover:text-white transition-colors">
+            <label className="flex items-center gap-2 cursor-pointer bg-card border border-border rounded-xl px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
               <input
                 type="checkbox"
                 checked={lowStockOnly}
@@ -209,7 +209,7 @@ export default function AdminInventoryPage() {
                   setLowStockOnly(e.target.checked);
                   setPage(1);
                 }}
-                className="rounded border-[#26221f] bg-[#1c1a17] text-accent focus:ring-0"
+                className="rounded border-border bg-background text-accent focus:ring-0"
               />
               <span className="flex items-center gap-1.5 text-xs">
                 <AlertTriangle className="h-3.5 w-3.5 text-amber-500" /> Show Low Stock Alerts Only
@@ -218,11 +218,11 @@ export default function AdminInventoryPage() {
           </div>
 
           {/* Stock Table */}
-          <div className="border border-[#26221f] rounded-xl bg-[#12100f] overflow-hidden">
+          <div className="border border-border rounded-xl bg-card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#26221f] text-[10px] uppercase tracking-widest text-[#7d7a77] font-bold">
+                  <tr className="border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground/80 font-bold">
                     <th className="p-4">SKU</th>
                     <th className="p-4">Product Name</th>
                     <th className="p-4 text-center">Total Quantity</th>
@@ -233,17 +233,17 @@ export default function AdminInventoryPage() {
                     <th className="p-4 text-right">Quick Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#26221f]/50 text-xs">
+                <tbody className="divide-y divide-border/50 text-xs">
                   {inventoryLoading ? (
                     <tr>
-                      <td colSpan={8} className="p-8 text-center text-[#a8a6a3]">
+                      <td colSpan={8} className="p-8 text-center text-muted-foreground">
                         <Loader2 className="h-6 w-6 animate-spin mx-auto text-accent mb-2" />
                         Fetching Inventory Status...
                       </td>
                     </tr>
                   ) : !inventoryData?.data || inventoryData.data.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="p-8 text-center text-[#7d7a77] uppercase tracking-widest">
+                      <td colSpan={8} className="p-8 text-center text-muted-foreground/80 uppercase tracking-widest">
                         No inventory data matching criteria
                       </td>
                     </tr>
@@ -251,9 +251,9 @@ export default function AdminInventoryPage() {
                     inventoryData.data.map((item: any) => {
                       const isLowStock = item.quantity <= item.lowStockThreshold;
                       return (
-                        <tr key={item.id} className={`hover:bg-[#1a1715]/40 transition-colors ${isLowStock ? "bg-red-950/5" : ""}`}>
-                          <td className="p-4 font-mono text-[11px] text-[#a8a6a3]">{item.product.sku}</td>
-                          <td className="p-4 font-semibold text-white">
+                        <tr key={item.id} className={`hover:bg-muted/40 transition-colors ${isLowStock ? "bg-red-950/5" : ""}`}>
+                          <td className="p-4 font-mono text-[11px] text-muted-foreground">{item.product.sku}</td>
+                          <td className="p-4 font-semibold text-foreground">
                             <span className="flex items-center gap-2">
                               {item.product.name}
                               {isLowStock && (
@@ -263,10 +263,10 @@ export default function AdminInventoryPage() {
                               )}
                             </span>
                           </td>
-                          <td className="p-4 text-center font-bold text-white">{item.quantity}</td>
-                          <td className="p-4 text-center text-[#7d7a77]">{item.reserved}</td>
+                          <td className="p-4 text-center font-bold text-foreground">{item.quantity}</td>
+                          <td className="p-4 text-center text-muted-foreground/80">{item.reserved}</td>
                           <td className="p-4 text-center text-emerald-400 font-semibold">{item.available}</td>
-                          <td className="p-4 text-center text-[#a8a6a3]">{item.incoming}</td>
+                          <td className="p-4 text-center text-muted-foreground">{item.incoming}</td>
                           <td className="p-4 text-center text-amber-500 font-semibold">{item.lowStockThreshold}</td>
                           <td className="p-4 text-right">
                             <div className="flex justify-end items-center gap-2">
@@ -274,7 +274,7 @@ export default function AdminInventoryPage() {
                                 onClick={() => openAdjustModal(item)}
                                 variant="outline"
                                 size="sm"
-                                className="text-xs md:text-[10px] border-[#26221f] hover:bg-[#1a1715] h-11 md:h-7 uppercase tracking-wider font-bold flex items-center px-4"
+                                className="text-xs md:text-[10px] border-border hover:bg-muted h-11 md:h-7 uppercase tracking-wider font-bold flex items-center px-4"
                               >
                                 Adjust Stock
                               </Button>
@@ -282,7 +282,7 @@ export default function AdminInventoryPage() {
                                 onClick={() => openThresholdModal(item)}
                                 variant="ghost"
                                 size="icon"
-                                className="h-11 w-11 md:h-7 md:w-7 text-[#7d7a77] hover:text-white flex items-center justify-center"
+                                className="h-11 w-11 md:h-7 md:w-7 text-muted-foreground/80 hover:text-foreground flex items-center justify-center"
                               >
                                 <Edit2 className="h-3.5 w-3.5" />
                               </Button>
@@ -298,8 +298,8 @@ export default function AdminInventoryPage() {
 
             {/* Inventory Status Pagination */}
             {inventoryData && inventoryData.totalPages > 1 && (
-              <div className="h-16 flex items-center justify-between px-6 border-t border-[#26221f]">
-                <span className="text-xs text-[#7d7a77]">
+              <div className="h-16 flex items-center justify-between px-6 border-t border-border">
+                <span className="text-xs text-muted-foreground/80">
                   Page {inventoryData.page} of {inventoryData.totalPages}
                 </span>
                 <div className="flex gap-2">
@@ -308,7 +308,7 @@ export default function AdminInventoryPage() {
                     disabled={page === 1}
                     variant="outline"
                     size="sm"
-                    className="text-xs border-[#26221f]"
+                    className="text-xs border-border"
                   >
                     Previous
                   </Button>
@@ -317,7 +317,7 @@ export default function AdminInventoryPage() {
                     disabled={page === inventoryData.totalPages}
                     variant="outline"
                     size="sm"
-                    className="text-xs border-[#26221f]"
+                    className="text-xs border-border"
                   >
                     Next
                   </Button>
@@ -329,11 +329,11 @@ export default function AdminInventoryPage() {
       ) : (
         <>
           {/* Logs Tab */}
-          <div className="border border-[#26221f] rounded-xl bg-[#12100f] overflow-hidden">
+          <div className="border border-border rounded-xl bg-card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#26221f] text-[10px] uppercase tracking-widest text-[#7d7a77] font-bold">
+                  <tr className="border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground/80 font-bold">
                     <th className="p-4">Timestamp</th>
                     <th className="p-4">SKU / Product</th>
                     <th className="p-4 text-center">Movement</th>
@@ -344,48 +344,48 @@ export default function AdminInventoryPage() {
                     <th className="p-4">Notes</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#26221f]/50 text-xs">
+                <tbody className="divide-y divide-border/50 text-xs">
                   {logsLoading ? (
                     <tr>
-                      <td colSpan={8} className="p-8 text-center text-[#a8a6a3]">
+                      <td colSpan={8} className="p-8 text-center text-muted-foreground">
                         <Loader2 className="h-6 w-6 animate-spin mx-auto text-accent mb-2" />
                         Fetching Audit Logs...
                       </td>
                     </tr>
                   ) : !logsData?.data || logsData.data.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="p-8 text-center text-[#7d7a77] uppercase tracking-widest">
+                      <td colSpan={8} className="p-8 text-center text-muted-foreground/80 uppercase tracking-widest">
                         No logs recorded yet
                       </td>
                     </tr>
                   ) : (
                     logsData.data.map((log: any) => (
-                      <tr key={log.id} className="hover:bg-[#1a1715]/40 transition-colors">
-                        <td className="p-4 text-[#7d7a77] font-mono text-[10px]">
+                      <tr key={log.id} className="hover:bg-muted/40 transition-colors">
+                        <td className="p-4 text-muted-foreground/80 font-mono text-[10px]">
                           {new Date(log.createdAt).toLocaleString()}
                         </td>
                         <td className="p-4">
-                          <p className="font-semibold text-white">{log.inventory.product.name}</p>
-                          <p className="text-[10px] text-[#7d7a77] font-mono">{log.inventory.product.sku}</p>
+                          <p className="font-semibold text-foreground">{log.inventory.product.name}</p>
+                          <p className="text-[10px] text-muted-foreground/80 font-mono">{log.inventory.product.sku}</p>
                         </td>
                         <td className={`p-4 text-center font-bold ${log.quantity > 0 ? "text-emerald-400" : "text-red-400"}`}>
                           {log.quantity > 0 ? `+${log.quantity}` : log.quantity}
                         </td>
-                        <td className="p-4 text-center text-[#7d7a77]">{log.previousQty}</td>
-                        <td className="p-4 text-center text-white font-semibold">{log.newQty}</td>
+                        <td className="p-4 text-center text-muted-foreground/80">{log.previousQty}</td>
+                        <td className="p-4 text-center text-foreground font-semibold">{log.newQty}</td>
                         <td className="p-4">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                             log.action === "RECONCILIATION"
                               ? "bg-purple-950/50 text-purple-400 border border-purple-900/30"
                               : log.action === "RESERVATION"
-                              ? "bg-blue-950/50 text-blue-400 border border-blue-900/30"
-                              : "bg-gray-950 text-[#a8a6a3] border border-gray-800"
+                              ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 dark:border-blue-900/30"
+                              : "bg-background text-muted-foreground border border-border"
                           }`}>
                             {log.action}
                           </span>
                         </td>
-                        <td className="p-4 text-[#a8a6a3]">{log.user ? `${log.user.firstName} (${log.user.email})` : "System"}</td>
-                        <td className="p-4 text-[#7d7a77] italic">{log.notes || "None"}</td>
+                        <td className="p-4 text-muted-foreground">{log.user ? `${log.user.firstName} (${log.user.email})` : "System"}</td>
+                        <td className="p-4 text-muted-foreground/80 italic">{log.notes || "None"}</td>
                       </tr>
                     ))
                   )}
@@ -395,8 +395,8 @@ export default function AdminInventoryPage() {
 
             {/* Audit Logs Pagination */}
             {logsData && logsData.totalPages > 1 && (
-              <div className="h-16 flex items-center justify-between px-6 border-t border-[#26221f]">
-                <span className="text-xs text-[#7d7a77]">
+              <div className="h-16 flex items-center justify-between px-6 border-t border-border">
+                <span className="text-xs text-muted-foreground/80">
                   Page {logsData.page} of {logsData.totalPages}
                 </span>
                 <div className="flex gap-2">
@@ -405,7 +405,7 @@ export default function AdminInventoryPage() {
                     disabled={page === 1}
                     variant="outline"
                     size="sm"
-                    className="text-xs border-[#26221f]"
+                    className="text-xs border-border"
                   >
                     Previous
                   </Button>
@@ -414,7 +414,7 @@ export default function AdminInventoryPage() {
                     disabled={page === logsData.totalPages}
                     variant="outline"
                     size="sm"
-                    className="text-xs border-[#26221f]"
+                    className="text-xs border-border"
                   >
                     Next
                   </Button>
@@ -428,28 +428,28 @@ export default function AdminInventoryPage() {
       {/* Adjust Stock Modal */}
       {isAdjustModalOpen && selectedInventory && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#12100f] border border-[#26221f] w-full max-w-md rounded-xl shadow-2xl flex flex-col">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-[#26221f]">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Adjust Stock Quantities</h3>
-              <Button variant="ghost" size="icon" onClick={closeAdjustModal} className="text-[#a8a6a3] hover:text-white">
+          <div className="bg-card border border-border w-full max-w-md rounded-xl shadow-2xl flex flex-col">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-border">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">Adjust Stock Quantities</h3>
+              <Button variant="ghost" size="icon" onClick={closeAdjustModal} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </Button>
             </div>
 
             <form onSubmit={handleAdjustSubmit} className="p-6 space-y-6">
-              <div className="bg-[#1c1a17] border border-[#26221f] p-4 rounded-lg space-y-2">
-                <p className="text-xs font-semibold text-white">{selectedInventory.product.name}</p>
-                <p className="text-[10px] text-[#7d7a77] font-mono uppercase tracking-widest">SKU: {selectedInventory.product.sku}</p>
-                <p className="text-xs text-white pt-2">Current Count: <strong className="text-accent">{selectedInventory.quantity} units</strong></p>
+              <div className="bg-background border border-border p-4 rounded-lg space-y-2">
+                <p className="text-xs font-semibold text-foreground">{selectedInventory.product.name}</p>
+                <p className="text-[10px] text-muted-foreground/80 font-mono uppercase tracking-widest">SKU: {selectedInventory.product.sku}</p>
+                <p className="text-xs text-foreground pt-2">Current Count: <strong className="text-accent">{selectedInventory.quantity} units</strong></p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Adjustment Type</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Adjustment Type</label>
                   <select
                     value={adjustAction}
                     onChange={(e: any) => setAdjustAction(e.target.value)}
-                    className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                   >
                     <option value="ADJUSTMENT">Standard Adjustment</option>
                     <option value="RECONCILIATION">Reconciliation Audit</option>
@@ -457,13 +457,13 @@ export default function AdminInventoryPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Delta Change (+ / -)</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Delta Change (+ / -)</label>
                   <div className="flex items-center">
                     <Button
                       type="button"
                       variant="outline"
                       onClick={() => setAdjustQty((q) => q - 1)}
-                      className="border-[#26221f] h-9 w-9 rounded-r-none rounded-l-lg"
+                      className="border-border h-9 w-9 rounded-r-none rounded-l-lg"
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
@@ -471,13 +471,13 @@ export default function AdminInventoryPage() {
                       type="number"
                       value={adjustQty}
                       onChange={(e) => setAdjustQty(parseInt(e.target.value, 10) || 0)}
-                      className="w-full h-9 bg-[#1c1a17] border-y border-[#26221f] text-center text-xs text-white outline-none"
+                      className="w-full h-9 bg-background border-y border-border text-center text-xs text-foreground outline-none"
                     />
                     <Button
                       type="button"
                       variant="outline"
                       onClick={() => setAdjustQty((q) => q + 1)}
-                      className="border-[#26221f] h-9 w-9 rounded-l-none rounded-r-lg"
+                      className="border-border h-9 w-9 rounded-l-none rounded-r-lg"
                     >
                       <Plus className="h-3 w-3" />
                     </Button>
@@ -486,19 +486,19 @@ export default function AdminInventoryPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Notes / Reason</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Notes / Reason</label>
                 <textarea
                   required
                   rows={3}
                   value={adjustNotes}
                   onChange={(e) => setAdjustNotes(e.target.value)}
                   placeholder="e.g. Received shipment, audited stock discrepancy"
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#26221f]">
-                <Button type="button" variant="outline" onClick={closeAdjustModal} className="text-xs border-[#26221f]">
+              <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                <Button type="button" variant="outline" onClick={closeAdjustModal} className="text-xs border-border">
                   Cancel
                 </Button>
                 <Button
@@ -518,17 +518,17 @@ export default function AdminInventoryPage() {
       {/* Threshold Modal */}
       {isThresholdModalOpen && selectedInventory && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#12100f] border border-[#26221f] w-full max-w-md rounded-xl shadow-2xl flex flex-col">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-[#26221f]">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Edit Stock Alert Settings</h3>
-              <Button variant="ghost" size="icon" onClick={closeThresholdModal} className="text-[#a8a6a3] hover:text-white">
+          <div className="bg-card border border-border w-full max-w-md rounded-xl shadow-2xl flex flex-col">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-border">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">Edit Stock Alert Settings</h3>
+              <Button variant="ghost" size="icon" onClick={closeThresholdModal} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </Button>
             </div>
 
             <form onSubmit={handleThresholdSubmit} className="p-6 space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Low Stock Threshold Limit</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Low Stock Threshold Limit</label>
                 <input
                   type="number"
                   required
@@ -537,12 +537,12 @@ export default function AdminInventoryPage() {
                   onChange={(e) =>
                     setThresholdState((p) => ({ ...p, lowStockThreshold: parseInt(e.target.value, 10) || 0 }))
                   }
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Incoming Purchase Order Stock</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Incoming Purchase Order Stock</label>
                 <input
                   type="number"
                   required
@@ -551,12 +551,12 @@ export default function AdminInventoryPage() {
                   onChange={(e) =>
                     setThresholdState((p) => ({ ...p, incoming: parseInt(e.target.value, 10) || 0 }))
                   }
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#26221f]">
-                <Button type="button" variant="outline" onClick={closeThresholdModal} className="text-xs border-[#26221f]">
+              <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                <Button type="button" variant="outline" onClick={closeThresholdModal} className="text-xs border-border">
                   Cancel
                 </Button>
                 <Button

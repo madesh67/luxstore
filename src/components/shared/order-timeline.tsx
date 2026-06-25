@@ -54,7 +54,7 @@ export function OrderTimeline({ timeline }: OrderTimelineProps) {
                 <span className={`text-[10px] font-bold tracking-wider px-2 py-0.5 rounded-sm uppercase border ${
                   isLatest
                     ? "text-accent bg-accent/5 border-accent/20"
-                    : "text-muted-foreground bg-neutral-100 dark:bg-neutral-800 border-border"
+                    : "text-muted-foreground bg-muted border-border"
                 }`}>
                   {event.status.replace("_", " ")}
                 </span>

@@ -74,7 +74,7 @@ export function ReturnRequestForm({
           {returnRequest.customerNotes && (
             <div>
               <span className="font-semibold text-foreground uppercase tracking-widest text-[9px] block mb-1">Your notes:</span>
-              <p className="text-muted-foreground p-3 bg-neutral-50 dark:bg-neutral-900 border border-border/50 rounded-sm italic">
+              <p className="text-muted-foreground p-3 bg-muted border border-border/50 rounded-sm italic">
                 &ldquo;{returnRequest.customerNotes}&rdquo;
               </p>
             </div>

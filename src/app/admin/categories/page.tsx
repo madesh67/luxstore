@@ -185,8 +185,8 @@ export default function AdminCategoriesPage() {
       {/* Title & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-display font-semibold tracking-wider text-white">Categories Management</h2>
-          <p className="text-xs text-[#a8a6a3] mt-1">Structure your product catalog hierarchy with parent-child connections.</p>
+          <h2 className="text-2xl font-display font-semibold tracking-wider text-foreground">Categories Management</h2>
+          <p className="text-xs text-muted-foreground mt-1">Structure your product catalog hierarchy with parent-child connections.</p>
         </div>
         <div className="flex gap-2">
           <Button
@@ -194,7 +194,7 @@ export default function AdminCategoriesPage() {
             disabled={isRefetching}
             variant="outline"
             size="sm"
-            className="border-[#26221f] text-xs font-semibold tracking-widest text-[#a8a6a3] hover:text-white uppercase gap-2 hover:bg-[#1a1715]"
+            className="border-border text-xs font-semibold tracking-widest text-muted-foreground hover:text-foreground uppercase gap-2 hover:bg-muted"
           >
             <RefreshCw className={`h-3 w-3 ${isRefetching ? "animate-spin" : ""}`} />
             Refresh
@@ -209,11 +209,11 @@ export default function AdminCategoriesPage() {
       </div>
 
       {/* Categories Table */}
-      <div className="border border-[#26221f] rounded-xl bg-[#12100f] overflow-hidden">
+      <div className="border border-border rounded-xl bg-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#26221f] text-[10px] uppercase tracking-widest text-[#7d7a77] font-bold">
+              <tr className="border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground/80 font-bold">
                 <th className="p-4">Image</th>
                 <th className="p-4">Category Name</th>
                 <th className="p-4">Slug</th>
@@ -223,40 +223,40 @@ export default function AdminCategoriesPage() {
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#26221f]/50 text-xs">
+            <tbody className="divide-y divide-border/50 text-xs">
               {isLoading ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#a8a6a3]">
+                  <td colSpan={7} className="p-8 text-center text-muted-foreground">
                     <Loader2 className="h-6 w-6 animate-spin mx-auto text-accent mb-2" />
                     Fetching Categories...
                   </td>
                 </tr>
               ) : !categories || categories.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-[#7d7a77] uppercase tracking-widest">
+                  <td colSpan={7} className="p-8 text-center text-muted-foreground/80 uppercase tracking-widest">
                     No categories found
                   </td>
                 </tr>
               ) : (
                 categories.map((c: any) => (
-                  <tr key={c.id} className="hover:bg-[#1a1715]/40 transition-colors">
+                  <tr key={c.id} className="hover:bg-muted/40 transition-colors">
                     <td className="p-4">
                       {c.image ? (
                         <img
                           src={c.image}
                           alt={c.name}
-                          className="h-10 w-10 object-cover rounded-lg border border-[#26221f]"
+                          className="h-10 w-10 object-cover rounded-lg border border-border"
                         />
                       ) : (
-                        <div className="h-10 w-10 bg-[#1c1a17] border border-[#26221f] rounded-lg flex items-center justify-center text-[10px] text-[#7d7a77] font-bold uppercase">
+                        <div className="h-10 w-10 bg-background border border-border rounded-lg flex items-center justify-center text-[10px] text-muted-foreground/80 font-bold uppercase">
                           Null
                         </div>
                       )}
                     </td>
-                    <td className="p-4 font-semibold text-white">{c.name}</td>
-                    <td className="p-4 font-mono text-[11px] text-[#a8a6a3]">{c.slug}</td>
-                    <td className="p-4 text-[#a8a6a3]">{c.parent?.name || "None (Root)"}</td>
-                    <td className="p-4 text-[#7d7a77] max-w-[200px] truncate">{c.description || "-"}</td>
+                    <td className="p-4 font-semibold text-foreground">{c.name}</td>
+                    <td className="p-4 font-mono text-[11px] text-muted-foreground">{c.slug}</td>
+                    <td className="p-4 text-muted-foreground">{c.parent?.name || "None (Root)"}</td>
+                    <td className="p-4 text-muted-foreground/80 max-w-[200px] truncate">{c.description || "-"}</td>
                     <td className="p-4 text-center">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                         c.active
@@ -272,7 +272,7 @@ export default function AdminCategoriesPage() {
                           onClick={() => openEditModal(c)}
                           variant="ghost"
                           size="icon"
-                          className="h-11 w-11 md:h-8 md:w-8 text-[#a8a6a3] hover:text-white flex items-center justify-center"
+                          className="h-11 w-11 md:h-8 md:w-8 text-muted-foreground hover:text-foreground flex items-center justify-center"
                         >
                           <Edit2 className="h-4 w-4" />
                         </Button>
@@ -297,45 +297,45 @@ export default function AdminCategoriesPage() {
       {/* Form Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#12100f] border border-[#26221f] w-full max-w-lg rounded-xl shadow-2xl flex flex-col">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-[#26221f]">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+          <div className="bg-card border border-border w-full max-w-lg rounded-xl shadow-2xl flex flex-col">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-border">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
                 {editingCategoryId ? "Modify Category" : "Add New Category"}
               </h3>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="text-[#a8a6a3] hover:text-white">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </Button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Category Name</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Category Name</label>
                 <input
                   type="text"
                   required
                   value={formState.name}
                   onChange={handleNameChange}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Slug</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Slug</label>
                 <input
                   type="text"
                   required
                   value={formState.slug}
                   onChange={(e) => setFormState((p) => ({ ...p, slug: slugify(e.target.value) }))}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none font-mono"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none font-mono"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Parent Category</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Parent Category</label>
                 <select
                   value={formState.parentId || ""}
                   onChange={(e) => setFormState((p) => ({ ...p, parentId: e.target.value || null }))}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 >
                   <option value="">Root Category (None)</option>
                   {categories
@@ -349,20 +349,20 @@ export default function AdminCategoriesPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3]">Description</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Description</label>
                 <textarea
                   rows={3}
                   value={formState.description}
                   onChange={(e) => setFormState((p) => ({ ...p, description: e.target.value }))}
-                  className="w-full bg-[#1c1a17] border border-[#26221f] rounded-lg px-3 py-2 text-xs text-white focus:border-accent outline-none"
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs text-foreground focus:border-accent outline-none"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#a8a6a3] block">Category Image</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Category Image</label>
                 <div className="flex items-center gap-4">
                   {formState.image ? (
-                    <div className="relative h-16 w-16 border border-[#26221f] rounded-lg overflow-hidden">
+                    <div className="relative h-16 w-16 border border-border rounded-lg overflow-hidden">
                       <img src={formState.image} alt="Upload preview" className="h-full w-full object-cover" />
                       <button
                         type="button"
@@ -373,13 +373,13 @@ export default function AdminCategoriesPage() {
                       </button>
                     </div>
                   ) : (
-                    <label className="h-16 w-16 border border-dashed border-[#26221f] hover:border-accent rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
+                    <label className="h-16 w-16 border border-dashed border-border hover:border-accent rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors">
                       {uploadingImage ? (
                         <Loader2 className="h-4.5 w-4.5 animate-spin text-accent" />
                       ) : (
                         <>
-                          <Upload className="h-4 w-4 text-[#7d7a77] mb-0.5" />
-                          <span className="text-[8px] font-bold uppercase tracking-wider text-[#7d7a77]">Upload</span>
+                          <Upload className="h-4 w-4 text-muted-foreground/80 mb-0.5" />
+                          <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground/80">Upload</span>
                         </>
                       )}
                       <input
@@ -391,7 +391,7 @@ export default function AdminCategoriesPage() {
                       />
                     </label>
                   )}
-                  <span className="text-[10px] text-[#7d7a77]">Recommended resolution: square webp (800x800)</span>
+                  <span className="text-[10px] text-muted-foreground/80">Recommended resolution: square webp (800x800)</span>
                 </div>
               </div>
 
@@ -400,13 +400,13 @@ export default function AdminCategoriesPage() {
                   type="checkbox"
                   checked={formState.active}
                   onChange={(e) => setFormState((p) => ({ ...p, active: e.target.checked }))}
-                  className="rounded border-[#26221f] bg-[#1c1a17] text-accent focus:ring-0"
+                  className="rounded border-border bg-background text-accent focus:ring-0"
                 />
-                <span className="text-xs text-[#a8a6a3]">Set Active Status</span>
+                <span className="text-xs text-muted-foreground">Set Active Status</span>
               </label>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#26221f]">
-                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-[#26221f]">
+              <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                <Button type="button" variant="outline" onClick={closeModal} className="text-xs border-border">
                   Cancel
                 </Button>
                 <Button
