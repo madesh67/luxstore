@@ -45,3 +45,6 @@ next-env.d.ts
 # system files
 .DS_Store
 Thumbs.db
+
+# scratch
+/scratch/

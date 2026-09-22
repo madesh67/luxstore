@@ -3,14 +3,22 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SlidersHorizontal, Search, RotateCcw, ChevronLeft, ChevronRight, Star, Tag } from "lucide-react";
+import {
+  SlidersHorizontal,
+  Search,
+  RotateCcw,
+  ChevronLeft,
+  ChevronRight,
+  Star,
+  Tag,
+} from "lucide-react";
 import { useProducts } from "@/hooks/use-catalog";
 import { Category, Brand } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Container } from "./container";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { WishlistButton } from "./wishlist-button";
 import { motion } from "framer-motion";
 
@@ -60,7 +68,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
       router.replace(`/shop?${params.toString()}`, { scroll: false });
     },
-    [searchParams, router]
+    [searchParams, router],
   );
 
   // 3. Debounce search input changes (300ms) to URL
@@ -105,17 +113,16 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
   return (
     <Container className="py-12">
-      <div className="flex flex-col md:flex-row gap-6 lg:gap-10">
-        
+      <div className="flex flex-col gap-6 md:flex-row lg:gap-10">
         {/* Sidebar Filters (Desktop/Tablet) */}
-        <aside className="hidden md:block w-56 lg:w-64 shrink-0 space-y-8">
-          <div className="flex justify-between items-center border-b border-border pb-4">
-            <h2 className="text-xs tracking-[0.2em] font-semibold uppercase text-foreground flex items-center gap-2">
+        <aside className="hidden w-56 shrink-0 space-y-8 md:block lg:w-64">
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground">
               <SlidersHorizontal className="h-4 w-4" /> Filters
             </h2>
             <button
               onClick={handleResetFilters}
-              className="text-[10px] tracking-widest font-semibold text-accent hover:underline flex items-center gap-1 uppercase"
+              className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-widest text-accent hover:underline"
             >
               <RotateCcw className="h-3 w-3" /> Reset
             </button>
@@ -123,11 +130,13 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
           {/* Categories Selector */}
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">Categories</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">
+              Categories
+            </h3>
             <div className="space-y-2">
               <button
                 onClick={() => updateFilter({ category: "" })}
-                className={`block text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${!normalizedCategory ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                className={`block text-xs font-light uppercase tracking-wider transition-colors hover:text-accent ${!normalizedCategory ? "font-semibold text-accent" : "text-muted-foreground"}`}
               >
                 All Categories
               </button>
@@ -135,7 +144,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 <button
                   key={cat.id}
                   onClick={() => updateFilter({ category: cat.slug })}
-                  className={`block text-xs uppercase tracking-wider font-light text-left hover:text-accent transition-colors ${normalizedCategory === cat.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                  className={`block text-left text-xs font-light uppercase tracking-wider transition-colors hover:text-accent ${normalizedCategory === cat.slug ? "font-semibold text-accent" : "text-muted-foreground"}`}
                 >
                   {cat.name}
                 </button>
@@ -149,7 +158,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             <div className="space-y-2">
               <button
                 onClick={() => updateFilter({ brand: "" })}
-                className={`block text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${!selectedBrand ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                className={`block text-xs font-light uppercase tracking-wider transition-colors hover:text-accent ${!selectedBrand ? "font-semibold text-accent" : "text-muted-foreground"}`}
               >
                 All Brands
               </button>
@@ -157,7 +166,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 <button
                   key={brand.id}
                   onClick={() => updateFilter({ brand: brand.slug })}
-                  className={`block text-xs uppercase tracking-wider font-light text-left hover:text-accent transition-colors ${selectedBrand === brand.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                  className={`block text-left text-xs font-light uppercase tracking-wider transition-colors hover:text-accent ${selectedBrand === brand.slug ? "font-semibold text-accent" : "text-muted-foreground"}`}
                 >
                   {brand.name}
                 </button>
@@ -167,14 +176,16 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
           {/* Price Range inputs */}
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">Price (INR)</h3>
-            <div className="flex gap-2 items-center">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-accent">
+              Price (INR)
+            </h3>
+            <div className="flex items-center gap-2">
               <Input
                 type="number"
                 placeholder="MIN"
                 value={minPrice}
                 onChange={(e) => updateFilter({ minPrice: e.target.value })}
-                className="h-9 uppercase text-[10px] tracking-widest bg-background/50 placeholder:text-muted-foreground/60"
+                className="h-9 bg-background/50 text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/60"
               />
               <span className="text-xs text-muted-foreground">—</span>
               <Input
@@ -182,7 +193,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 placeholder="MAX"
                 value={maxPrice}
                 onChange={(e) => updateFilter({ maxPrice: e.target.value })}
-                className="h-9 uppercase text-[10px] tracking-widest bg-background/50 placeholder:text-muted-foreground/60"
+                className="h-9 bg-background/50 text-[10px] uppercase tracking-widest placeholder:text-muted-foreground/60"
               />
             </div>
           </div>
@@ -195,9 +206,11 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 type="checkbox"
                 checked={featured}
                 onChange={(e) => updateFilter({ featured: e.target.checked })}
-                className="rounded border-border text-accent focus:ring-accent accent-accent"
+                className="rounded border-border text-accent accent-accent focus:ring-accent"
               />
-              <Label htmlFor="featured" className="cursor-pointer">Featured Pieces Only</Label>
+              <Label htmlFor="featured" className="cursor-pointer">
+                Featured Pieces Only
+              </Label>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -205,9 +218,11 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 type="checkbox"
                 checked={inStock}
                 onChange={(e) => updateFilter({ inStock: e.target.checked })}
-                className="rounded border-border text-accent focus:ring-accent accent-accent"
+                className="rounded border-border text-accent accent-accent focus:ring-accent"
               />
-              <Label htmlFor="inStock" className="cursor-pointer">Available In Stock</Label>
+              <Label htmlFor="inStock" className="cursor-pointer">
+                Available In Stock
+              </Label>
             </div>
           </div>
 
@@ -217,7 +232,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             <div className="space-y-2">
               <button
                 onClick={() => updateFilter({ rating: "" })}
-                className={`block text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${!rating ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                className={`block text-xs font-light uppercase tracking-wider transition-colors hover:text-accent ${!rating ? "font-semibold text-accent" : "text-muted-foreground"}`}
               >
                 Any Rating
               </button>
@@ -225,9 +240,9 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 <button
                   key={val}
                   onClick={() => updateFilter({ rating: String(val) })}
-                  className={`flex items-center gap-1.5 text-xs uppercase tracking-wider font-light hover:text-accent transition-colors ${rating === String(val) ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                  className={`flex items-center gap-1.5 text-xs font-light uppercase tracking-wider transition-colors hover:text-accent ${rating === String(val) ? "font-semibold text-accent" : "text-muted-foreground"}`}
                 >
-                  <Star className="h-3 w-3 text-accent fill-accent" /> {val} & Above
+                  <Star className="h-3 w-3 fill-accent text-accent" /> {val} & Above
                 </button>
               ))}
             </div>
@@ -237,7 +252,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
         {/* Main Content Area */}
         <main className="flex-grow space-y-8">
           {/* Header Controls (Search and Sort) */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 border border-border rounded-sm">
+          <div className="flex flex-col items-center justify-between gap-4 rounded-sm border border-border bg-card p-4 sm:flex-row">
             <div className="relative w-full sm:max-w-xs md:max-w-sm lg:max-w-md">
               <Search className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground/60" />
               <Input
@@ -245,27 +260,29 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                 placeholder="SEARCH CATALOG OR SKU..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 h-11 uppercase text-[10px] tracking-[0.2em] bg-background/50"
+                className="h-11 bg-background/50 pl-10 text-[10px] uppercase tracking-[0.2em]"
               />
             </div>
-            
-            <div className="flex justify-between sm:justify-end items-center gap-4 w-full sm:w-auto">
+
+            <div className="flex w-full items-center justify-between gap-4 sm:w-auto sm:justify-end">
               {/* Mobile Filter Button */}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-                className="md:hidden flex items-center gap-2 uppercase tracking-widest text-[10px] font-semibold h-11"
+                className="flex h-11 items-center gap-2 text-[10px] font-semibold uppercase tracking-widest md:hidden"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
               </Button>
 
               <div className="flex items-center gap-2">
-                <span className="hidden sm:inline text-[10px] font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">Sort By</span>
+                <span className="hidden whitespace-nowrap text-[10px] font-semibold uppercase tracking-widest text-muted-foreground sm:inline">
+                  Sort By
+                </span>
                 <select
                   value={sortBy}
                   onChange={(e) => updateFilter({ sortBy: e.target.value })}
-                  className="h-11 border border-input bg-background/50 px-3 uppercase text-[10px] tracking-widest focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm cursor-pointer"
+                  className="h-11 cursor-pointer rounded-sm border border-input bg-background/50 px-3 text-[10px] uppercase tracking-widest focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   <option value="newest">Newest Arrivals</option>
                   <option value="price_asc">Price: Low to High</option>
@@ -279,43 +296,58 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
           {/* Catalog Listing States */}
           {isError ? (
-            <div className="text-center py-16 border border-destructive/20 bg-destructive/5 rounded-sm">
-              <h3 className="text-lg font-semibold text-destructive uppercase tracking-widest">Database Offline</h3>
-              <p className="text-xs text-muted-foreground font-light max-w-sm mx-auto mt-2 leading-relaxed">
-                {error?.message || "We encountered an issue checking our inventory. Please verify seed migration scripts."}
+            <div className="rounded-sm border border-destructive/20 bg-destructive/5 py-16 text-center">
+              <h3 className="text-lg font-semibold uppercase tracking-widest text-destructive">
+                Database Offline
+              </h3>
+              <p className="mx-auto mt-2 max-w-sm text-xs font-light leading-relaxed text-muted-foreground">
+                {error?.message ||
+                  "We encountered an issue checking our inventory. Please verify seed migration scripts."}
               </p>
-              <Button onClick={() => router.refresh()} variant="outline" className="mt-4">Retry Query</Button>
+              <Button onClick={() => router.refresh()} variant="outline" className="mt-4">
+                Retry Query
+              </Button>
             </div>
           ) : isLoading ? (
             /* Skeletons */
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="space-y-4 border border-border/30 p-4 rounded-sm animate-pulse">
-                  <div className="bg-muted aspect-square w-full rounded-sm" />
-                  <div className="h-4 bg-muted w-3/4 rounded-sm" />
-                  <div className="h-3 bg-muted w-1/2 rounded-sm" />
-                  <div className="h-4 bg-muted w-1/4 rounded-sm" />
+                <div
+                  key={i}
+                  className="animate-pulse space-y-4 rounded-sm border border-border/30 p-4"
+                >
+                  <div className="aspect-square w-full rounded-sm bg-muted" />
+                  <div className="h-4 w-3/4 rounded-sm bg-muted" />
+                  <div className="h-3 w-1/2 rounded-sm bg-muted" />
+                  <div className="h-4 w-1/4 rounded-sm bg-muted" />
                 </div>
               ))}
             </div>
           ) : products.length === 0 ? (
             /* Empty State */
-            <div className="text-center py-20 border border-border/40 rounded-sm bg-card space-y-4">
-              <Tag className="h-12 w-12 text-accent mx-auto animate-pulse" />
-              <h3 className="text-lg uppercase tracking-widest text-foreground font-display font-medium">No Products Found</h3>
-              <p className="text-xs text-muted-foreground font-light max-w-md mx-auto leading-relaxed">
-                We couldn&apos;t find any accessories matching your selected criteria. Try adjusting your search query or reset filters.
+            <div className="space-y-4 rounded-sm border border-border/40 bg-card py-20 text-center">
+              <Tag className="mx-auto h-12 w-12 animate-pulse text-accent" />
+              <h3 className="font-display text-lg font-medium uppercase tracking-widest text-foreground">
+                No Products Found
+              </h3>
+              <p className="mx-auto max-w-md text-xs font-light leading-relaxed text-muted-foreground">
+                We couldn&apos;t find any accessories matching your selected criteria. Try adjusting
+                your search query or reset filters.
               </p>
-              <Button onClick={handleResetFilters} variant="gold" className="text-xs uppercase tracking-widest">
+              <Button
+                onClick={handleResetFilters}
+                variant="gold"
+                className="text-xs uppercase tracking-widest"
+              >
                 Clear All Filters
               </Button>
             </div>
           ) : (
             /* Products Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
               {products.map((product) => {
-                const primaryImage = product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800";
-                
+                const primaryImage = getProductImageUrl(product);
+
                 return (
                   <motion.div
                     key={product.id}
@@ -326,52 +358,56 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                   >
                     <Link
                       href={`/products/${product.slug}`}
-                      className="group border border-border/30 bg-card hover:border-accent/40 p-4 md:p-6 hover-lift rounded-sm relative flex flex-col justify-between h-full"
+                      className="hover-lift group relative flex h-full flex-col justify-between rounded-sm border border-border/30 bg-card p-4 hover:border-accent/40 md:p-6"
                     >
                       <div>
                         {/* Product image */}
-                        <div className="relative aspect-square w-full overflow-hidden bg-secondary/20 rounded-sm mb-4 md:mb-6">
+                        <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-sm bg-secondary/20 md:mb-6">
                           <img
                             src={primaryImage}
                             alt={product.name}
-                            className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                           {product.featured && (
-                            <span className="absolute top-2 left-2 text-[8px] font-bold tracking-widest text-accent-foreground bg-accent px-2 py-0.5 uppercase rounded-sm">
+                            <span className="absolute left-2 top-2 rounded-sm bg-accent px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest text-accent-foreground">
                               Featured
                             </span>
                           )}
-                          <div className="absolute top-2 right-2 z-10">
+                          <div className="absolute right-2 top-2 z-10">
                             <WishlistButton productId={product.id} product={product} />
                           </div>
                         </div>
 
                         {/* Brand & Category details */}
-                        <div className="flex justify-between items-center text-[9px] md:text-[10px] tracking-widest text-muted-foreground uppercase font-semibold mb-1 md:mb-2">
+                        <div className="mb-1 flex items-center justify-between text-[9px] font-semibold uppercase tracking-widest text-muted-foreground md:mb-2 md:text-[10px]">
                           <span>{product.brand?.name || "LuxStore"}</span>
                           <span>{product.category?.name}</span>
                         </div>
 
                         {/* Product Title */}
-                        <h3 className="text-sm md:text-base font-display font-medium uppercase tracking-wider text-foreground group-hover:text-accent transition-colors line-clamp-1">
+                        <h3 className="line-clamp-1 font-display text-sm font-medium uppercase tracking-wider text-foreground transition-colors group-hover:text-accent md:text-base">
                           {product.name}
                         </h3>
-                        
+
                         {/* Star Rating */}
-                        <div className="flex items-center gap-1 mt-1 mb-2 md:mt-2 md:mb-3">
-                          <Star className="h-3 w-3 text-accent fill-accent" />
-                          <span className="text-[10px] md:text-xs text-foreground font-semibold">{Number(product.ratingAverage).toFixed(1)}</span>
-                          <span className="text-[9px] md:text-[10px] text-muted-foreground font-light">({product.ratingCount})</span>
+                        <div className="mb-2 mt-1 flex items-center gap-1 md:mb-3 md:mt-2">
+                          <Star className="h-3 w-3 fill-accent text-accent" />
+                          <span className="text-[10px] font-semibold text-foreground md:text-xs">
+                            {Number(product.ratingAverage).toFixed(1)}
+                          </span>
+                          <span className="text-[9px] font-light text-muted-foreground md:text-[10px]">
+                            ({product.ratingCount})
+                          </span>
                         </div>
                       </div>
 
                       {/* Pricing */}
-                      <div className="mt-4 pt-3 md:mt-6 md:pt-4 border-t border-border/40 flex items-baseline gap-2">
-                        <span className="text-sm md:text-base font-semibold text-foreground">
+                      <div className="mt-4 flex items-baseline gap-2 border-t border-border/40 pt-3 md:mt-6 md:pt-4">
+                        <span className="text-sm font-semibold text-foreground md:text-base">
                           {formatPrice(Number(product.price))}
                         </span>
                         {product.compareAtPrice && (
-                          <span className="text-xs md:text-sm text-muted-foreground line-through font-light">
+                          <span className="text-xs font-light text-muted-foreground line-through md:text-sm">
                             {formatPrice(Number(product.compareAtPrice))}
                           </span>
                         )}
@@ -395,7 +431,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <span className="text-xs uppercase tracking-widest font-semibold px-4 text-muted-foreground">
+              <span className="px-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 Page {page} of {pagination.pages}
               </span>
               <Button
@@ -415,18 +451,20 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
       {/* Mobile Drawer Filters Modal */}
       {mobileFiltersOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/50 lg:hidden flex justify-end"
+          className="fixed inset-0 z-50 flex justify-end bg-black/50 lg:hidden"
           onClick={() => setMobileFiltersOpen(false)}
         >
           <div
-            className="w-80 bg-background h-full p-6 overflow-y-auto animate-fade-in flex flex-col space-y-6"
+            className="flex h-full w-80 animate-fade-in flex-col space-y-6 overflow-y-auto bg-background p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center border-b border-border pb-4">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-foreground">Filters</h2>
+            <div className="flex items-center justify-between border-b border-border pb-4">
+              <h2 className="text-xs font-semibold uppercase tracking-widest text-foreground">
+                Filters
+              </h2>
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="text-[10px] font-semibold text-accent uppercase tracking-widest min-h-[44px] px-2 flex items-center justify-center"
+                className="flex min-h-[44px] items-center justify-center px-2 text-[10px] font-semibold uppercase tracking-widest text-accent"
               >
                 Close
               </button>
@@ -436,11 +474,13 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
             <div className="space-y-6">
               {/* Category selector */}
               <div className="space-y-2.5">
-                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">Categories</h3>
-                <div className="space-y-1.5 flex flex-col items-start">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">
+                  Categories
+                </h3>
+                <div className="flex flex-col items-start space-y-1.5">
                   <button
                     onClick={() => updateFilter({ category: "" })}
-                    className={`text-xs uppercase tracking-wider ${!normalizedCategory ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                    className={`text-xs uppercase tracking-wider ${!normalizedCategory ? "font-semibold text-accent" : "text-muted-foreground"}`}
                   >
                     All Categories
                   </button>
@@ -448,7 +488,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                     <button
                       key={cat.id}
                       onClick={() => updateFilter({ category: cat.slug })}
-                      className={`text-xs uppercase tracking-wider ${normalizedCategory === cat.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                      className={`text-xs uppercase tracking-wider ${normalizedCategory === cat.slug ? "font-semibold text-accent" : "text-muted-foreground"}`}
                     >
                       {cat.name}
                     </button>
@@ -458,11 +498,13 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
               {/* Brand selector */}
               <div className="space-y-2.5">
-                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">Brands</h3>
-                <div className="space-y-1.5 flex flex-col items-start">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">
+                  Brands
+                </h3>
+                <div className="flex flex-col items-start space-y-1.5">
                   <button
                     onClick={() => updateFilter({ brand: "" })}
-                    className={`text-xs uppercase tracking-wider ${!selectedBrand ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                    className={`text-xs uppercase tracking-wider ${!selectedBrand ? "font-semibold text-accent" : "text-muted-foreground"}`}
                   >
                     All Brands
                   </button>
@@ -470,7 +512,7 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
                     <button
                       key={brand.id}
                       onClick={() => updateFilter({ brand: brand.slug })}
-                      className={`text-xs uppercase tracking-wider text-left ${selectedBrand === brand.slug ? "text-accent font-semibold" : "text-muted-foreground"}`}
+                      className={`text-left text-xs uppercase tracking-wider ${selectedBrand === brand.slug ? "font-semibold text-accent" : "text-muted-foreground"}`}
                     >
                       {brand.name}
                     </button>
@@ -480,8 +522,10 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
 
               {/* Price inputs */}
               <div className="space-y-2.5">
-                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">Price (INR)</h3>
-                <div className="flex gap-2 items-center">
+                <h3 className="text-[11px] font-semibold uppercase tracking-widest text-accent">
+                  Price (INR)
+                </h3>
+                <div className="flex items-center gap-2">
                   <Input
                     type="number"
                     placeholder="MIN"
@@ -500,7 +544,11 @@ export function ShopCatalogClient({ initialCategories, initialBrands }: ShopCata
               </div>
 
               {/* Reset action */}
-              <Button onClick={handleResetFilters} variant="outline" className="w-full uppercase text-xs tracking-widest">
+              <Button
+                onClick={handleResetFilters}
+                variant="outline"
+                className="w-full text-xs uppercase tracking-widest"
+              >
                 Reset All Filters
               </Button>
             </div>

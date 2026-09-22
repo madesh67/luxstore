@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Container } from "./container";
 import { Loader2, CheckCircle2, ChevronRight, CreditCard, MapPin, Truck } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getCategoryFallbackImage } from "@/lib/utils";
 import { getStripe } from "@/lib/stripe-client";
 import { Elements } from "@stripe/react-stripe-js";
 import { StripePaymentForm } from "./stripe-payment-form";
@@ -38,7 +38,7 @@ export function CheckoutClient() {
 
   const [step, setStep] = React.useState<CheckoutStep>("address");
   const [session, setSession] = React.useState<CheckoutSessionType | null>(null);
-  
+
   // Stripe configuration
   const [clientSecret, setClientSecret] = React.useState<string | null>(null);
   const [paymentTotal, setPaymentTotal] = React.useState<number>(0);
@@ -116,19 +116,20 @@ export function CheckoutClient() {
           onError: () => {
             router.push("/cart");
           },
-        }
+        },
       );
     }
   }, [cartData, isCartLoading, createSessionMutation, router, user?.email, enablePayments]);
 
   if (!enablePayments) {
     return (
-      <Container className="py-20 text-center space-y-4">
-        <h2 className="text-xl font-bold tracking-wider uppercase text-foreground">
+      <Container className="space-y-4 py-20 text-center">
+        <h2 className="text-xl font-bold uppercase tracking-wider text-foreground">
           Demo Mode / Checkout Unavailable
         </h2>
-        <p className="text-sm text-muted-foreground max-w-md mx-auto">
-          LuxStore Preview: Orders are currently not being processed. Payment integration is disabled on this preview environment.
+        <p className="mx-auto max-w-md text-sm text-muted-foreground">
+          LuxStore Preview: Orders are currently not being processed. Payment integration is
+          disabled on this preview environment.
         </p>
         <div className="pt-4">
           <Button asChild variant="gold">
@@ -144,9 +145,11 @@ export function CheckoutClient() {
 
   if (isLoadingSetup) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 space-y-3">
+      <div className="flex flex-col items-center justify-center space-y-3 py-32">
         <Loader2 className="h-8 w-8 animate-spin text-accent" />
-        <span className="text-xs uppercase tracking-widest text-muted-foreground">Setting up checkout session...</span>
+        <span className="text-xs uppercase tracking-widest text-muted-foreground">
+          Setting up checkout session...
+        </span>
       </div>
     );
   }
@@ -211,7 +214,7 @@ export function CheckoutClient() {
         onError: (err) => {
           alert(err.message || "Failed to save address details");
         },
-      }
+      },
     );
   };
 
@@ -239,7 +242,7 @@ export function CheckoutClient() {
         onError: (err) => {
           alert(err.message || "Failed to set shipping option");
         },
-      }
+      },
     );
   };
 
@@ -261,7 +264,7 @@ export function CheckoutClient() {
         onError: (err) => {
           alert(err.message || "Stripe gateway handshake failed");
         },
-      }
+      },
     );
   };
 
@@ -287,43 +290,63 @@ export function CheckoutClient() {
   const formattedAddress = session.addressSnapshot as unknown as AddressSnapshotType;
 
   return (
-    <Container className="py-12 space-y-10 max-w-6xl animate-fade-in">
+    <Container className="max-w-6xl animate-fade-in space-y-10 py-12">
       {/* Step Indicators */}
-      <div className="flex items-center justify-center space-x-4 max-w-md mx-auto border-b border-border/30 pb-6">
+      <div className="mx-auto flex max-w-md items-center justify-center space-x-4 border-b border-border/30 pb-6">
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "address" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}>1</span>
-          <span className={step === "address" ? "text-accent" : "text-muted-foreground"}>Address</span>
+          <span
+            className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] ${step === "address" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}
+          >
+            1
+          </span>
+          <span className={step === "address" ? "text-accent" : "text-muted-foreground"}>
+            Address
+          </span>
         </div>
         <ChevronRight className="h-4 w-4 text-muted-foreground/40" />
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "shipping" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}>2</span>
-          <span className={step === "shipping" ? "text-accent" : "text-muted-foreground"}>Shipping</span>
+          <span
+            className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] ${step === "shipping" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}
+          >
+            2
+          </span>
+          <span className={step === "shipping" ? "text-accent" : "text-muted-foreground"}>
+            Shipping
+          </span>
         </div>
         <ChevronRight className="h-4 w-4 text-muted-foreground/40" />
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] ${step === "review" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}>3</span>
-          <span className={step === "review" ? "text-accent" : "text-muted-foreground"}>Payment</span>
+          <span
+            className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] ${step === "review" ? "bg-accent text-accent-foreground" : "bg-primary/10 text-primary"}`}
+          >
+            3
+          </span>
+          <span className={step === "review" ? "text-accent" : "text-muted-foreground"}>
+            Payment
+          </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+      <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-3">
         {/* Step Panels Column */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="space-y-8 lg:col-span-2">
           {/* STEP 1: ADDRESS */}
           {step === "address" && (
             <div className="space-y-6">
               <div>
-                <span className="text-[10px] tracking-[0.25em] font-semibold text-accent uppercase flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-accent">
                   <MapPin className="h-3.5 w-3.5" /> Step 1 of 3
                 </span>
-                <h2 className="text-2xl font-display font-light uppercase tracking-wider text-foreground mt-1">
+                <h2 className="mt-1 font-display text-2xl font-light uppercase tracking-wider text-foreground">
                   Shipping Address
                 </h2>
               </div>
 
               {user && addressesData?.addresses && addressesData.addresses.length > 0 && (
-                <div className="space-y-4 p-4 border border-border/40 bg-secondary/15 rounded-sm">
-                  <Label className="text-[10px] uppercase tracking-widest font-bold">Choose a Saved Address</Label>
+                <div className="space-y-4 rounded-sm border border-border/40 bg-secondary/15 p-4">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest">
+                    Choose a Saved Address
+                  </Label>
                   <div className="grid grid-cols-1 gap-3">
                     {addressesData.addresses.map((addr) => (
                       <div
@@ -332,12 +355,22 @@ export function CheckoutClient() {
                           setSelectedAddressId(addr.id);
                           setShowManualAddressForm(false);
                         }}
-                        className={`p-4 border rounded-sm cursor-pointer transition-all flex justify-between items-center ${selectedAddressId === addr.id ? "border-accent bg-accent/5" : "border-border/40 bg-card hover:border-accent/40"}`}
+                        className={`flex cursor-pointer items-center justify-between rounded-sm border p-4 transition-all ${selectedAddressId === addr.id ? "border-accent bg-accent/5" : "border-border/40 bg-card hover:border-accent/40"}`}
                       >
                         <div className="space-y-1">
-                          <p className="text-xs font-bold uppercase">{addr.fullName} <span className="text-[9px] text-muted-foreground bg-secondary px-1.5 py-0.5 rounded ml-2 font-semibold tracking-wider">{addr.title || "HOME"}</span></p>
-                          <p className="text-xs text-muted-foreground font-light">{addr.addressLine1}, {addr.addressLine2 && `${addr.addressLine2}, `}{addr.city}, {addr.state} - {addr.postalCode}</p>
-                          <p className="text-[10px] text-muted-foreground font-mono">{addr.phoneNumber}</p>
+                          <p className="text-xs font-bold uppercase">
+                            {addr.fullName}{" "}
+                            <span className="ml-2 rounded bg-secondary px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-muted-foreground">
+                              {addr.title || "HOME"}
+                            </span>
+                          </p>
+                          <p className="text-xs font-light text-muted-foreground">
+                            {addr.addressLine1}, {addr.addressLine2 && `${addr.addressLine2}, `}
+                            {addr.city}, {addr.state} - {addr.postalCode}
+                          </p>
+                          <p className="font-mono text-[10px] text-muted-foreground">
+                            {addr.phoneNumber}
+                          </p>
                         </div>
                         {selectedAddressId === addr.id && (
                           <CheckCircle2 className="h-4.5 w-4.5 text-accent" />
@@ -349,7 +382,7 @@ export function CheckoutClient() {
                   <button
                     type="button"
                     onClick={() => setShowManualAddressForm(true)}
-                    className="text-xs text-accent hover:underline font-semibold uppercase tracking-wider pt-2"
+                    className="pt-2 text-xs font-semibold uppercase tracking-wider text-accent hover:underline"
                   >
                     + Ship to a different address
                   </button>
@@ -359,8 +392,10 @@ export function CheckoutClient() {
               {showManualAddressForm && (
                 <form onSubmit={handleAddressSubmit} className="space-y-6">
                   {user && addressesData?.addresses && addressesData.addresses.length > 0 && (
-                    <div className="flex justify-between items-center pb-2 border-b border-border/30">
-                      <h3 className="text-xs uppercase tracking-widest font-bold text-foreground">New Shipping Address</h3>
+                    <div className="flex items-center justify-between border-b border-border/30 pb-2">
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-foreground">
+                        New Shipping Address
+                      </h3>
                       <button
                         type="button"
                         onClick={() => {
@@ -368,7 +403,7 @@ export function CheckoutClient() {
                           const first = addressesData.addresses[0];
                           if (first) setSelectedAddressId(first.id);
                         }}
-                        className="text-xs text-accent hover:underline uppercase tracking-wider"
+                        className="text-xs uppercase tracking-wider text-accent hover:underline"
                       >
                         Use Saved Address
                       </button>
@@ -382,7 +417,9 @@ export function CheckoutClient() {
                         id="firstName"
                         required
                         value={addressForm.firstName}
-                        onChange={(e) => setAddressForm({ ...addressForm, firstName: e.target.value })}
+                        onChange={(e) =>
+                          setAddressForm({ ...addressForm, firstName: e.target.value })
+                        }
                       />
                     </div>
                     <div className="space-y-1">
@@ -391,12 +428,14 @@ export function CheckoutClient() {
                         id="lastName"
                         required
                         value={addressForm.lastName}
-                        onChange={(e) => setAddressForm({ ...addressForm, lastName: e.target.value })}
+                        onChange={(e) =>
+                          setAddressForm({ ...addressForm, lastName: e.target.value })
+                        }
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="space-y-1">
                       <Label htmlFor="email">Email *</Label>
                       <Input
@@ -414,7 +453,9 @@ export function CheckoutClient() {
                         type="tel"
                         required
                         value={addressForm.phoneNumber}
-                        onChange={(e) => setAddressForm({ ...addressForm, phoneNumber: e.target.value })}
+                        onChange={(e) =>
+                          setAddressForm({ ...addressForm, phoneNumber: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -425,7 +466,9 @@ export function CheckoutClient() {
                       id="addressLine1"
                       required
                       value={addressForm.addressLine1}
-                      onChange={(e) => setAddressForm({ ...addressForm, addressLine1: e.target.value })}
+                      onChange={(e) =>
+                        setAddressForm({ ...addressForm, addressLine1: e.target.value })
+                      }
                     />
                   </div>
 
@@ -434,7 +477,9 @@ export function CheckoutClient() {
                     <Input
                       id="addressLine2"
                       value={addressForm.addressLine2}
-                      onChange={(e) => setAddressForm({ ...addressForm, addressLine2: e.target.value })}
+                      onChange={(e) =>
+                        setAddressForm({ ...addressForm, addressLine2: e.target.value })
+                      }
                     />
                   </div>
 
@@ -463,7 +508,9 @@ export function CheckoutClient() {
                         id="postalCode"
                         required
                         value={addressForm.postalCode}
-                        onChange={(e) => setAddressForm({ ...addressForm, postalCode: e.target.value })}
+                        onChange={(e) =>
+                          setAddressForm({ ...addressForm, postalCode: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -471,18 +518,19 @@ export function CheckoutClient() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <Label htmlFor="country">Country</Label>
-                      <Input
-                        id="country"
-                        readOnly
-                        value={addressForm.country}
-                      />
+                      <Input id="country" readOnly value={addressForm.country} />
                     </div>
                     <div className="space-y-1">
                       <Label htmlFor="addressType">Location Label</Label>
                       <select
                         id="addressType"
                         value={addressForm.addressType}
-                        onChange={(e) => setAddressForm({ ...addressForm, addressType: e.target.value as "HOME" | "WORK" | "OTHER" })}
+                        onChange={(e) =>
+                          setAddressForm({
+                            ...addressForm,
+                            addressType: e.target.value as "HOME" | "WORK" | "OTHER",
+                          })
+                        }
                         className="flex h-10 w-full rounded-sm border border-input bg-background px-3 py-2 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <option value="HOME">Home</option>
@@ -496,7 +544,7 @@ export function CheckoutClient() {
                     type="submit"
                     disabled={updateStepMutation.isPending}
                     variant="gold"
-                    className="w-full h-12 uppercase tracking-widest text-xs font-bold"
+                    className="h-12 w-full text-xs font-bold uppercase tracking-widest"
                   >
                     {updateStepMutation.isPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -512,7 +560,7 @@ export function CheckoutClient() {
                   onClick={handleAddressSubmit}
                   disabled={updateStepMutation.isPending}
                   variant="gold"
-                  className="w-full h-12 uppercase tracking-widest text-xs font-bold"
+                  className="h-12 w-full text-xs font-bold uppercase tracking-widest"
                 >
                   {updateStepMutation.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -528,30 +576,37 @@ export function CheckoutClient() {
           {step === "shipping" && (
             <div className="space-y-6">
               <div>
-                <span className="text-[10px] tracking-[0.25em] font-semibold text-accent uppercase flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-accent">
                   <Truck className="h-3.5 w-3.5" /> Step 2 of 3
                 </span>
-                <h2 className="text-2xl font-display font-light uppercase tracking-wider text-foreground mt-1">
+                <h2 className="mt-1 font-display text-2xl font-light uppercase tracking-wider text-foreground">
                   Shipping Methods
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 gap-4">
                 {shippingMethodsData?.methods.map((method) => {
-                  const calculatedSurcharge = method.slug === "standard" && session.subtotal >= 10000 ? 0 : method.baseCost;
+                  const calculatedSurcharge =
+                    method.slug === "standard" && session.subtotal >= 10000 ? 0 : method.baseCost;
                   return (
                     <div
                       key={method.id}
                       onClick={() => setSelectedShippingMethodId(method.id)}
-                      className={`p-5 border rounded-sm cursor-pointer transition-all flex justify-between items-center ${selectedShippingMethodId === method.id ? "border-accent bg-accent/5" : "border-border/40 bg-card hover:border-accent/40"}`}
+                      className={`flex cursor-pointer items-center justify-between rounded-sm border p-5 transition-all ${selectedShippingMethodId === method.id ? "border-accent bg-accent/5" : "border-border/40 bg-card hover:border-accent/40"}`}
                     >
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold uppercase tracking-wider">{method.name}</p>
-                        <p className="text-xs text-muted-foreground font-light">Estimated Delivery: {method.estimatedDays}</p>
+                        <p className="text-sm font-semibold uppercase tracking-wider">
+                          {method.name}
+                        </p>
+                        <p className="text-xs font-light text-muted-foreground">
+                          Estimated Delivery: {method.estimatedDays}
+                        </p>
                       </div>
                       <div className="text-right">
-                        <span className="text-xs font-mono font-bold text-foreground">
-                          {calculatedSurcharge === 0 ? "FREE" : formatPrice(Number(calculatedSurcharge))}
+                        <span className="font-mono text-xs font-bold text-foreground">
+                          {calculatedSurcharge === 0
+                            ? "FREE"
+                            : formatPrice(Number(calculatedSurcharge))}
                         </span>
                       </div>
                     </div>
@@ -559,11 +614,11 @@ export function CheckoutClient() {
                 })}
               </div>
 
-              <div className="flex gap-4 pt-4 border-t border-border/30">
+              <div className="flex gap-4 border-t border-border/30 pt-4">
                 <Button
                   onClick={() => setStep("address")}
                   variant="outline"
-                  className="w-1/3 h-12 uppercase tracking-widest text-[10px] font-bold"
+                  className="h-12 w-1/3 text-[10px] font-bold uppercase tracking-widest"
                 >
                   Back to Address
                 </Button>
@@ -571,7 +626,7 @@ export function CheckoutClient() {
                   onClick={handleShippingSubmit}
                   disabled={updateStepMutation.isPending || !selectedShippingMethodId}
                   variant="gold"
-                  className="w-2/3 h-12 uppercase tracking-widest text-xs font-bold"
+                  className="h-12 w-2/3 text-xs font-bold uppercase tracking-widest"
                 >
                   {updateStepMutation.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -587,37 +642,51 @@ export function CheckoutClient() {
           {step === "review" && clientSecret && (
             <div className="space-y-6">
               <div>
-                <span className="text-[10px] tracking-[0.25em] font-semibold text-accent uppercase flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-accent">
                   <CreditCard className="h-3.5 w-3.5" /> Step 3 of 3
                 </span>
-                <h2 className="text-2xl font-display font-light uppercase tracking-wider text-foreground mt-1">
+                <h2 className="mt-1 font-display text-2xl font-light uppercase tracking-wider text-foreground">
                   Authorize Payment
                 </h2>
               </div>
 
               {/* Immutable snapshotted details summary */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 border border-border/40 bg-secondary/15 rounded-sm text-xs">
+              <div className="grid grid-cols-1 gap-6 rounded-sm border border-border/40 bg-secondary/15 p-5 text-xs md:grid-cols-2">
                 <div className="space-y-2">
-                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Shipping Address</p>
-                  <p className="font-semibold text-foreground uppercase">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    Shipping Address
+                  </p>
+                  <p className="font-semibold uppercase text-foreground">
                     {formattedAddress.firstName} {formattedAddress.lastName}
                   </p>
-                  <p className="text-muted-foreground font-light">
-                    {formattedAddress.addressLine1}, {formattedAddress.addressLine2 && `${formattedAddress.addressLine2}, `}
-                    {formattedAddress.city}, {formattedAddress.state} - {formattedAddress.postalCode}
+                  <p className="font-light text-muted-foreground">
+                    {formattedAddress.addressLine1},{" "}
+                    {formattedAddress.addressLine2 && `${formattedAddress.addressLine2}, `}
+                    {formattedAddress.city}, {formattedAddress.state} -{" "}
+                    {formattedAddress.postalCode}
                   </p>
-                  <p className="text-muted-foreground font-light">Contact: {formattedAddress.phoneNumber}</p>
+                  <p className="font-light text-muted-foreground">
+                    Contact: {formattedAddress.phoneNumber}
+                  </p>
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Selected Carrier</p>
-                  <p className="font-semibold text-foreground uppercase">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    Selected Carrier
+                  </p>
+                  <p className="font-semibold uppercase text-foreground">
                     {session.shippingMethod?.name || "Standard Shipping"}
                   </p>
-                  <p className="text-muted-foreground font-light">
-                    Cost: {Number(session.shippingCost) === 0 ? "FREE" : formatPrice(Number(session.shippingCost))}
+                  <p className="font-light text-muted-foreground">
+                    Cost:{" "}
+                    {Number(session.shippingCost) === 0
+                      ? "FREE"
+                      : formatPrice(Number(session.shippingCost))}
                   </p>
-                  <p className="text-[10px] text-accent font-semibold uppercase tracking-wider cursor-pointer" onClick={() => setStep("shipping")}>
+                  <p
+                    className="cursor-pointer text-[10px] font-semibold uppercase tracking-wider text-accent"
+                    onClick={() => setStep("shipping")}
+                  >
                     Edit Shipping Method
                   </p>
                 </div>
@@ -635,7 +704,7 @@ export function CheckoutClient() {
 
               <button
                 onClick={() => setStep("shipping")}
-                className="text-xs uppercase tracking-widest font-semibold hover:text-accent flex items-center gap-1 mx-auto mt-4 text-muted-foreground"
+                className="mx-auto mt-4 flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-accent"
               >
                 Go back to Shipping Choice
               </button>
@@ -645,24 +714,34 @@ export function CheckoutClient() {
 
         {/* Pricing Summary Sidepanel */}
         <div className="space-y-6 lg:sticky lg:top-24">
-          <div className="border border-border/40 p-6 rounded-sm bg-card space-y-6">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-foreground pb-4 border-b border-border/30">
+          <div className="space-y-6 rounded-sm border border-border/40 bg-card p-6">
+            <h3 className="border-b border-border/30 pb-4 text-xs font-semibold uppercase tracking-widest text-foreground">
               Selection Summary
             </h3>
 
             {/* List mini products */}
-            <div className="divide-y divide-border/20 max-h-60 overflow-y-auto pr-1">
+            <div className="max-h-60 divide-y divide-border/20 overflow-y-auto pr-1">
               {items.map((item, idx) => (
-                <div key={idx} className="flex gap-4 py-3 first:pt-0 last:pb-0 text-xs">
-                  <div className="h-12 w-12 bg-secondary/20 border border-border/30 rounded-sm overflow-hidden flex-shrink-0">
-                    <img src={item.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=100"} alt={item.name} className="object-cover h-full w-full" />
+                <div key={idx} className="flex gap-4 py-3 text-xs first:pt-0 last:pb-0">
+                  <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-sm border border-border/30 bg-secondary/20">
+                    <img
+                      src={item.imageUrl || getCategoryFallbackImage()}
+                      alt={item.name}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
-                  <div className="flex-grow min-w-0">
-                    <h4 className="font-display font-medium text-foreground uppercase truncate">{item.name}</h4>
-                    <p className="text-muted-foreground/60 text-[10px] uppercase font-semibold">SKU: {item.sku}</p>
-                    <p className="text-muted-foreground text-[10px] mt-0.5">Quantity: {item.quantity}</p>
+                  <div className="min-w-0 flex-grow">
+                    <h4 className="truncate font-display font-medium uppercase text-foreground">
+                      {item.name}
+                    </h4>
+                    <p className="text-[10px] font-semibold uppercase text-muted-foreground/60">
+                      SKU: {item.sku}
+                    </p>
+                    <p className="mt-0.5 text-[10px] text-muted-foreground">
+                      Quantity: {item.quantity}
+                    </p>
                   </div>
-                  <div className="font-mono text-foreground font-semibold">
+                  <div className="font-mono font-semibold text-foreground">
                     {formatPrice(item.price * item.quantity)}
                   </div>
                 </div>
@@ -670,31 +749,35 @@ export function CheckoutClient() {
             </div>
 
             {/* Totals table */}
-            <div className="border-t border-border/30 pt-4 space-y-2.5 text-xs">
-              <div className="flex justify-between text-muted-foreground font-light">
+            <div className="space-y-2.5 border-t border-border/30 pt-4 text-xs">
+              <div className="flex justify-between font-light text-muted-foreground">
                 <span>Subtotal</span>
                 <span className="font-mono">{formatPrice(Number(session.subtotal))}</span>
               </div>
-              
+
               {step !== "address" && (
                 <>
-                  <div className="flex justify-between text-muted-foreground font-light">
+                  <div className="flex justify-between font-light text-muted-foreground">
                     <span>Shipping</span>
                     <span className="font-mono">
-                      {Number(session.shippingCost) === 0 ? "FREE" : formatPrice(Number(session.shippingCost || 0))}
+                      {Number(session.shippingCost) === 0
+                        ? "FREE"
+                        : formatPrice(Number(session.shippingCost || 0))}
                     </span>
                   </div>
-                  <div className="flex justify-between text-muted-foreground font-light">
+                  <div className="flex justify-between font-light text-muted-foreground">
                     <span>Estimated Tax</span>
                     <span className="font-mono">{formatPrice(Number(session.taxCost || 0))}</span>
                   </div>
                 </>
               )}
 
-              <div className="flex justify-between text-sm font-semibold pt-3 border-t border-border/20 text-foreground">
+              <div className="flex justify-between border-t border-border/20 pt-3 text-sm font-semibold text-foreground">
                 <span>Total Selection</span>
-                <span className="font-mono text-accent text-base">
-                  {step === "address" ? formatPrice(Number(session.subtotal)) : formatPrice(Number(session.total))}
+                <span className="font-mono text-base text-accent">
+                  {step === "address"
+                    ? formatPrice(Number(session.subtotal))
+                    : formatPrice(Number(session.total))}
                 </span>
               </div>
             </div>

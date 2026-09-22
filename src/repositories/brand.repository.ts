@@ -1,31 +1,50 @@
 import { prisma } from "@/lib/prisma";
 import { AdminBrandCreateInput } from "@/schemas/catalog";
+import { getCatalogBrands } from "@/data/catalog";
 
 export const BrandRepository = {
   async findMany(onlyActive = true) {
-    return prisma.brand.findMany({
-      where: {
-        deletedAt: null,
-        ...(onlyActive ? { active: true } : {}),
-      },
-      orderBy: { name: "asc" },
-    });
+    try {
+      const brands = await prisma.brand.findMany({
+        where: {
+          deletedAt: null,
+          ...(onlyActive ? { active: true } : {}),
+        },
+        orderBy: { name: "asc" },
+      });
+      if (brands && brands.length > 0) return brands;
+      return getCatalogBrands();
+    } catch {
+      return getCatalogBrands();
+    }
   },
 
   async findBySlug(slug: string, onlyActive = true) {
-    return prisma.brand.findFirst({
-      where: {
-        slug,
-        deletedAt: null,
-        ...(onlyActive ? { active: true } : {}),
-      },
-    });
+    try {
+      const brand = await prisma.brand.findFirst({
+        where: {
+          slug,
+          deletedAt: null,
+          ...(onlyActive ? { active: true } : {}),
+        },
+      });
+      if (brand) return brand;
+      return getCatalogBrands().find((b) => b.slug === slug) || null;
+    } catch {
+      return getCatalogBrands().find((b) => b.slug === slug) || null;
+    }
   },
 
   async findById(id: string) {
-    return prisma.brand.findUnique({
-      where: { id },
-    });
+    try {
+      const brand = await prisma.brand.findUnique({
+        where: { id },
+      });
+      if (brand) return brand;
+      return getCatalogBrands().find((b) => b.id === id) || null;
+    } catch {
+      return getCatalogBrands().find((b) => b.id === id) || null;
+    }
   },
 
   async create(data: AdminBrandCreateInput) {
@@ -63,4 +82,3 @@ export const BrandRepository = {
     });
   },
 };
-

@@ -116,22 +116,25 @@ export function Header() {
   }
 
   return (
-
-    <header className="w-full sticky top-0 z-40">
+    <header className="sticky top-0 z-40 w-full" suppressHydrationWarning>
       {/* Top Banner */}
-      <div className="w-full bg-accent py-2 text-center text-[10px] sm:text-xs tracking-widest text-accent-foreground uppercase font-bold px-4">
+      <div className="w-full bg-accent px-4 py-2 text-center text-[10px] font-bold uppercase tracking-widest text-accent-foreground sm:text-xs">
         LuxStore Preview: Orders are currently not being processed.
       </div>
 
       {/* Main Header navigation */}
-      <div className={cn(
-        "glass-header w-full border-b border-border/40 bg-background/95 transition-all duration-300",
-        isScrolled ? "shadow-md bg-background/98" : ""
-      )}>
-        <Container className={cn(
-          "flex items-center justify-between transition-all duration-300",
-          isScrolled ? "h-12" : "h-16"
-        )}>
+      <div
+        className={cn(
+          "glass-header w-full border-b border-border/40 bg-background/95 transition-all duration-300",
+          isScrolled ? "bg-background/98 shadow-md" : "",
+        )}
+      >
+        <Container
+          className={cn(
+            "flex items-center justify-between transition-all duration-300",
+            isScrolled ? "h-12" : "h-16",
+          )}
+        >
           {/* Mobile Menu Toggle Button */}
           <Button
             variant="ghost"
@@ -144,35 +147,45 @@ export function Header() {
           </Button>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1 group">
-            <span className="font-display text-lg sm:text-2xl font-semibold tracking-wider text-foreground">
+          <Link href="/" className="group flex items-center gap-1">
+            <span className="font-display text-lg font-semibold tracking-wider text-foreground sm:text-2xl">
               LUX<span className="text-accent">STORE</span>
             </span>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex space-x-3 lg:space-x-8">
+          <nav className="hidden space-x-3 md:flex lg:space-x-8">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-[10px] lg:text-xs font-semibold tracking-widest text-foreground/80 hover:text-foreground uppercase transition-colors py-2 relative group"
+                className="group relative py-2 text-[10px] font-semibold uppercase tracking-widest text-foreground/80 transition-colors hover:text-foreground lg:text-xs"
               >
                 {item.label}
-                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
+                <span className="absolute bottom-0 left-0 h-[1px] w-full origin-left scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100" />
               </Link>
             ))}
           </nav>
 
           {/* Action Utilities (Search, Account, Wishlist, Cart) */}
           <div className="flex items-center space-x-1.5 sm:space-x-2">
-            <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex text-foreground/80 hover:text-foreground">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="hidden text-foreground/80 hover:text-foreground sm:inline-flex"
+            >
               <Link href="/shop" aria-label="Search">
                 <Search className="h-[1.2rem] w-[1.2rem]" />
               </Link>
             </Button>
-            
-            <Button asChild variant="ghost" size="icon" className="text-foreground/80 hover:text-foreground">
+
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="text-foreground/80 hover:text-foreground"
+            >
               <Link href={accountHref} aria-label="Account">
                 <User className="h-[1.2rem] w-[1.2rem]" />
               </Link>
@@ -180,11 +193,16 @@ export function Header() {
 
             <NotificationCenter />
 
-            <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex text-foreground/80 hover:text-foreground relative">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="relative hidden text-foreground/80 hover:text-foreground sm:inline-flex"
+            >
               <Link href="/wishlist" aria-label="Wishlist">
                 <Heart className="h-[1.2rem] w-[1.2rem]" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-accent-foreground">
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-accent-foreground">
                     {wishlistCount}
                   </span>
                 )}
@@ -195,18 +213,18 @@ export function Header() {
               variant="ghost"
               size="icon"
               onClick={handleOpenCart}
-              className="text-foreground/80 hover:text-foreground relative"
+              className="relative text-foreground/80 hover:text-foreground"
               aria-label="Shopping Cart"
             >
               <ShoppingBag className="h-[1.2rem] w-[1.2rem]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground">
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground">
                   {cartCount}
                 </span>
               )}
             </Button>
 
-            <div className="hidden sm:block pl-1 border-l border-border/60">
+            <div className="hidden border-l border-border/60 pl-1 sm:block">
               <ThemeToggle />
             </div>
           </div>
@@ -233,10 +251,14 @@ export function Header() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
-              className="fixed inset-y-0 left-0 z-[60] w-[80vw] max-w-[320px] h-[100vh] bg-background p-6 shadow-xl flex flex-col md:hidden border-r border-border/40"
+              className="fixed inset-y-0 left-0 z-[60] flex h-[100vh] w-[80vw] max-w-[320px] flex-col border-r border-border/40 bg-background p-6 shadow-xl md:hidden"
             >
-              <div className="flex justify-between items-center border-b border-border/40 pb-4 mb-6">
-                <Link href="/" className="flex items-center gap-1 group" onClick={() => setMobileMenuOpen(false)}>
+              <div className="mb-6 flex items-center justify-between border-b border-border/40 pb-4">
+                <Link
+                  href="/"
+                  className="group flex items-center gap-1"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   <span className="font-display text-lg font-semibold tracking-wider text-foreground">
                     LUX<span className="text-accent">STORE</span>
                   </span>
@@ -257,25 +279,35 @@ export function Header() {
                     key={item.label}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="text-lg font-medium tracking-widest text-foreground hover:text-accent uppercase transition-colors"
+                    className="text-lg font-medium uppercase tracking-widest text-foreground transition-colors hover:text-accent"
                   >
                     {item.label}
                   </Link>
                 ))}
               </nav>
-              <div className="mt-auto border-t border-border/60 pt-6 flex flex-col gap-4">
-                <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
+              <div className="mt-auto flex flex-col gap-4 border-t border-border/60 pt-6">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="flex w-full items-center justify-center gap-2"
+                >
                   <Link href={accountHref} onClick={() => setMobileMenuOpen(false)}>
                     <User className="h-4 w-4" /> Account
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="w-full flex items-center justify-center gap-2">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="flex w-full items-center justify-center gap-2"
+                >
                   <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)}>
                     <Heart className="h-4 w-4" /> Wishlist ({wishlistCount})
                   </Link>
                 </Button>
-                <div className="flex justify-between items-center border-t border-border/60 pt-4 mt-2">
-                  <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">Appearance</span>
+                <div className="mt-2 flex items-center justify-between border-t border-border/60 pt-4">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    Appearance
+                  </span>
                   <ThemeToggle />
                 </div>
               </div>

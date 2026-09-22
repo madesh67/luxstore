@@ -16,7 +16,7 @@ export function formatPrice(
   options: {
     currency?: "USD" | "INR" | "EUR" | "GBP";
     notation?: Intl.NumberFormatOptions["notation"];
-  } = {}
+  } = {},
 ) {
   const { currency = "INR", notation = "standard" } = options;
 
@@ -53,4 +53,48 @@ export function slugify(text: string): string {
     .replace(/&/g, "-and-") // Replace & with 'and'
     .replace(/[^\w\-]+/g, "") // Remove all non-word chars
     .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+}
+
+export const CATEGORY_DEFAULT_IMAGES: Record<string, string> = {
+  timepieces: "/images/products/timepieces/chronos-co-royal-chronograph.jpg",
+  "leather-bags": "/images/products/leather-bags/atelier-v-tuscany-calfskin-duffel.jpg",
+  "wallets-folios": "/images/products/wallets-folios/saffiano-bifold-leather-wallet.jpg",
+  eyewear: "/images/products/eyewear/ocular-optics-polarized-tortoiseshell.jpg",
+  belts: "/images/products/belts/atelier-v-reversible-calfskin-belt.jpg",
+  "travel-cases": "/images/products/travel-cases/apex-design-polycarbonate-spinner.jpg",
+  backpacks: "/images/products/backpacks/nordic-craft-commuter-leather-backpack.jpg",
+  "tech-sleeves": "/images/products/tech-sleeves/velo-tech-padded-leather-laptop-sleeve.jpg",
+  "fine-jewelry": "/images/products/fine-jewelry/sterling-co-18k-gold-signet-ring.jpg",
+  cufflinks: "/images/products/cufflinks/sterling-co-mother-of-pearl-cufflinks.jpg",
+};
+
+/**
+ * Returns a proper high-resolution product image, guaranteeing category accuracy.
+ */
+export function getProductImageUrl(
+  product?: {
+    slug?: string;
+    images?: { imageUrl: string }[];
+    category?: { slug?: string } | null;
+  } | null,
+  index = 0,
+): string {
+  if (product?.images && product.images.length > index && product.images[index]?.imageUrl) {
+    return product.images[index].imageUrl;
+  }
+  if (product?.images && product.images.length > 0 && product.images[0]?.imageUrl) {
+    return product.images[0].imageUrl;
+  }
+  const categorySlug = product?.category?.slug;
+  if (categorySlug && CATEGORY_DEFAULT_IMAGES[categorySlug]) {
+    return CATEGORY_DEFAULT_IMAGES[categorySlug];
+  }
+  return "/images/products/timepieces/chronos-co-royal-chronograph.jpg";
+}
+
+export function getCategoryFallbackImage(categorySlug?: string): string {
+  if (categorySlug && CATEGORY_DEFAULT_IMAGES[categorySlug]) {
+    return CATEGORY_DEFAULT_IMAGES[categorySlug];
+  }
+  return "/images/products/timepieces/chronos-co-royal-chronograph.jpg";
 }

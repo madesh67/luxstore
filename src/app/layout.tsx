@@ -37,22 +37,20 @@ export const metadata: Metadata = {
     title: "LuxStore",
     description: "Premium accessories crafted with timeless elegance and modern luxury.",
   },
+  other: {
+    "darkreader-lock": "",
+  },
 };
 
 import { OrganizationJsonLd } from "@/components/shared/json-ld";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${playfair.variable}`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-screen flex flex-col justify-between">
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+      <head>
+        <meta name="darkreader-lock" content="" />
+      </head>
+      <body className="flex min-h-screen flex-col justify-between" suppressHydrationWarning>
         <AppProvider>
           <OrganizationJsonLd />
           <Header />

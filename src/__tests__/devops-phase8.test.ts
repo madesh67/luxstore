@@ -3,12 +3,18 @@ import { cache } from "@/lib/redis";
 import { backgroundJobs } from "@/lib/queue";
 import { isRateLimited } from "@/lib/rate-limiter";
 import { env } from "@/lib/env";
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: {
+    $queryRaw: vi.fn().mockResolvedValue([{ "?column?": 1 }]),
+  },
+}));
+
 import { GET as healthCheckHandler } from "@/app/api/health/route";
 import { GET as dbHealthHandler } from "@/app/api/health/database/route";
 import { GET as cacheHealthHandler } from "@/app/api/health/cache/route";
 
 describe("Phase 8 - Performance, Caching & DevOps Tests", () => {
-  
   beforeEach(() => {
     vi.restoreAllMocks();
   });
@@ -140,6 +146,12 @@ describe("Phase 8 - Performance, Caching & DevOps Tests", () => {
     });
 
     it("should return consolidated healthy check status", async () => {
+      process.env.CLOUDINARY_CLOUD_NAME = "test-cloud";
+      process.env.CLOUDINARY_API_KEY = "test-key";
+      process.env.CLOUDINARY_API_SECRET = "test-secret";
+      process.env.STRIPE_SECRET_KEY = "test-stripe";
+      process.env.STRIPE_WEBHOOK_SECRET = "test-whsec";
+
       const res = await healthCheckHandler();
       expect(res.status).toBe(200);
       const json = await res.json();

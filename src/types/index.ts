@@ -71,6 +71,7 @@ export interface Product {
   brand?: Brand | null;
   category?: Category | null;
   images?: ProductImage[];
+  inventory?: Inventory | null;
 }
 
 export interface ProductImage {

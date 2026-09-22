@@ -1,6 +1,18 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { CatalogFilterInput, AdminProductCreateInput } from "@/schemas/catalog";
+import {
+  getCatalogProducts,
+  getCatalogProductBySlug,
+  getCatalogRelatedProducts,
+} from "@/data/catalog";
+
+type ProductDetailResult = Prisma.ProductGetPayload<{
+  include: {
+    images: true;
+    inventory: true;
+  };
+}>;
 
 export const ProductRepository = {
   async findManyAndCount(filters: CatalogFilterInput) {
@@ -80,12 +92,42 @@ export const ProductRepository = {
       orderBy = { featured: "desc" };
     }
 
-    const [products, total] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy,
+    try {
+      const [products, total] = await Promise.all([
+        prisma.product.findMany({
+          where,
+          skip,
+          take: limit,
+          orderBy,
+          include: {
+            category: true,
+            brand: true,
+            images: {
+              orderBy: { displayOrder: "asc" },
+            },
+            inventory: true,
+          },
+        }),
+        prisma.product.count({ where }),
+      ]);
+
+      if (total > 0) {
+        return { products, total };
+      }
+      return getCatalogProducts(filters);
+    } catch {
+      return getCatalogProducts(filters);
+    }
+  },
+
+  async findBySlug(slug: string, onlyActive = true) {
+    try {
+      const product = await prisma.product.findFirst({
+        where: {
+          slug,
+          deletedAt: null,
+          ...(onlyActive ? { active: true } : {}),
+        },
         include: {
           category: true,
           brand: true,
@@ -93,47 +135,49 @@ export const ProductRepository = {
             orderBy: { displayOrder: "asc" },
           },
           inventory: true,
+          reviews: {
+            include: { user: true },
+            orderBy: { createdAt: "desc" },
+          },
         },
-      }),
-      prisma.product.count({ where }),
-    ]);
+      });
 
-    return { products, total };
-  },
-
-  async findBySlug(slug: string, onlyActive = true) {
-    return prisma.product.findFirst({
-      where: {
-        slug,
-        deletedAt: null,
-        ...(onlyActive ? { active: true } : {}),
-      },
-      include: {
-        category: true,
-        brand: true,
-        images: {
-          orderBy: { displayOrder: "asc" },
-        },
-        inventory: true,
-        reviews: {
-          include: { user: true },
-          orderBy: { createdAt: "desc" },
-        },
-      },
-    });
+      if (product) return product;
+      return getCatalogProductBySlug(slug);
+    } catch {
+      return getCatalogProductBySlug(slug);
+    }
   },
 
   async findById(id: string) {
-    return prisma.product.findUnique({
-      where: { id },
-      include: {
-        images: true,
-        inventory: true,
-      },
-    });
+    let product: ProductDetailResult | null = null;
+    try {
+      product = await prisma.product.findUnique({
+        where: { id },
+        include: {
+          images: true,
+          inventory: true,
+        },
+      });
+      if (product) return product;
+      const fallback = getCatalogProducts({ page: 1, limit: 100, sortBy: "newest" }).products.find(
+        (p) => p.id === id,
+      );
+      return (fallback as unknown as ProductDetailResult) || null;
+    } catch {
+      const fallback = getCatalogProducts({ page: 1, limit: 100, sortBy: "newest" }).products.find(
+        (p) => p.id === id,
+      );
+      return (fallback as unknown as ProductDetailResult) || null;
+    }
   },
 
-  async findRelated(productId: string, categoryId: string | null, brandId: string | null, limit = 4) {
+  async findRelated(
+    productId: string,
+    categoryId: string | null,
+    brandId: string | null,
+    limit = 4,
+  ) {
     const where: Prisma.ProductWhereInput = {
       id: { not: productId },
       deletedAt: null,
@@ -153,18 +197,25 @@ export const ProductRepository = {
       delete where.OR;
     }
 
-    return prisma.product.findMany({
-      where,
-      take: limit,
-      orderBy: { ratingAverage: "desc" },
-      include: {
-        category: true,
-        brand: true,
-        images: {
-          orderBy: { displayOrder: "asc" },
+    try {
+      const related = await prisma.product.findMany({
+        where,
+        take: limit,
+        orderBy: { ratingAverage: "desc" },
+        include: {
+          category: true,
+          brand: true,
+          images: {
+            orderBy: { displayOrder: "asc" },
+          },
         },
-      },
-    });
+      });
+
+      if (related && related.length > 0) return related;
+      return getCatalogRelatedProducts(productId, categoryId, brandId, limit);
+    } catch {
+      return getCatalogRelatedProducts(productId, categoryId, brandId, limit);
+    }
   },
 
   async create(data: AdminProductCreateInput) {
